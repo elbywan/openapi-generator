@@ -1,0 +1,17 @@
+name: openapi-generator
+version: 0.1.0
+
+authors:
+  - elbywan <elbywan@hotmail.com>
+
+crystal: 0.33.0
+
+dependencies:
+  open_api:
+    github: repomaa/open_api.cr
+
+development_dependencies:
+  amber:
+    github: amberframework/amber
+
+license: MIT
