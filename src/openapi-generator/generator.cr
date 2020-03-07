@@ -55,26 +55,19 @@ module OpenAPI::Generator
             )
           }
 
+          {% begin %}
+          {% methods = %w(get put post delete options head patch trace) %}
+
           case method
-          when "get"
-            path_items[full_path].get = op
-          when "put"
-            path_items[full_path].put = op
-          when "post"
-            path_items[full_path].post = op
-          when "delete"
-            path_items[full_path].delete = op
-          when "options"
-            path_items[full_path].options = op
-          when "head"
-            path_items[full_path].head = op
-          when "patch"
-            path_items[full_path].patch = op
-          when "trace"
-            path_items[full_path].trace = op
+          {% for method in methods %}
+          when "{{method.id}}"
+            path_items[full_path].{{method.id}} = op
+          {% end %}
           else
             raise "Unsupported method: #{method}."
           end
+
+          {% end %}
         rescue err
           Amber.logger.error "Error while generating bindings for path [#{full_path}].\n\n#{err}\n\n#{yaml_op}", "OpenAPI Generation"
         end
