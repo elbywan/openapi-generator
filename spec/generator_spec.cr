@@ -45,6 +45,8 @@ describe OpenAPI::Generator do
           - name: id
             in: path
             required: true
+            schema:
+              type: string
             example: id
           responses:
             "200":
@@ -55,6 +57,8 @@ describe OpenAPI::Generator do
           - name: id
             in: path
             required: true
+            schema:
+              type: string
             example: id
           responses:
             "200":
@@ -65,6 +69,8 @@ describe OpenAPI::Generator do
           - name: id
             in: path
             required: true
+            schema:
+              type: string
             example: id
           responses:
             "200":
@@ -83,8 +89,8 @@ describe OpenAPI::Generator do
             opt_string:
               type: string
             inner_schema:
-              all_of:
-              - ref: '#/components/schemas/Model::InnerModel'
+              allOf:
+              - $ref: '#/components/schemas/Model::InnerModel'
             cast:
               type: string
         Model::InnerModel:
@@ -104,29 +110,29 @@ describe OpenAPI::Generator do
           type: object
           properties:
             union_types:
-              one_of:
+              oneOf:
               - type: object
-                additional_properties:
-                  ref: '#/components/schemas/Model::InnerModel'
+                additionalProperties:
+                  $ref: '#/components/schemas/Model::InnerModel'
               - type: integer
               - type: string
             free_form:
               type: object
-              additional_properties: true
+              additionalProperties: true
             array_of_hash:
               type: array
               items:
                 type: object
-                additional_properties:
-                  one_of:
+                additionalProperties:
+                  oneOf:
                   - type: integer
                   - type: string
       responses: {}
       parameters: {}
       examples: {}
-      request_bodies: {}
+      requestBodies: {}
       headers: {}
-      security_schemes: {}
+      securitySchemes: {}
       links: {}
       callbacks: {}
 

@@ -237,12 +237,14 @@ paths:
       - name: id
         in: path
         required: true
+        schema:
+          type: string
         example: id
-      request_body:
+      requestBody:
         content:
           application/json:
             schema:
-              ref: '#/components/schemas/Coordinates'
+              $ref: '#/components/schemas/Coordinates'
         required: true
       responses:
         "200":
@@ -257,12 +259,14 @@ paths:
       - name: id
         in: path
         required: true
+        schema:
+          type: string
         example: id
-      request_body:
+      requestBody:
         content:
           application/json:
             schema:
-              ref: '#/components/schemas/Coordinates'
+              $ref: '#/components/schemas/Coordinates'
         required: true
       responses:
         "200":
@@ -284,9 +288,9 @@ components:
   responses: {}
   parameters: {}
   examples: {}
-  request_bodies: {}
+  requestBodies: {}
   headers: {}
-  security_schemes: {}
+  securitySchemes: {}
   links: {}
   callbacks: {}</code></pre>
 
@@ -335,14 +339,14 @@ components:
   </h2>
   
     
-      <a href="https://github.com/elbywan/openapi-generator/blob/9d7e462871296f1d8f499848d78ed583368b79fe/src/openapi-generator/controller.cr#L38" target="_blank">
+      <a href="https://github.com/elbywan/openapi-generator/blob/34ba401ec5f0d491b1a32ed3429bc38cce351e76/src/openapi-generator/controller.cr#L38" target="_blank">
         openapi-generator/controller.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/elbywan/openapi-generator/blob/9d7e462871296f1d8f499848d78ed583368b79fe/src/openapi-generator/generator.cr#L140" target="_blank">
+      <a href="https://github.com/elbywan/openapi-generator/blob/34ba401ec5f0d491b1a32ed3429bc38cce351e76/src/openapi-generator/generator.cr#L144" target="_blank">
         openapi-generator/generator.cr
       </a>
     
@@ -470,7 +474,7 @@ base_doc <span class="o">=</span> {
       <br/>
       <div>
         
-          [<a href="https://github.com/elbywan/openapi-generator/blob/9d7e462871296f1d8f499848d78ed583368b79fe/src/openapi-generator/generator.cr#L190" target="_blank">View source</a>]
+          [<a href="https://github.com/elbywan/openapi-generator/blob/34ba401ec5f0d491b1a32ed3429bc38cce351e76/src/openapi-generator/generator.cr#L194" target="_blank">View source</a>]
         
       </div>
     </div>

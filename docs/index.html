@@ -143,10 +143,15 @@
   </svg>
 </a>openapi-generator</h1>
 
-<p>This library can be used to generate an <a href="https://swagger.io/specification/" target="_blank">OpenAPI v3 compliant</a>
-yaml file declaratively from your web framework code.</p>
+<p><a href="https://travis-ci.org/elbywan/openapi-generator" target="_blank"><img src="https://travis-ci.org/elbywan/openapi-generator.svg?branch=master" alt="Build Status"/></a></p>
 
-<p>It is then extremely easy to serve it from a <a href="https://swagger.io/tools/swagger-ui/" target="_blank">Swagger UI</a> instance.</p>
+<h4><a id="generate-an-open-api-v3-complianthttpsswagger.iospecification-yaml-file-declaratively-from-your-web-framework-code." class="anchor" href="#generate-an-open-api-v3-complianthttpsswagger.iospecification-yaml-file-declaratively-from-your-web-framework-code.">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Generate an <a href="https://swagger.io/specification/" target="_blank">OpenAPI v3 compliant</a> yaml file declaratively from your web framework code.</h4>
+
+<p>Then serve it from a <a href="https://swagger.io/tools/swagger-ui/" target="_blank">Swagger UI</a> instance.</p>
 
 <h2><a id="installation" class="anchor" href="#installation">
   <svg class="octicon-link" aria-hidden="true">
@@ -168,7 +173,7 @@ yaml file declaratively from your web framework code.</p>
   </svg>
 </a>📚 Full Documentation</h2>
 
-<p><a href="https://elbywan.github.io/openapi-generator/" target="_blank"><strong>Please check this link for the full documentation.</strong></a></p>
+<p><a href="https://elbywan.github.io/openapi-generator/OpenAPI/Generator.html" target="_blank"><strong>Please check this link for the full documentation.</strong></a></p>
 
 <h2><a id="minimal-working-example" class="anchor" href="#minimal-working-example">
   <svg class="octicon-link" aria-hidden="true">
@@ -249,12 +254,14 @@ paths:
       - name: id
         in: path
         required: true
+        schema:
+          type: string
         example: id
-      request_body:
+      requestBody:
         content:
           application/json:
             schema:
-              ref: '#/components/schemas/Coordinates'
+              $ref: '#/components/schemas/Coordinates'
         required: true
       responses:
         "200":
@@ -269,12 +276,14 @@ paths:
       - name: id
         in: path
         required: true
+        schema:
+          type: string
         example: id
-      request_body:
+      requestBody:
         content:
           application/json:
             schema:
-              ref: '#/components/schemas/Coordinates'
+              $ref: '#/components/schemas/Coordinates'
         required: true
       responses:
         "200":
@@ -296,9 +305,9 @@ components:
   responses: {}
   parameters: {}
   examples: {}
-  request_bodies: {}
+  requestBodies: {}
   headers: {}
-  security_schemes: {}
+  securitySchemes: {}
   links: {}
   callbacks: {}</code></pre>
 

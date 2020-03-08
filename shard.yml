@@ -9,6 +9,7 @@ crystal: 0.33.0
 dependencies:
   open_api:
     github: repomaa/open_api.cr
+    branch: master
 
 development_dependencies:
   amber:

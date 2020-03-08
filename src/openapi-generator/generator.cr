@@ -80,12 +80,14 @@ require "./providers/base"
 #       - name: id
 #         in: path
 #         required: true
+#         schema:
+#           type: string
 #         example: id
-#       request_body:
+#       requestBody:
 #         content:
 #           application/json:
 #             schema:
-#               ref: '#/components/schemas/Coordinates'
+#               $ref: '#/components/schemas/Coordinates'
 #         required: true
 #       responses:
 #         "200":
@@ -100,12 +102,14 @@ require "./providers/base"
 #       - name: id
 #         in: path
 #         required: true
+#         schema:
+#           type: string
 #         example: id
-#       request_body:
+#       requestBody:
 #         content:
 #           application/json:
 #             schema:
-#               ref: '#/components/schemas/Coordinates'
+#               $ref: '#/components/schemas/Coordinates'
 #         required: true
 #       responses:
 #         "200":
@@ -127,9 +131,9 @@ require "./providers/base"
 #   responses: {}
 #   parameters: {}
 #   examples: {}
-#   request_bodies: {}
+#   requestBodies: {}
 #   headers: {}
-#   security_schemes: {}
+#   securitySchemes: {}
 #   links: {}
 #   callbacks: {}
 # ```
@@ -227,7 +231,8 @@ module OpenAPI::Generator
               in: "path",
               name: param,
               required: true,
-              example: param
+              example: param,
+              schema: OpenAPI::Schema.new(type: "string")
             )
           }
 

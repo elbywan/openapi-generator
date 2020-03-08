@@ -100,12 +100,14 @@ paths:
       - name: id
         in: path
         required: true
+        schema:
+          type: string
         example: id
-      request_body:
+      requestBody:
         content:
           application/json:
             schema:
-              ref: '#/components/schemas/Coordinates'
+              $ref: '#/components/schemas/Coordinates'
         required: true
       responses:
         "200":
@@ -120,12 +122,14 @@ paths:
       - name: id
         in: path
         required: true
+        schema:
+          type: string
         example: id
-      request_body:
+      requestBody:
         content:
           application/json:
             schema:
-              ref: '#/components/schemas/Coordinates'
+              $ref: '#/components/schemas/Coordinates'
         required: true
       responses:
         "200":
@@ -147,9 +151,9 @@ components:
   responses: {}
   parameters: {}
   examples: {}
-  request_bodies: {}
+  requestBodies: {}
   headers: {}
-  security_schemes: {}
+  securitySchemes: {}
   links: {}
   callbacks: {}
 ```
