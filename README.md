@@ -19,7 +19,7 @@ dependencies:
 
 ## 📚 Full Documentation
 
-[**Please check this link for the full documentation.**](https://elbywan.github.io/openapi-generator/)
+[**Please check this link for the full documentation.**](https://elbywan.github.io/openapi-generator/OpenAPI/Generator.html)
 
 ## 🔨Minimal Working Example
 
