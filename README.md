@@ -1,9 +1,10 @@
 # openapi-generator
 
-This library can be used to generate an [OpenAPI v3 compliant](https://swagger.io/specification/)
-yaml file declaratively from your web framework code.
+[![Build Status](https://travis-ci.org/elbywan/openapi-generator.svg?branch=master)](https://travis-ci.org/elbywan/openapi-generator)
 
-It is then extremely easy to serve it from a [Swagger UI](https://swagger.io/tools/swagger-ui/) instance.
+#### Generate an [OpenAPI v3 compliant](https://swagger.io/specification/) yaml file declaratively from your web framework code.
+
+Then serve it from a [Swagger UI](https://swagger.io/tools/swagger-ui/) instance.
 
 ## 💾 Installation
 
