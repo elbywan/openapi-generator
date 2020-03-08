@@ -179,7 +179,7 @@
 
   <span class="k">def</span> <span class="m">initialize</span>(@lat, @long); <span class="k">end</span>
 
-  property lat  : <span class="t">Int32</span>
+  property lat : <span class="t">Int32</span>
   property long : <span class="t">Int32</span>
 <span class="k">end</span>
 
@@ -218,8 +218,7 @@
 
 <span class="t">OpenAPI</span><span class="t">::</span><span class="t">Generator</span>.generate(
   provider: <span class="t">OpenAPI</span><span class="t">::</span><span class="t">Generator</span><span class="t">::</span><span class="t">RoutesProvider</span><span class="t">::</span><span class="t">Amber</span>.<span class="k">new</span>
-)
-</code></pre>
+)</code></pre>
 
 <p>Will produce an <code>./openapi.yaml</code> file with the following contents:</p>
 
@@ -336,14 +335,14 @@ components:
   </h2>
   
     
-      <a href="https://github.com/elbywan/openapi-generator/blob/8b8f39cc9dd3d126c4ea2f68f02b0b030d94dece/src/openapi-generator/controller.cr#L38" target="_blank">
+      <a href="https://github.com/elbywan/openapi-generator/blob/9d7e462871296f1d8f499848d78ed583368b79fe/src/openapi-generator/controller.cr#L38" target="_blank">
         openapi-generator/controller.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/elbywan/openapi-generator/blob/8b8f39cc9dd3d126c4ea2f68f02b0b030d94dece/src/openapi-generator/generator.cr#L141" target="_blank">
+      <a href="https://github.com/elbywan/openapi-generator/blob/9d7e462871296f1d8f499848d78ed583368b79fe/src/openapi-generator/generator.cr#L140" target="_blank">
         openapi-generator/generator.cr
       </a>
     
@@ -455,9 +454,9 @@ options <span class="o">=</span> {
   output: <span class="t">Path</span>[<span class="t">Dir</span>.current] <span class="o">/</span> <span class="s">&quot;public&quot;</span> <span class="o">/</span> <span class="s">&quot;openapi.yaml&quot;</span>,
 }
 base_doc <span class="o">=</span> {
-  info:       {
-    title: <span class="s">&quot;Test&quot;</span>,
-    version: <span class="s">&quot;0.0.1&quot;</span>
+  info: {
+    title:   <span class="s">&quot;Test&quot;</span>,
+    version: <span class="s">&quot;0.0.1&quot;</span>,
   },
   components: <span class="t">NamedTuple</span>.<span class="k">new</span>,
 }
@@ -471,7 +470,7 @@ base_doc <span class="o">=</span> {
       <br/>
       <div>
         
-          [<a href="https://github.com/elbywan/openapi-generator/blob/8b8f39cc9dd3d126c4ea2f68f02b0b030d94dece/src/openapi-generator/generator.cr#L191" target="_blank">View source</a>]
+          [<a href="https://github.com/elbywan/openapi-generator/blob/9d7e462871296f1d8f499848d78ed583368b79fe/src/openapi-generator/generator.cr#L190" target="_blank">View source</a>]
         
       </div>
     </div>

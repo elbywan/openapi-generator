@@ -3,19 +3,25 @@
 This library can be used to generate an [OpenAPI v3 compliant](https://swagger.io/specification/)
 yaml file declaratively from your web framework code.
 
-## Installation
+It is then extremely easy to serve it from a [Swagger UI](https://swagger.io/tools/swagger-ui/) instance.
+
+## 💾 Installation
 
 1. Add the dependency to your `shard.yml`:
 
-   ```yaml
-   dependencies:
-     openapi-generator:
-       github: elbywan/openapi-generator
-   ```
+```yaml
+dependencies:
+  openapi-generator:
+    github: elbywan/openapi-generator
+```
 
 2. Run `shards install`
 
-## Usage
+## 📚 Full Documentation
+
+[**Please check this link for the full documentation.**](https://elbywan.github.io/openapi-generator/)
+
+## 🔨Minimal Working Example
 
 ```crystal
 require "openapi-generator"
@@ -27,7 +33,7 @@ require "amber"
 require "openapi-generator/providers/amber"
 
 # Optional: auto-serialize classes into openapi schema.
-# A typed Model class can be used as the source of truth.
+# Benefit: a typed Model class can then be used as the source of truth.
 class Coordinates
   extend OpenAPI::Generator::Serializable
 
@@ -147,11 +153,7 @@ components:
   callbacks: {}
 ```
 
-## Documentation
-
-[**Please check this link for the full documentation.**](https://elbywan.github.io/openapi-generator/)
-
-## Contributing
+## 🤝 Contributing
 
 1. Fork it (<https://github.com/your-github-user/openapi-generator/fork>)
 2. Create your feature branch (`git checkout -b my-new-feature`)
@@ -159,6 +161,6 @@ components:
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
 
-## Contributors
+## 🧑‍🤝‍🧑 Contributors
 
 - [elbywan](https://github.com/your-github-user) - creator and maintainer
