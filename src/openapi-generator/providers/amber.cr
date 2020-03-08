@@ -23,7 +23,7 @@ class OpenAPI::Generator::RoutesProvider::Amber < OpenAPI::Generator::RoutesProv
   end
 
   # Return a list of routes mapped with the controllers and methods.
-  def route_mappings
+  def route_mappings : Array(RouteMapping)
     routes = [] of RouteMapping
     ::Amber::Server.router.routes.each_route ->(full_path : String, route : ::Amber::Route) {
       method, paths, path_params = full_path
@@ -49,7 +49,7 @@ class OpenAPI::Generator::RoutesProvider::Amber < OpenAPI::Generator::RoutesProv
       # Full stringified path.
       string_path = "/#{paths.join "/"}"
       # Key matching the registered controller operation.
-      key = "#{route.controller}:#{route.action}"
+      key = "#{route.controller}::#{route.action}"
       # Add the triplet if it matches the included methods & paths filters.
       if (
            (@included_methods.nil? || @included_methods.try &.includes?(method)) &&

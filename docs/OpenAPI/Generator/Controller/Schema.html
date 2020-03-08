@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.32.1">
+
+<link href="../../../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../../js/doc.js"></script>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+
+  <meta id="repository-name" content="github.com/elbywan/openapi-generator">
+  <title>OpenAPI::Generator::Controller::Schema - github.com/elbywan/openapi-generator</title>
+  <script type="text/javascript">
+    CrystalDoc.base_path = "../../../";
+  </script>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="repository-links">
+      <a href="../../../index.html">README</a>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/Array" data-name="array(t)">
+      <a href="../../../Array.html">Array</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/Hash" data-name="hash(k, v)">
+      <a href="../../../Hash.html">Hash</a>
+      
+    </li>
+  
+  <li class="parent open current" data-id="github.com/elbywan/openapi-generator/OpenAPI" data-name="openapi">
+      <a href="../../../OpenAPI.html">OpenAPI</a>
+      
+        <ul>
+  
+  <li class="parent open current" data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator" data-name="openapi::generator">
+      <a href="../../../OpenAPI/Generator.html">Generator</a>
+      
+        <ul>
+  
+  <li class="parent open current" data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Controller" data-name="openapi::generator::controller">
+      <a href="../../../OpenAPI/Generator/Controller.html">Controller</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Controller/OpenAPI" data-name="openapi::generator::controller::openapi">
+      <a href="../../../OpenAPI/Generator/Controller/OpenAPI.html">OpenAPI</a>
+      
+    </li>
+  
+  <li class=" current" data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Controller/Schema" data-name="openapi::generator::controller::schema">
+      <a href="../../../OpenAPI/Generator/Controller/Schema.html">Schema</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/RouteMapping" data-name="openapi::generator::routemapping">
+      <a href="../../../OpenAPI/Generator/RouteMapping.html">RouteMapping</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/RoutesProvider" data-name="openapi::generator::routesprovider">
+      <a href="../../../OpenAPI/Generator/RoutesProvider.html">RoutesProvider</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/RoutesProvider/Amber" data-name="openapi::generator::routesprovider::amber">
+      <a href="../../../OpenAPI/Generator/RoutesProvider/Amber.html">Amber</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/RoutesProvider/Base" data-name="openapi::generator::routesprovider::base">
+      <a href="../../../OpenAPI/Generator/RoutesProvider/Base.html">Base</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Serializable" data-name="openapi::generator::serializable">
+      <a href="../../../OpenAPI/Generator/Serializable.html">Serializable</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Serializable/Field" data-name="openapi::generator::serializable::field">
+      <a href="../../../OpenAPI/Generator/Serializable/Field.html">Field</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">module</span> OpenAPI::Generator::Controller::Schema
+
+</h1>
+
+
+
+
+
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>This module contains various OpenAPI yaml syntax shortcuts.</p>
+
+
+
+
+
+
+
+  <h2>
+    <a id="extended-modules" class="anchor" href="#extended-modules">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Extended Modules
+  </h2>
+  <ul class="other-types-list">
+    
+      <li class="other-type"><a href="../../../OpenAPI/Generator/Controller/Schema.html">OpenAPI::Generator::Controller::Schema</a></li>
+    
+  </ul>
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+    
+      <a href="https://github.com/elbywan/openapi-generator/blob/8b8f39cc9dd3d126c4ea2f68f02b0b030d94dece/src/openapi-generator/controller.cr#L78" target="_blank">
+        openapi-generator/controller.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#error(code,message=nil)-instance-method" class="signature"><strong>#error</strong>(code, message = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Generate an error response as a <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#responses-object-example" target="_blank">response object</a>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#header(name,description,type=&quot;string&quot;)-instance-method" class="signature"><strong>#header</strong>(name, description, type = <span class="s">&quot;string&quot;</span>)</a>
+        
+          <div class="summary"><p>Generate a <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#header-object" target="_blank">header object</a>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#header_param(name,description,*,required=false)-instance-method" class="signature"><strong>#header_param</strong>(name, description, *, required = <span class="n">false</span>)</a>
+        
+          <div class="summary"><p>Generate a header <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#parameterObject" target="_blank">parameter object</a>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#qp(name,description,*,required=false)-instance-method" class="signature"><strong>#qp</strong>(name, description, *, required = <span class="n">false</span>)</a>
+        
+          <div class="summary"><p>Generate a query parameter as a <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#parameterObject" target="_blank">parameter object</a>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#ref(schema,*,content_type=&quot;application/json&quot;)-instance-method" class="signature"><strong>#ref</strong>(schema, *, content_type = <span class="s">&quot;application/json&quot;</span>)</a>
+        
+          <div class="summary"><p>Generates a schema reference as a <a href="https://swagger.io/docs/specification/media-types/" target="_blank">media type object</a>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#ref_array(schema,*,content_type=&quot;application/json&quot;)-instance-method" class="signature"><strong>#ref_array</strong>(schema, *, content_type = <span class="s">&quot;application/json&quot;</span>)</a>
+        
+          <div class="summary"><p>Generates an array of schema references as a <a href="https://swagger.io/docs/specification/media-types/" target="_blank">media type object</a>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#string_array(*,content_type=&quot;application/json&quot;)-instance-method" class="signature"><strong>#string_array</strong>(*, content_type = <span class="s">&quot;application/json&quot;</span>)</a>
+        
+          <div class="summary"><p>Generates an array of string as a <a href="https://swagger.io/docs/specification/media-types/" target="_blank">media type object</a>.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+<div class="methods-inherited">
+  
+</div>
+
+
+
+
+
+
+  <h2>
+    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="error(code,message=nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>error</strong>(code, message = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#error(code,message=nil)-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Generate an error response as a <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#responses-object-example" target="_blank">response object</a>.</p>
+
+<pre><code><span class="c"># message is optional and defaults to a [standard error description](https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml) based on the code.</span>
+<span class="t">Schema</span>.error <span class="n">400</span>, message: <span class="s">&quot;Bad Request&quot;</span>
+
+<span class="c"># Produces:</span>
+
+<span class="s">&lt;&lt;-YAML
+400:
+  description: Bad Request
+YAML</span></code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/elbywan/openapi-generator/blob/8b8f39cc9dd3d126c4ea2f68f02b0b030d94dece/src/openapi-generator/controller.cr#L177" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="header(name,description,type=&amp;quot;string&amp;quot;)-instance-method">
+      <div class="signature">
+        
+        def <strong>header</strong>(name, description, type = <span class="s">&quot;string&quot;</span>)
+
+        <a class="method-permalink" href="#header(name,description,type=&quot;string&quot;)-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Generate a <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#header-object" target="_blank">header object</a>.</p>
+
+<pre><code><span class="t">Schema</span>.header <span class="s">&quot;X-Header&quot;</span>, <span class="s">&quot;A custom header&quot;</span>, <span class="k">type</span>: <span class="s">&quot;string&quot;</span>
+
+<span class="c"># Produces:</span>
+
+<span class="s">&lt;&lt;-YAML
+&quot;X-Header&quot;:
+  schema:
+    type: string
+  description: A custom header
+YAML</span></code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/elbywan/openapi-generator/blob/8b8f39cc9dd3d126c4ea2f68f02b0b030d94dece/src/openapi-generator/controller.cr#L249" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="header_param(name,description,*,required=false)-instance-method">
+      <div class="signature">
+        
+        def <strong>header_param</strong>(name, description, *, required = <span class="n">false</span>)
+
+        <a class="method-permalink" href="#header_param(name,description,*,required=false)-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Generate a header <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#parameterObject" target="_blank">parameter object</a>.</p>
+
+<pre><code><span class="t">Schema</span>.header_param <span class="s">&quot;X-Header&quot;</span>, <span class="s">&quot;A custom header&quot;</span>, required: <span class="n">true</span>
+
+<span class="c"># Produces</span>
+
+<span class="s">&lt;&lt;-YAML
+- in: header
+  name: &quot;X-Header&quot;
+  description: A custom header
+  required: true
+YAML</span></code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/elbywan/openapi-generator/blob/8b8f39cc9dd3d126c4ea2f68f02b0b030d94dece/src/openapi-generator/controller.cr#L224" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="qp(name,description,*,required=false)-instance-method">
+      <div class="signature">
+        
+        def <strong>qp</strong>(name, description, *, required = <span class="n">false</span>)
+
+        <a class="method-permalink" href="#qp(name,description,*,required=false)-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Generate a query parameter as a <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#parameterObject" target="_blank">parameter object</a>.</p>
+
+<pre><code><span class="t">Schema</span>.qp <span class="s">&quot;id&quot;</span>, <span class="s">&quot;Filter by id&quot;</span>, required: <span class="n">true</span>
+
+<span class="c"># Produces:</span>
+
+<span class="s">&lt;&lt;-YAML
+- in: query
+  name: id
+  description: Filter by id
+  required: true
+YAML</span></code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/elbywan/openapi-generator/blob/8b8f39cc9dd3d126c4ea2f68f02b0b030d94dece/src/openapi-generator/controller.cr#L199" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="ref(schema,*,content_type=&amp;quot;application/json&amp;quot;)-instance-method">
+      <div class="signature">
+        
+        def <strong>ref</strong>(schema, *, content_type = <span class="s">&quot;application/json&quot;</span>)
+
+        <a class="method-permalink" href="#ref(schema,*,content_type=&quot;application/json&quot;)-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Generates a schema reference as a <a href="https://swagger.io/docs/specification/media-types/" target="_blank">media type object</a>.</p>
+
+<p>Useful when dealing with objects including the <code><a href="../../../OpenAPI/Generator/Serializable.html">Serializable</a></code> module.</p>
+
+<pre><code><span class="t">Schema</span>.ref <span class="t">SerializableClass</span>, content_type: <span class="s">&quot;application/x-www-form-urlencoded&quot;</span>
+
+<span class="c"># Produces:</span>
+
+<span class="s">&lt;&lt;-YAML
+application/x-www-form-urlencoded:
+  schema:
+    $ref: &#39;#/components/schemas/SerializableClass&#39;
+YAML</span></code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/elbywan/openapi-generator/blob/8b8f39cc9dd3d126c4ea2f68f02b0b030d94dece/src/openapi-generator/controller.cr#L96" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="ref_array(schema,*,content_type=&amp;quot;application/json&amp;quot;)-instance-method">
+      <div class="signature">
+        
+        def <strong>ref_array</strong>(schema, *, content_type = <span class="s">&quot;application/json&quot;</span>)
+
+        <a class="method-permalink" href="#ref_array(schema,*,content_type=&quot;application/json&quot;)-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Generates an array of schema references as a <a href="https://swagger.io/docs/specification/media-types/" target="_blank">media type object</a>.</p>
+
+<p>Useful when dealing with objects including the <code><a href="../../../OpenAPI/Generator/Serializable.html">Serializable</a></code> module.</p>
+
+<pre><code><span class="t">Schema</span>.ref_array <span class="t">SerializableClass</span>, content_type: <span class="s">&quot;application/x-www-form-urlencoded&quot;</span>
+
+<span class="c"># Produces:</span>
+
+<span class="s">&lt;&lt;-YAML
+application/x-www-form-urlencoded:
+  schema:
+    type: array,
+    items:
+      $ref: &#39;#/components/schemas/SerializableClass&#39;
+YAML</span></code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/elbywan/openapi-generator/blob/8b8f39cc9dd3d126c4ea2f68f02b0b030d94dece/src/openapi-generator/controller.cr#L123" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="string_array(*,content_type=&amp;quot;application/json&amp;quot;)-instance-method">
+      <div class="signature">
+        
+        def <strong>string_array</strong>(*, content_type = <span class="s">&quot;application/json&quot;</span>)
+
+        <a class="method-permalink" href="#string_array(*,content_type=&quot;application/json&quot;)-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Generates an array of string as a <a href="https://swagger.io/docs/specification/media-types/" target="_blank">media type object</a>.</p>
+
+<pre><code><span class="t">Schema</span>.string_array content_type: <span class="s">&quot;application/x-www-form-urlencoded&quot;</span>
+
+<span class="c"># Produces:</span>
+
+<span class="s">&lt;&lt;-YAML
+application/x-www-form-urlencoded:
+  schema:
+    type: array,
+    items:
+      type: string
+YAML</span></code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/elbywan/openapi-generator/blob/8b8f39cc9dd3d126c4ea2f68f02b0b030d94dece/src/openapi-generator/controller.cr#L151" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+</div>
+
+</body>
+</html>

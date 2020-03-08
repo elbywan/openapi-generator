@@ -1,7 +1,7 @@
-# Define a to_openapi method for Arrays.
+# Define a `self.to_openapi_schema` method for the Array class.
 class Array(T)
   # Converts an Array to an OpenAPI schema.
-  def self.to_openapi
+  def self.to_openapi_schema
     {% begin %}
 
       {% array_types = T.union_types %}
@@ -23,7 +23,7 @@ class Array(T)
           {% serialized_types << {"array", type.type_vars[0]} %}
         {% elsif OpenAPI::Generator::Serializable::SERIALIZABLE_CLASSES.includes? type %}
           {% serialized_types << {"object", type} %}
-        {% elsif (type.has_method? :to_schema) || (type.class.has_method? :to_schema) %}
+        {% elsif (type.has_method? :to_openapi_schema) || (type.class.has_method? :to_openapi_schema) %}
           {% serialized_types << {"self_schema", type} %}
         {% elsif type <= JSON::Any %}
           {% serialized_types << {"json", Nil} %}
@@ -50,11 +50,11 @@ class Array(T)
           ref = OpenAPI::Reference.new ref: "#/components/schemas/{{extra}}"
         {% elsif type == "self_schema" %}
           type = nil
-          generated_schema = {{extra}}.to_schema
+          generated_schema = {{extra}}.to_openapi_schema
         {% elsif type == "array" %}
           type = "array"
           # Recursively compute array items.
-          items = Array({{ extra }}).to_openapi
+          items = Array({{ extra }}).to_openapi_schema
         {% elsif type == "json" %}
           # Free form object
           type = "object"
@@ -95,11 +95,11 @@ class Array(T)
             ref = OpenAPI::Reference.new ref: "#/components/schemas/{{extra}}"
           {% elsif type == "self_schema" %}
             type = nil
-            generated_schema = {{extra}}.to_schema
+            generated_schema = {{extra}}.to_openapi_schema
           {% elsif type == "array" %}
             type = "array"
             # Recursively compute array items.
-            items = Array({{ extra }}).to_openapi
+            items = Array({{ extra }}).to_openapi_schema
           {% elsif type == "json" %}
             # Free form object
             type = "object"
@@ -130,10 +130,10 @@ class Array(T)
   end
 end
 
-# Define a to_schema method for Arrays.
+# Define a `self.to_openapi_schema` method for the Hash class.
 class Hash(K, V)
   # Returns the OpenAPI schema associated with the Hash.
-  def self.to_schema
+  def self.to_openapi_schema
     additional_properties = uninitialized (OpenAPI::Schema | OpenAPI::Reference)?
 
     {% begin %}
@@ -156,7 +156,7 @@ class Hash(K, V)
           {% serialized_types << {"array", type.type_vars[0]} %}
         {% elsif OpenAPI::Generator::Serializable::SERIALIZABLE_CLASSES.includes? type %}
           {% serialized_types << {"object", type} %}
-        {% elsif (type.has_method? :to_schema) || (type.class.has_method? :to_schema) %}
+        {% elsif (type.has_method? :to_openapi_schema) || (type.class.has_method? :to_openapi_schema) %}
           {% serialized_types << {"self_schema", type} %}
         {% elsif type <= JSON::Any %}
           {% serialized_types << {"json", Nil} %}
@@ -184,11 +184,11 @@ class Hash(K, V)
           ref = OpenAPI::Reference.new ref: "#/components/schemas/{{extra}}"
         {% elsif type == "self_schema" %}
           type = nil
-          generated_schema = {{extra}}.to_schema
+          generated_schema = {{extra}}.to_openapi_schema
         {% elsif type == "array" %}
           type = "array"
           # Recursively compute array items.
-          items = Array({{ extra }}).to_openapi
+          items = Array({{ extra }}).to_openapi_schema
         {% elsif type == "json" %}
           # Free form object
           type = "object"
@@ -229,11 +229,11 @@ class Hash(K, V)
             ref = OpenAPI::Reference.new ref: "#/components/schemas/{{extra}}"
           {% elsif type == "self_schema" %}
             type = nil
-            generated_schema = {{extra}}.to_schema
+            generated_schema = {{extra}}.to_openapi_schema
           {% elsif type == "array" %}
             type = "array"
             # Recursively compute array items.
-            items = Array({{ extra }}).to_openapi
+            items = Array({{ extra }}).to_openapi_schema
           {% elsif type == "json" %}
             # Free form object
             type = "object"
@@ -269,6 +269,7 @@ class Hash(K, V)
 end
 
 module OpenAPI
+  # :nodoc:
   # Used to declare path parameters.
   struct Operation
     setter parameters

@@ -3,7 +3,7 @@ require "json"
 require "../src/openapi-generator"
 
 struct Model
-  include OpenAPI::Generator::Serializable
+  extend OpenAPI::Generator::Serializable
   include JSON::Serializable
 
   property string : String
@@ -12,7 +12,11 @@ struct Model
   @[Field(ignore: true)]
   property ignored : Nil
   @[Field(type: String)]
-  property cast : Int32
+  @cast : Int32
+
+  def cast
+    @cast.to_s
+  end
 
   SCHEMA = <<-JSON
   {
@@ -44,7 +48,7 @@ struct Model
   JSON
 
   struct InnerModel
-    include OpenAPI::Generator::Serializable
+    extend OpenAPI::Generator::Serializable
     include JSON::Serializable
 
     property array_of_int : Array(Int32)
@@ -68,7 +72,7 @@ struct Model
   end
 
   struct ComplexModel
-    include OpenAPI::Generator::Serializable
+    extend OpenAPI::Generator::Serializable
     include JSON::Serializable
 
     property union_types : Int32 | String | Hash(String, InnerModel)
@@ -135,8 +139,8 @@ class Controller
     summary: A brief summary of the method.
     requestBody:
       content:
-        #{Schema.object Model}
-        #{Schema.object Model, content_type: "application/x-www-form-urlencoded"}
+        #{Schema.ref Model}
+        #{Schema.ref Model, content_type: "application/x-www-form-urlencoded"}
       required: true
     responses:
       "303":

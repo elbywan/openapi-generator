@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.32.1">
+
+<link href="../../../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../../js/doc.js"></script>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+
+  <meta id="repository-name" content="github.com/elbywan/openapi-generator">
+  <title>OpenAPI::Generator::RoutesProvider::Amber - github.com/elbywan/openapi-generator</title>
+  <script type="text/javascript">
+    CrystalDoc.base_path = "../../../";
+  </script>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="repository-links">
+      <a href="../../../index.html">README</a>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/Array" data-name="array(t)">
+      <a href="../../../Array.html">Array</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/Hash" data-name="hash(k, v)">
+      <a href="../../../Hash.html">Hash</a>
+      
+    </li>
+  
+  <li class="parent open current" data-id="github.com/elbywan/openapi-generator/OpenAPI" data-name="openapi">
+      <a href="../../../OpenAPI.html">OpenAPI</a>
+      
+        <ul>
+  
+  <li class="parent open current" data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator" data-name="openapi::generator">
+      <a href="../../../OpenAPI/Generator.html">Generator</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Controller" data-name="openapi::generator::controller">
+      <a href="../../../OpenAPI/Generator/Controller.html">Controller</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Controller/OpenAPI" data-name="openapi::generator::controller::openapi">
+      <a href="../../../OpenAPI/Generator/Controller/OpenAPI.html">OpenAPI</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Controller/Schema" data-name="openapi::generator::controller::schema">
+      <a href="../../../OpenAPI/Generator/Controller/Schema.html">Schema</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/RouteMapping" data-name="openapi::generator::routemapping">
+      <a href="../../../OpenAPI/Generator/RouteMapping.html">RouteMapping</a>
+      
+    </li>
+  
+  <li class="parent open current" data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/RoutesProvider" data-name="openapi::generator::routesprovider">
+      <a href="../../../OpenAPI/Generator/RoutesProvider.html">RoutesProvider</a>
+      
+        <ul>
+  
+  <li class=" current" data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/RoutesProvider/Amber" data-name="openapi::generator::routesprovider::amber">
+      <a href="../../../OpenAPI/Generator/RoutesProvider/Amber.html">Amber</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/RoutesProvider/Base" data-name="openapi::generator::routesprovider::base">
+      <a href="../../../OpenAPI/Generator/RoutesProvider/Base.html">Base</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Serializable" data-name="openapi::generator::serializable">
+      <a href="../../../OpenAPI/Generator/Serializable.html">Serializable</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Serializable/Field" data-name="openapi::generator::serializable::field">
+      <a href="../../../OpenAPI/Generator/Serializable/Field.html">Field</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">class</span> OpenAPI::Generator::RoutesProvider::Amber
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../../OpenAPI/Generator/RoutesProvider/Amber.html">OpenAPI::Generator::RoutesProvider::Amber</a></li><li class="superclass"><a href="../../../OpenAPI/Generator/RoutesProvider/Base.html">OpenAPI::Generator::RoutesProvider::Base</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+
+
+
+
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>Provides the list of routes declared in an Amber Framework instance.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+    
+      <a href="https://github.com/elbywan/openapi-generator/blob/8b8f39cc9dd3d126c4ea2f68f02b0b030d94dece/src/openapi-generator/providers/amber.cr#L20" target="_blank">
+        openapi-generator/providers/amber.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+  <h2>
+    <a id="constructors" class="anchor" href="#constructors">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructors
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#new(included_methods:Array(String)?=nil,included_paths:Array(String)?=nil)-class-method" class="signature"><strong>.new</strong>(included_methods : Array(String)? = <span class="n">nil</span>, included_paths : Array(String)? = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Initialize the provider with a list of allowed HTTP verbs and path prefixes to filter the routes.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+  <h2>
+    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#route_mappings:Array(RouteMapping)-instance-method" class="signature"><strong>#route_mappings</strong> : Array(RouteMapping)</a>
+        
+          <div class="summary"><p>Return a list of routes mapped with the controllers and methods.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+<div class="methods-inherited">
+  
+    
+
+  <h3>Instance methods inherited from class <code><a href="../../../OpenAPI/Generator/RoutesProvider/Base.html">OpenAPI::Generator::RoutesProvider::Base</a></code></h3>
+  
+  
+    <a href="../../../OpenAPI/Generator/RoutesProvider/Base.html#route_mappings:Array(RouteMapping)-instance-method" class="tooltip">
+      <span>route_mappings : Array(RouteMapping)</span>
+    route_mappings</a>
+    
+  
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+</div>
+
+
+  <h2>
+    <a id="constructor-detail" class="anchor" href="#constructor-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructor Detail
+  </h2>
+  
+    <div class="entry-detail" id="new(included_methods:Array(String)?=nil,included_paths:Array(String)?=nil)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(included_methods : <a href="../../../Array.html">Array</a>(String)? = <span class="n">nil</span>, included_paths : <a href="../../../Array.html">Array</a>(String)? = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#new(included_methods:Array(String)?=nil,included_paths:Array(String)?=nil)-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Initialize the provider with a list of allowed HTTP verbs and path prefixes to filter the routes.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/elbywan/openapi-generator/blob/8b8f39cc9dd3d126c4ea2f68f02b0b030d94dece/src/openapi-generator/providers/amber.cr#L22" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+
+  <h2>
+    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="route_mappings:Array(RouteMapping)-instance-method">
+      <div class="signature">
+        
+        def <strong>route_mappings</strong> : <a href="../../../Array.html">Array</a>(<a href="../../../OpenAPI/Generator/RouteMapping.html">RouteMapping</a>)
+
+        <a class="method-permalink" href="#route_mappings:Array(RouteMapping)-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Return a list of routes mapped with the controllers and methods.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/elbywan/openapi-generator/blob/8b8f39cc9dd3d126c4ea2f68f02b0b030d94dece/src/openapi-generator/providers/amber.cr#L26" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.32.1">
+
+<link href="../../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../js/doc.js"></script>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+
+  <meta id="repository-name" content="github.com/elbywan/openapi-generator">
+  <title>OpenAPI::Generator::Controller - github.com/elbywan/openapi-generator</title>
+  <script type="text/javascript">
+    CrystalDoc.base_path = "../../";
+  </script>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="repository-links">
+      <a href="../../index.html">README</a>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/Array" data-name="array(t)">
+      <a href="../../Array.html">Array</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/Hash" data-name="hash(k, v)">
+      <a href="../../Hash.html">Hash</a>
+      
+    </li>
+  
+  <li class="parent open current" data-id="github.com/elbywan/openapi-generator/OpenAPI" data-name="openapi">
+      <a href="../../OpenAPI.html">OpenAPI</a>
+      
+        <ul>
+  
+  <li class="parent open current" data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator" data-name="openapi::generator">
+      <a href="../../OpenAPI/Generator.html">Generator</a>
+      
+        <ul>
+  
+  <li class="parent open current" data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Controller" data-name="openapi::generator::controller">
+      <a href="../../OpenAPI/Generator/Controller.html">Controller</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Controller/OpenAPI" data-name="openapi::generator::controller::openapi">
+      <a href="../../OpenAPI/Generator/Controller/OpenAPI.html">OpenAPI</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Controller/Schema" data-name="openapi::generator::controller::schema">
+      <a href="../../OpenAPI/Generator/Controller/Schema.html">Schema</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/RouteMapping" data-name="openapi::generator::routemapping">
+      <a href="../../OpenAPI/Generator/RouteMapping.html">RouteMapping</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/RoutesProvider" data-name="openapi::generator::routesprovider">
+      <a href="../../OpenAPI/Generator/RoutesProvider.html">RoutesProvider</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/RoutesProvider/Amber" data-name="openapi::generator::routesprovider::amber">
+      <a href="../../OpenAPI/Generator/RoutesProvider/Amber.html">Amber</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/RoutesProvider/Base" data-name="openapi::generator::routesprovider::base">
+      <a href="../../OpenAPI/Generator/RoutesProvider/Base.html">Base</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Serializable" data-name="openapi::generator::serializable">
+      <a href="../../OpenAPI/Generator/Serializable.html">Serializable</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Serializable/Field" data-name="openapi::generator::serializable::field">
+      <a href="../../OpenAPI/Generator/Serializable/Field.html">Field</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">module</span> OpenAPI::Generator::Controller
+
+</h1>
+
+
+
+
+
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>This module, when included, will register every instance methods annotated with the <code><a href="../../OpenAPI/Generator/Controller/OpenAPI.html">OpenAPI</a></code> annotation.</p>
+
+<h3><a id="example" class="anchor" href="#example">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Example</h3>
+
+<pre><code><span class="k">class</span> <span class="t">Controller</span>
+  <span class="k">include</span> <span class="t">OpenAPI</span><span class="t">::</span><span class="t">Generator</span><span class="t">::</span><span class="t">Controller</span>
+
+  @[<span class="t">OpenAPI</span>(<span class="s">&lt;&lt;-YAML
+    tags:
+    - tag
+    summary: A brief summary of the method.
+    requestBody:
+      content:
+        </span><span class="i">#{</span><span class="t">Schema</span>.ref <span class="t">SerializableClass</span><span class="i">}</span><span class="s">
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: &#39;#/components/schemas/SerializableClass&#39;
+      required: true
+    responses:
+      &quot;303&quot;:
+        description: Operation completed successfully, and redirects to /.
+      &quot;404&quot;:
+        description: Data not found.
+      </span><span class="i">#{</span><span class="t">Schema</span>.error <span class="n">400</span><span class="i">}</span><span class="s">
+  YAML</span>
+  )]
+  <span class="k">def</span> <span class="m">method</span>; <span class="k">end</span>
+<span class="k">end</span></code></pre>
+
+<h3><a id="usage" class="anchor" href="#usage">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Usage</h3>
+
+<p>Including this module will register and mark every instance method annotated with a valid <code>@[<a href="../../OpenAPI/Generator/Controller/OpenAPI.html">OpenAPI</a>]</code> annotation during the compilation phase.
+These methods will then be taken into account when calling the <code><a href="../../OpenAPI/Generator.html">Generator</a></code> as long as the method can be mapped to a route.</p>
+
+<p>The <code><a href="../../OpenAPI/Generator/Controller/Schema.html">Schema</a></code> module contains various helpers to generate YAML parts.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+    
+      <a href="https://github.com/elbywan/openapi-generator/blob/8b8f39cc9dd3d126c4ea2f68f02b0b030d94dece/src/openapi-generator/controller.cr#L38" target="_blank">
+        openapi-generator/controller.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+  
+    <h2>
+      <a id="constant-summary" class="anchor" href="#constant-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+      Constant Summary
+    </h2>
+  
+  <dl>
+    
+      <dt class="entry-const" id="CONTROLLER_OPS">
+        <strong>CONTROLLER_OPS</strong> = <code>{} <span class="k">of</span> <span class="t">String</span> => <span class="t">String</span></code>
+      </dt>
+      
+    
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+<div class="methods-inherited">
+  
+</div>
+
+
+
+
+
+
+
+
+
+</div>
+
+</body>
+</html>

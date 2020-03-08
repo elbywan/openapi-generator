@@ -2,11 +2,11 @@ require "./spec_helper"
 require "file_utils"
 
 class MockProvider < OpenAPI::Generator::RoutesProvider::Base
-  def route_mappings
+  def route_mappings : Array(OpenAPI::Generator::RouteMapping)
     [
-      {"get", "/{id}", "HelloController:index", ["id"]},
-      {"head", "/{id}", "HelloController:index", ["id"]},
-      {"options", "/{id}", "HelloController:index", ["id"]},
+      {"get", "/{id}", "HelloController::index", ["id"]},
+      {"head", "/{id}", "HelloController::index", ["id"]},
+      {"options", "/{id}", "HelloController::index", ["id"]},
     ]
   end
 end

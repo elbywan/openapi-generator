@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.32.1">
+
+<link href="../../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../js/doc.js"></script>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+
+  <meta id="repository-name" content="github.com/elbywan/openapi-generator">
+  <title>OpenAPI::Generator::Serializable - github.com/elbywan/openapi-generator</title>
+  <script type="text/javascript">
+    CrystalDoc.base_path = "../../";
+  </script>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="repository-links">
+      <a href="../../index.html">README</a>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/Array" data-name="array(t)">
+      <a href="../../Array.html">Array</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/Hash" data-name="hash(k, v)">
+      <a href="../../Hash.html">Hash</a>
+      
+    </li>
+  
+  <li class="parent open current" data-id="github.com/elbywan/openapi-generator/OpenAPI" data-name="openapi">
+      <a href="../../OpenAPI.html">OpenAPI</a>
+      
+        <ul>
+  
+  <li class="parent open current" data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator" data-name="openapi::generator">
+      <a href="../../OpenAPI/Generator.html">Generator</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Controller" data-name="openapi::generator::controller">
+      <a href="../../OpenAPI/Generator/Controller.html">Controller</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Controller/OpenAPI" data-name="openapi::generator::controller::openapi">
+      <a href="../../OpenAPI/Generator/Controller/OpenAPI.html">OpenAPI</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Controller/Schema" data-name="openapi::generator::controller::schema">
+      <a href="../../OpenAPI/Generator/Controller/Schema.html">Schema</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/RouteMapping" data-name="openapi::generator::routemapping">
+      <a href="../../OpenAPI/Generator/RouteMapping.html">RouteMapping</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/RoutesProvider" data-name="openapi::generator::routesprovider">
+      <a href="../../OpenAPI/Generator/RoutesProvider.html">RoutesProvider</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/RoutesProvider/Amber" data-name="openapi::generator::routesprovider::amber">
+      <a href="../../OpenAPI/Generator/RoutesProvider/Amber.html">Amber</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/RoutesProvider/Base" data-name="openapi::generator::routesprovider::base">
+      <a href="../../OpenAPI/Generator/RoutesProvider/Base.html">Base</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent open current" data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Serializable" data-name="openapi::generator::serializable">
+      <a href="../../OpenAPI/Generator/Serializable.html">Serializable</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Serializable/Field" data-name="openapi::generator::serializable::field">
+      <a href="../../OpenAPI/Generator/Serializable/Field.html">Field</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">module</span> OpenAPI::Generator::Serializable
+
+</h1>
+
+
+
+
+
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>The <code><a href="../../OpenAPI/Generator/Serializable.html">Serializable</a></code> module automatically generates an OpenAPI Operations representation of the class or struct when extended.</p>
+
+<h3><a id="example" class="anchor" href="#example">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Example</h3>
+
+<pre><code><span class="k">struct</span> <span class="t">Model</span>
+  <span class="k">extend</span> <span class="t">OpenAPI</span><span class="t">::</span><span class="t">Generator</span><span class="t">::</span><span class="t">Serializable</span>
+  <span class="k">include</span> <span class="t">JSON</span><span class="t">::</span><span class="t">Serializable</span>
+
+  property string : <span class="t">String</span>
+  property opt_string : <span class="t">String</span>?
+  @[<span class="t">Field</span>(ignore: <span class="n">true</span>)]
+  property ignored : <span class="t">Nil</span>
+  @[<span class="t">Field</span>(<span class="k">type</span>: <span class="t">String</span>)]
+  @cast : <span class="t">Int32</span>
+  <span class="k">def</span> <span class="m">cast</span>
+    @cast.to_s
+  <span class="k">end</span>
+<span class="k">end</span>
+
+puts <span class="t">Model</span>.to_openapi_schema.to_pretty_json
+<span class="c"># =&gt; {</span>
+<span class="c">#   &quot;required&quot;: [</span>
+<span class="c">#     &quot;string&quot;,</span>
+<span class="c">#     &quot;cast&quot;</span>
+<span class="c">#   ],</span>
+<span class="c">#   &quot;type&quot;: &quot;object&quot;,</span>
+<span class="c">#   &quot;properties&quot;: {</span>
+<span class="c">#     &quot;string&quot;: {</span>
+<span class="c">#       &quot;type&quot;: &quot;string&quot;</span>
+<span class="c">#     },</span>
+<span class="c">#     &quot;opt_string&quot;: {</span>
+<span class="c">#       &quot;type&quot;: &quot;string&quot;</span>
+<span class="c">#     },</span>
+<span class="c">#     &quot;cast&quot;: {</span>
+<span class="c">#       &quot;type&quot;: &quot;string&quot;</span>
+<span class="c">#     }</span>
+<span class="c">#   }</span>
+<span class="c"># }</span></code></pre>
+
+<h3><a id="usage" class="anchor" href="#usage">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Usage</h3>
+
+<p>Extending this module adds a <code>self<a href="../../OpenAPI/Generator/Serializable.html#to_openapi_schema-instance-method">.to_openapi_schema</a></code> that returns an OpenAPI representation
+inferred from the shape of the class or struct.</p>
+
+<p>The class name is also registered as a global <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#components-object" target="_blank">component schema</a>
+and will be available for referencing from any <code><a href="../../OpenAPI/Generator/Controller.html">Controller</a></code> annotation from a <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#referenceObject" target="_blank">reference object</a>.</p>
+
+<p><strong>See:</strong> <code><a href="../../OpenAPI/Generator/Controller/Schema.html#ref(schema,*,content_type=&quot;application/json&quot;)-instance-method">OpenAPI::Generator::Controller::Schema.ref</a></code></p>
+
+<p><span class="flag purple">NOTE</span>  <strong>Calling <code><a href="../../OpenAPI/Generator/Serializable.html#to_openapi_schema-instance-method">#to_openapi_schema</a></code> programatically is unnecessary.
+The <code><a href="../../OpenAPI/Generator.html">Generator</a></code> will take care of serialization while producing the openapi yaml file.</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+    
+      <a href="https://github.com/elbywan/openapi-generator/blob/8b8f39cc9dd3d126c4ea2f68f02b0b030d94dece/src/openapi-generator/serializable.cr#L54" target="_blank">
+        openapi-generator/serializable.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+  
+    <h2>
+      <a id="constant-summary" class="anchor" href="#constant-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+      Constant Summary
+    </h2>
+  
+  <dl>
+    
+      <dt class="entry-const" id="SERIALIZABLE_CLASSES">
+        <strong>SERIALIZABLE_CLASSES</strong> = <code><span class="o">[]</span> <span class="k">of</span> <span class="t">Class</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>A list of all serializable subclasses.</p>
+      </dd>
+      
+    
+  </dl>
+
+
+
+
+
+
+
+  <h2>
+    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#to_openapi_schema-instance-method" class="signature"><strong>#to_openapi_schema</strong></a>
+        
+          <div class="summary"><p>Serialize the class into an <code>OpenAPI::Schema</code> representation.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+<div class="methods-inherited">
+  
+</div>
+
+
+
+
+
+
+  <h2>
+    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="to_openapi_schema-instance-method">
+      <div class="signature">
+        
+        def <strong>to_openapi_schema</strong>
+
+        <a class="method-permalink" href="#to_openapi_schema-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Serialize the class into an <code>OpenAPI::Schema</code> representation.</p>
+
+<p>Check the <a href="https://swagger.io/docs/specification/data-models/" target="_blank">swagger documentation</a> for more details</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/elbywan/openapi-generator/blob/8b8f39cc9dd3d126c4ea2f68f02b0b030d94dece/src/openapi-generator/serializable.cr#L83" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+</div>
+
+</body>
+</html>

@@ -1,16 +1,192 @@
 require "./providers/base"
 
+# An OpenAPI yaml specifications file generator.
+#
+# ### Complete example
+#
+# ```
+# require "./src/openapi-generator"
+#
+# # The following example is using [Amber](https://amberframework.org/)
+# # but this library is compatible with any web framework.
+#
+# require "amber"
+# require "./src/openapi-generator/providers/amber"
+#
+# # Optional: auto-serialize classes into openapi schema.
+# # A typed Model class can be used as the source of truth.
+# class Coordinates
+#   extend OpenAPI::Generator::Serializable
+#
+#   def initialize(@lat, @long); end
+#
+#   property lat : Int32
+#   property long : Int32
+# end
+#
+# # Annotate the methods that will appear in the openapi file.
+# class Controller < Amber::Controller::Base
+#   include OpenAPI::Generator::Controller
+#
+#   @[OpenAPI(<<-YAML
+#     tags:
+#     - tag
+#     summary: A brief summary of the method.
+#     requestBody:
+#       required: true
+#       content:
+#         #{Schema.ref Coordinates}
+#     required: true
+#     responses:
+#       200:
+#         description: OK
+#       #{Schema.error 404}
+#   YAML
+#   )]
+#   def method
+#     # Some code…
+#   end
+# end
+#
+# # Add the routes.
+# Amber::Server.configure do
+#   routes :api do
+#     post "/method/:id", Controller, :method
+#   end
+# end
+#
+# # Generate the openapi file.
+#
+# OpenAPI::Generator.generate(
+#   provider: OpenAPI::Generator::RoutesProvider::Amber.new
+# )
+# ```
+#
+# Will produce an `./openapi.yaml` file with the following contents:
+#
+# ```yaml
+# ---
+# openapi: 3.0.1
+# info:
+#   title: Server
+#   version: "1"
+# paths:
+#   /method/{id}:
+#     post:
+#       tags:
+#       - tag
+#       summary: A brief summary of the method.
+#       parameters:
+#       - name: id
+#         in: path
+#         required: true
+#         example: id
+#       request_body:
+#         content:
+#           application/json:
+#             schema:
+#               ref: '#/components/schemas/Coordinates'
+#         required: true
+#       responses:
+#         "200":
+#           description: OK
+#         "404":
+#           description: Not Found.
+#     options:
+#       tags:
+#       - tag
+#       summary: A brief summary of the method.
+#       parameters:
+#       - name: id
+#         in: path
+#         required: true
+#         example: id
+#       request_body:
+#         content:
+#           application/json:
+#             schema:
+#               ref: '#/components/schemas/Coordinates'
+#         required: true
+#       responses:
+#         "200":
+#           description: OK
+#         "404":
+#           description: Not Found.
+# components:
+#   schemas:
+#     Coordinates:
+#       required:
+#       - lat
+#       - long
+#       type: object
+#       properties:
+#         lat:
+#           type: integer
+#         long:
+#           type: integer
+#   responses: {}
+#   parameters: {}
+#   examples: {}
+#   request_bodies: {}
+#   headers: {}
+#   security_schemes: {}
+#   links: {}
+#   callbacks: {}
+# ```
+#
+# ### Usage
+#
+#
 module OpenAPI::Generator
   extend self
 
+  # A RouteMapping type is a tuple with the following shape: `{method, full_path, key, path_params}`
+  # - method: The HTTP Verb of the route. (ex: `"get"`)
+  # - full_path: The full path representation of the route with path parameters between curly braces. (ex: `"/name/{id}"`)
+  # - key: The fully qualified name of the method mapped to the route. (ex: `"Controller::show"`)
+  # - path_params: A list of path parameter names. (ex: `["id", "name"]`)
   alias RouteMapping = Tuple(String, String, String, Array(String))
 
   DEFAULT_OPTIONS = {
     output: Path[Dir.current] / "openapi.yaml",
   }
 
-  # Generate the OpenAPI yaml file.
-  # ameba:disable Metrics/CyclomaticComplexity
+  # Generate an OpenAPI yaml file.
+  #
+  # An `OpenAPI::Generator::RoutesProvider::Base` implementation must be provided.
+  #
+  # Currently, only the [Amber](https://amberframework.org/) provider is included out of the box
+  # but writing a custom provider should be easy.
+  #
+  # ### Example
+  #
+  # ```
+  # class MockProvider < OpenAPI::Generator::RoutesProvider::Base
+  #   def route_mappings : Array(OpenAPI::Generator::RouteMapping)
+  #     [
+  #       {"get", "/{id}", "HelloController::index", ["id"]},
+  #       {"head", "/{id}", "HelloController::index", ["id"]},
+  #       {"options", "/{id}", "HelloController::index", ["id"]},
+  #     ]
+  #   end
+  # end
+  #
+  # options = {
+  #   output: Path[Dir.current] / "public" / "openapi.yaml",
+  # }
+  # base_doc = {
+  #   info: {
+  #     title:   "Test",
+  #     version: "0.0.1",
+  #   },
+  #   components: NamedTuple.new,
+  # }
+  # OpenAPI::Generator.generate(
+  #   MockProvider.new,
+  #   options: options,
+  #   base_doc: base_doc
+  # )
+  # ```
   def generate(
     provider : OpenAPI::Generator::RoutesProvider::Base,
     *,
