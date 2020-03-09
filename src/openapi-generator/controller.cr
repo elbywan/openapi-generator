@@ -215,7 +215,7 @@ module OpenAPI::Generator::Controller
     # Generate a header [parameter object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#parameterObject).
     #
     # ```
-    # Schema.header_param "X-Header", "A custom header", required: true
+    # Schema.header_param "X-Header", "A custom header", required: true, type: "integer"
     #
     # # Produces
     #
@@ -224,15 +224,20 @@ module OpenAPI::Generator::Controller
     #   name: "X-Header"
     #   description: A custom header
     #   required: true
+    #   schema:
+    #     type: integer
     # YAML
     # ```
-    def header_param(name, description, *, required = false)
+    def header_param(name, description, *, required = false, type = "string")
       <<-YAML
       - {
         in: header,
         name: #{name},
         description: #{description},
-        required: #{required}
+        required: #{required},
+        schema: {
+          type: #{type}
+        }
       }
       YAML
     end
