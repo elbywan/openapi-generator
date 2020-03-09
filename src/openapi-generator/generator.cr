@@ -5,13 +5,13 @@ require "./providers/base"
 # ### Complete example
 #
 # ```
-# require "./src/openapi-generator"
+# require "openapi-generator"
 #
 # # The following example is using [Amber](https://amberframework.org/)
 # # but this library is compatible with any web framework.
 #
 # require "amber"
-# require "./src/openapi-generator/providers/amber"
+# require "openapi-generator/providers/amber"
 #
 # # Optional: auto-serialize classes into openapi schema.
 # # A typed Model class can be used as the source of truth.
