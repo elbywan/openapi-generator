@@ -185,7 +185,7 @@ module OpenAPI::Generator::Controller
     # Generate a query parameter as a [parameter object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#parameterObject).
     #
     # ```
-    # Schema.qp "id", "Filter by id", required: true
+    # Schema.qp "id", "Filter by id", required: true, type: "integer"
     #
     # # Produces:
     #
@@ -194,15 +194,20 @@ module OpenAPI::Generator::Controller
     #   name: id
     #   description: Filter by id
     #   required: true
+    #   schema:
+    #     type: integer
     # YAML
     # ```
-    def qp(name, description, *, required = false)
+    def qp(name, description, *, required = false, type = "string")
       <<-YAML
       - {
         in: query,
         name: "#{name}",
         description: "#{description}",
-        required: #{required}
+        required: #{required},
+        schema: {
+          type: #{type}
+        }
       }
       YAML
     end
