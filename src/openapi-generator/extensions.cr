@@ -1,3 +1,4 @@
+# :nodoc:
 # Define a `self.to_openapi_schema` method for the Array class.
 class Array(T)
   # Converts an Array to an OpenAPI schema.
@@ -130,6 +131,7 @@ class Array(T)
   end
 end
 
+# :nodoc:
 # Define a `self.to_openapi_schema` method for the Hash class.
 class Hash(K, V)
   # Returns the OpenAPI schema associated with the Hash.
