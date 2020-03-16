@@ -9,9 +9,9 @@ struct Model
   property string : String
   property opt_string : String?
   property inner_schema : InnerModel
-  @[Field(ignore: true)]
+  @[OpenAPI::Field(ignore: true)]
   property ignored : Nil
-  @[Field(type: String)]
+  @[OpenAPI::Field(type: String)]
   @cast : Int32
 
   def cast

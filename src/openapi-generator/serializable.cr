@@ -9,9 +9,9 @@
 #
 #   property string : String
 #   property opt_string : String?
-#   @[Field(ignore: true)]
+#   @[OpenAPI::Field(ignore: true)]
 #   property ignored : Nil
-#   @[Field(type: String)]
+#   @[OpenAPI::Field(type: String)]
 #   @cast : Int32
 #
 #   def cast
@@ -56,13 +56,13 @@ module OpenAPI::Generator::Serializable
   # Mark a field with special properties during serialization.
   #
   # ```
-  # @[Field(ignore: true)] # Ignore the field
+  # @[OpenAPI::Field(ignore: true)] # Ignore the field
   # property ignored_field
   #
-  # @[Field(type: String)] # Enforce a type
+  # @[OpenAPI::Field(type: String)] # Enforce a type
   # property str_field : Int32
   # ```
-  annotation Field
+  annotation OpenAPI::Field
   end
 
   # A list of all serializable subclasses.
@@ -92,7 +92,7 @@ module OpenAPI::Generator::Serializable
     {% for ivar in @type.instance_vars %}
 
       {% json_ann = ivar.annotation(JSON::Field) %}
-      {% openapi_ann = ivar.annotation(OpenAPI::Generator::Serializable::Field) %}
+      {% openapi_ann = ivar.annotation(OpenAPI::Field) %}
       {% schema_key = json_ann && json_ann[:key] || ivar.id %}
       {% as_type = openapi_ann && openapi_ann[:type] && openapi_ann[:type].types.map(&.resolve) %}
       {% read_only = openapi_ann && openapi_ann[:read_only] %}
