@@ -5,8 +5,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="generator" content="Crystal Docs 0.32.1">
 
-<link href="../../../css/style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="../../../js/doc.js"></script>
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../js/doc.js"></script>
 
 <svg class="hidden">
   <symbol id="octicon-link" viewBox="0 0 16 16">
@@ -15,9 +15,9 @@
 </svg>
 
   <meta id="repository-name" content="github.com/elbywan/openapi-generator">
-  <title>OpenAPI::Generator::Serializable::Field - github.com/elbywan/openapi-generator</title>
+  <title>OpenAPI::Field - github.com/elbywan/openapi-generator</title>
   <script type="text/javascript">
-    CrystalDoc.base_path = "../../../";
+    CrystalDoc.base_path = "../";
   </script>
 </head>
 <body>
@@ -29,7 +29,7 @@
     </div>
 
     <div class="repository-links">
-      <a href="../../../index.html">README</a>
+      <a href="../index.html">README</a>
     </div>
   </div>
 
@@ -40,38 +40,33 @@
   <div class="types-list">
     <ul>
   
-  <li class=" " data-id="github.com/elbywan/openapi-generator/Array" data-name="array(t)">
-      <a href="../../../Array.html">Array</a>
-      
-    </li>
-  
-  <li class=" " data-id="github.com/elbywan/openapi-generator/Hash" data-name="hash(k, v)">
-      <a href="../../../Hash.html">Hash</a>
-      
-    </li>
-  
   <li class="parent open current" data-id="github.com/elbywan/openapi-generator/OpenAPI" data-name="openapi">
-      <a href="../../../OpenAPI.html">OpenAPI</a>
+      <a href="../OpenAPI.html">OpenAPI</a>
       
         <ul>
   
-  <li class="parent open current" data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator" data-name="openapi::generator">
-      <a href="../../../OpenAPI/Generator.html">Generator</a>
+  <li class=" current" data-id="github.com/elbywan/openapi-generator/OpenAPI/Field" data-name="openapi::field">
+      <a href="../OpenAPI/Field.html">Field</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator" data-name="openapi::generator">
+      <a href="../OpenAPI/Generator.html">Generator</a>
       
         <ul>
   
   <li class="parent " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Controller" data-name="openapi::generator::controller">
-      <a href="../../../OpenAPI/Generator/Controller.html">Controller</a>
+      <a href="../OpenAPI/Generator/Controller.html">Controller</a>
       
         <ul>
   
   <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Controller/OpenAPI" data-name="openapi::generator::controller::openapi">
-      <a href="../../../OpenAPI/Generator/Controller/OpenAPI.html">OpenAPI</a>
+      <a href="../OpenAPI/Generator/Controller/OpenAPI.html">OpenAPI</a>
       
     </li>
   
   <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Controller/Schema" data-name="openapi::generator::controller::schema">
-      <a href="../../../OpenAPI/Generator/Controller/Schema.html">Schema</a>
+      <a href="../OpenAPI/Generator/Controller/Schema.html">Schema</a>
       
     </li>
   
@@ -81,22 +76,22 @@
     </li>
   
   <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/RouteMapping" data-name="openapi::generator::routemapping">
-      <a href="../../../OpenAPI/Generator/RouteMapping.html">RouteMapping</a>
+      <a href="../OpenAPI/Generator/RouteMapping.html">RouteMapping</a>
       
     </li>
   
   <li class="parent " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/RoutesProvider" data-name="openapi::generator::routesprovider">
-      <a href="../../../OpenAPI/Generator/RoutesProvider.html">RoutesProvider</a>
+      <a href="../OpenAPI/Generator/RoutesProvider.html">RoutesProvider</a>
       
         <ul>
   
   <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/RoutesProvider/Amber" data-name="openapi::generator::routesprovider::amber">
-      <a href="../../../OpenAPI/Generator/RoutesProvider/Amber.html">Amber</a>
+      <a href="../OpenAPI/Generator/RoutesProvider/Amber.html">Amber</a>
       
     </li>
   
   <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/RoutesProvider/Base" data-name="openapi::generator::routesprovider::base">
-      <a href="../../../OpenAPI/Generator/RoutesProvider/Base.html">Base</a>
+      <a href="../OpenAPI/Generator/RoutesProvider/Base.html">Base</a>
       
     </li>
   
@@ -105,18 +100,8 @@
       
     </li>
   
-  <li class="parent open current" data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Serializable" data-name="openapi::generator::serializable">
-      <a href="../../../OpenAPI/Generator/Serializable.html">Serializable</a>
-      
-        <ul>
-  
-  <li class=" current" data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Serializable/Field" data-name="openapi::generator::serializable::field">
-      <a href="../../../OpenAPI/Generator/Serializable/Field.html">Field</a>
-      
-    </li>
-  
-</ul>
-
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Serializable" data-name="openapi::generator::serializable">
+      <a href="../OpenAPI/Generator/Serializable.html">Serializable</a>
       
     </li>
   
@@ -139,7 +124,7 @@
 <div class="main-content">
 <h1 class="type-name">
 
-  <span class="kind">annotation</span> OpenAPI::Generator::Serializable::Field
+  <span class="kind">annotation</span> OpenAPI::Field
 
 </h1>
 
@@ -158,10 +143,10 @@
 
   <p>Mark a field with special properties during serialization.</p>
 
-<pre><code>@[<span class="t">Field</span>(ignore: <span class="n">true</span>)] <span class="c"># Ignore the field</span>
+<pre><code>@[<span class="t">OpenAPI</span><span class="t">::</span><span class="t">Field</span>(ignore: <span class="n">true</span>)] <span class="c"># Ignore the field</span>
 property ignored_field
 
-@[<span class="t">Field</span>(<span class="k">type</span>: <span class="t">String</span>)] <span class="c"># Enforce a type</span>
+@[<span class="t">OpenAPI</span><span class="t">::</span><span class="t">Field</span>(<span class="k">type</span>: <span class="t">String</span>)] <span class="c"># Enforce a type</span>
 property str_field : <span class="t">Int32</span></code></pre>
 
 
@@ -187,7 +172,7 @@ property str_field : <span class="t">Int32</span></code></pre>
   </h2>
   
     
-      <a href="https://github.com/elbywan/openapi-generator/blob/142e20086af7ea38372d50b3ac6ce926922918c9/src/openapi-generator/serializable.cr#L65" target="_blank">
+      <a href="https://github.com/elbywan/openapi-generator/blob/8ccd5ad1d09eac4a7834559399b9ee928ca33315/src/openapi-generator/serializable.cr#L65" target="_blank">
         openapi-generator/serializable.cr
       </a>
     

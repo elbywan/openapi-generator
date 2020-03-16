@@ -40,20 +40,15 @@
   <div class="types-list">
     <ul>
   
-  <li class=" " data-id="github.com/elbywan/openapi-generator/Array" data-name="array(t)">
-      <a href="../../../Array.html">Array</a>
-      
-    </li>
-  
-  <li class=" " data-id="github.com/elbywan/openapi-generator/Hash" data-name="hash(k, v)">
-      <a href="../../../Hash.html">Hash</a>
-      
-    </li>
-  
   <li class="parent open current" data-id="github.com/elbywan/openapi-generator/OpenAPI" data-name="openapi">
       <a href="../../../OpenAPI.html">OpenAPI</a>
       
         <ul>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Field" data-name="openapi::field">
+      <a href="../../../OpenAPI/Field.html">Field</a>
+      
+    </li>
   
   <li class="parent open current" data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator" data-name="openapi::generator">
       <a href="../../../OpenAPI/Generator.html">Generator</a>
@@ -105,18 +100,8 @@
       
     </li>
   
-  <li class="parent " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Serializable" data-name="openapi::generator::serializable">
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Serializable" data-name="openapi::generator::serializable">
       <a href="../../../OpenAPI/Generator/Serializable.html">Serializable</a>
-      
-        <ul>
-  
-  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Serializable/Field" data-name="openapi::generator::serializable::field">
-      <a href="../../../OpenAPI/Generator/Serializable/Field.html">Field</a>
-      
-    </li>
-  
-</ul>
-
       
     </li>
   
@@ -195,7 +180,7 @@
   </h2>
   
     
-      <a href="https://github.com/elbywan/openapi-generator/blob/142e20086af7ea38372d50b3ac6ce926922918c9/src/openapi-generator/controller.cr#L78" target="_blank">
+      <a href="https://github.com/elbywan/openapi-generator/blob/8ccd5ad1d09eac4a7834559399b9ee928ca33315/src/openapi-generator/controller.cr#L78" target="_blank">
         openapi-generator/controller.cr
       </a>
     
@@ -235,14 +220,14 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#header_param(name,description,*,required=false)-instance-method" class="signature"><strong>#header_param</strong>(name, description, *, required = <span class="n">false</span>)</a>
+        <a href="#header_param(name,description,*,required=false,type=&quot;string&quot;)-instance-method" class="signature"><strong>#header_param</strong>(name, description, *, required = <span class="n">false</span>, type = <span class="s">&quot;string&quot;</span>)</a>
         
           <div class="summary"><p>Generate a header <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#parameterObject" target="_blank">parameter object</a>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#qp(name,description,*,required=false)-instance-method" class="signature"><strong>#qp</strong>(name, description, *, required = <span class="n">false</span>)</a>
+        <a href="#qp(name,description,*,required=false,type=&quot;string&quot;)-instance-method" class="signature"><strong>#qp</strong>(name, description, *, required = <span class="n">false</span>, type = <span class="s">&quot;string&quot;</span>)</a>
         
           <div class="summary"><p>Generate a query parameter as a <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#parameterObject" target="_blank">parameter object</a>.</p></div>
         
@@ -319,7 +304,7 @@ YAML</span></code></pre>
       <br/>
       <div>
         
-          [<a href="https://github.com/elbywan/openapi-generator/blob/142e20086af7ea38372d50b3ac6ce926922918c9/src/openapi-generator/controller.cr#L177" target="_blank">View source</a>]
+          [<a href="https://github.com/elbywan/openapi-generator/blob/8ccd5ad1d09eac4a7834559399b9ee928ca33315/src/openapi-generator/controller.cr#L177" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -351,24 +336,24 @@ YAML</span></code></pre>
       <br/>
       <div>
         
-          [<a href="https://github.com/elbywan/openapi-generator/blob/142e20086af7ea38372d50b3ac6ce926922918c9/src/openapi-generator/controller.cr#L249" target="_blank">View source</a>]
+          [<a href="https://github.com/elbywan/openapi-generator/blob/8ccd5ad1d09eac4a7834559399b9ee928ca33315/src/openapi-generator/controller.cr#L259" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="header_param(name,description,*,required=false)-instance-method">
+    <div class="entry-detail" id="header_param(name,description,*,required=false,type=&amp;quot;string&amp;quot;)-instance-method">
       <div class="signature">
         
-        def <strong>header_param</strong>(name, description, *, required = <span class="n">false</span>)
+        def <strong>header_param</strong>(name, description, *, required = <span class="n">false</span>, type = <span class="s">&quot;string&quot;</span>)
 
-        <a class="method-permalink" href="#header_param(name,description,*,required=false)-instance-method">#</a>
+        <a class="method-permalink" href="#header_param(name,description,*,required=false,type=&quot;string&quot;)-instance-method">#</a>
       </div>
       
         <div class="doc">
           
           <p>Generate a header <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#parameterObject" target="_blank">parameter object</a>.</p>
 
-<pre><code><span class="t">Schema</span>.header_param <span class="s">&quot;X-Header&quot;</span>, <span class="s">&quot;A custom header&quot;</span>, required: <span class="n">true</span>
+<pre><code><span class="t">Schema</span>.header_param <span class="s">&quot;X-Header&quot;</span>, <span class="s">&quot;A custom header&quot;</span>, required: <span class="n">true</span>, <span class="k">type</span>: <span class="s">&quot;integer&quot;</span>
 
 <span class="c"># Produces</span>
 
@@ -377,30 +362,32 @@ YAML</span></code></pre>
   name: &quot;X-Header&quot;
   description: A custom header
   required: true
+  schema:
+    type: integer
 YAML</span></code></pre>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/elbywan/openapi-generator/blob/142e20086af7ea38372d50b3ac6ce926922918c9/src/openapi-generator/controller.cr#L224" target="_blank">View source</a>]
+          [<a href="https://github.com/elbywan/openapi-generator/blob/8ccd5ad1d09eac4a7834559399b9ee928ca33315/src/openapi-generator/controller.cr#L231" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="qp(name,description,*,required=false)-instance-method">
+    <div class="entry-detail" id="qp(name,description,*,required=false,type=&amp;quot;string&amp;quot;)-instance-method">
       <div class="signature">
         
-        def <strong>qp</strong>(name, description, *, required = <span class="n">false</span>)
+        def <strong>qp</strong>(name, description, *, required = <span class="n">false</span>, type = <span class="s">&quot;string&quot;</span>)
 
-        <a class="method-permalink" href="#qp(name,description,*,required=false)-instance-method">#</a>
+        <a class="method-permalink" href="#qp(name,description,*,required=false,type=&quot;string&quot;)-instance-method">#</a>
       </div>
       
         <div class="doc">
           
           <p>Generate a query parameter as a <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#parameterObject" target="_blank">parameter object</a>.</p>
 
-<pre><code><span class="t">Schema</span>.qp <span class="s">&quot;id&quot;</span>, <span class="s">&quot;Filter by id&quot;</span>, required: <span class="n">true</span>
+<pre><code><span class="t">Schema</span>.qp <span class="s">&quot;id&quot;</span>, <span class="s">&quot;Filter by id&quot;</span>, required: <span class="n">true</span>, <span class="k">type</span>: <span class="s">&quot;integer&quot;</span>
 
 <span class="c"># Produces:</span>
 
@@ -409,13 +396,15 @@ YAML</span></code></pre>
   name: id
   description: Filter by id
   required: true
+  schema:
+    type: integer
 YAML</span></code></pre>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/elbywan/openapi-generator/blob/142e20086af7ea38372d50b3ac6ce926922918c9/src/openapi-generator/controller.cr#L199" target="_blank">View source</a>]
+          [<a href="https://github.com/elbywan/openapi-generator/blob/8ccd5ad1d09eac4a7834559399b9ee928ca33315/src/openapi-generator/controller.cr#L201" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -448,7 +437,7 @@ YAML</span></code></pre>
       <br/>
       <div>
         
-          [<a href="https://github.com/elbywan/openapi-generator/blob/142e20086af7ea38372d50b3ac6ce926922918c9/src/openapi-generator/controller.cr#L96" target="_blank">View source</a>]
+          [<a href="https://github.com/elbywan/openapi-generator/blob/8ccd5ad1d09eac4a7834559399b9ee928ca33315/src/openapi-generator/controller.cr#L96" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -483,7 +472,7 @@ YAML</span></code></pre>
       <br/>
       <div>
         
-          [<a href="https://github.com/elbywan/openapi-generator/blob/142e20086af7ea38372d50b3ac6ce926922918c9/src/openapi-generator/controller.cr#L123" target="_blank">View source</a>]
+          [<a href="https://github.com/elbywan/openapi-generator/blob/8ccd5ad1d09eac4a7834559399b9ee928ca33315/src/openapi-generator/controller.cr#L123" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -516,7 +505,7 @@ YAML</span></code></pre>
       <br/>
       <div>
         
-          [<a href="https://github.com/elbywan/openapi-generator/blob/142e20086af7ea38372d50b3ac6ce926922918c9/src/openapi-generator/controller.cr#L151" target="_blank">View source</a>]
+          [<a href="https://github.com/elbywan/openapi-generator/blob/8ccd5ad1d09eac4a7834559399b9ee928ca33315/src/openapi-generator/controller.cr#L151" target="_blank">View source</a>]
         
       </div>
     </div>
