@@ -1,5 +1,5 @@
 name: openapi-generator
-version: 0.1.0
+version: 0.2.0
 
 authors:
   - elbywan <elbywan@hotmail.com>
@@ -9,7 +9,7 @@ crystal: 0.33.0
 dependencies:
   open_api:
     github: repomaa/open_api.cr
-    branch: master
+    commit: 95e4df2ca10b1fe88b8b35c62a18b06a10267b6c
 
 development_dependencies:
   amber:
