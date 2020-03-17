@@ -70,11 +70,8 @@ module OpenAPI::Generator::Serializable
 
   macro extended
     {% verbatim do %}
-    include OpenAPI::Generator::Serializable
-
     # When extended, add the subtype to the global list.
     {% OpenAPI::Generator::Serializable::SERIALIZABLE_CLASSES << @type %}
-
     {% end %}
   end
 
