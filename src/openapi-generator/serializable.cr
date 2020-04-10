@@ -112,11 +112,9 @@ module OpenAPI::Generator::Serializable
             {% serialized_types << {"number"} %}
           {% elsif type == Bool %}
             {% serialized_types << {"boolean"} %}
-          {% elsif type <= Array %}
-            {% serialized_types << {"array", type.type_vars[0]} %}
           {% elsif OpenAPI::Generator::Serializable::SERIALIZABLE_CLASSES.includes? type %}
             {% serialized_types << {"object", type} %}
-          {% elsif (type.has_method? :to_openapi_schema) || (type.class.has_method? :to_openapi_schema) %}
+          {% elsif type.class.has_method? :to_openapi_schema %}
             {% serialized_types << {"self_schema", type} %}
           {% elsif type <= JSON::Any %}
             {% serialized_types << {"json"} %}
@@ -134,7 +132,6 @@ module OpenAPI::Generator::Serializable
         {% if serialized_types.size == 1 %}
           # As there is only one supported type…
           items = nil
-          ref = nil
           generated_schema = nil
           additional_properties = nil
 
@@ -143,19 +140,15 @@ module OpenAPI::Generator::Serializable
           {% extra = serialized_type[1] %}
 
           {% if type == "object" %}
-            # Store a reference to another object.
             type = nil
-            ref = OpenAPI::Schema.new(
+            # Store a reference to another object.
+            generated_schema = OpenAPI::Schema.new(
               read_only: {{ read_only }},
               write_only: {{ write_only }},
               all_of: [
                 OpenAPI::Reference.new ref: "#/components/schemas/{{extra}}"
               ]
             )
-          {% elsif type == "array" %}
-            type = "array"
-            # Recursively compute array items.
-            items = Array({{ extra }}).to_openapi_schema
           {% elsif type == "json" %}
             # Free form object
             type = "object"
@@ -178,8 +171,6 @@ module OpenAPI::Generator::Serializable
             )
           elsif generated_schema
             schema.properties.not_nil!["{{schema_key}}"] = generated_schema
-          elsif ref
-            schema.properties.not_nil!["{{schema_key}}"] = ref
           end
 
         {% elsif serialized_types.size > 1 %}
@@ -192,25 +183,19 @@ module OpenAPI::Generator::Serializable
             {% extra = serialized_type[1] %}
 
             items = nil
-            ref = nil
             additional_properties = nil
             generated_schema = nil
 
             {% if type == "object" %}
-              # Store a reference to another object.
               type = nil
               # ref = OpenAPI::Reference.new ref: "#/components/schemas/{{extra}}"
-              ref = OpenAPI::Schema.new(
+              generated_schema = OpenAPI::Schema.new(
                 read_only: {{ read_only }},
                 write_only: {{ write_only }},
                 all_of: [
                   OpenAPI::Reference.new ref: "#/components/schemas/{{extra}}"
                 ]
               )
-            {% elsif type == "array" %}
-              type = "array"
-              # Recursively compute array items.
-              items = Array({{ extra }}).to_openapi_schema
             {% elsif type == "json" %}
               # Free form object
               type = "object"
@@ -234,8 +219,6 @@ module OpenAPI::Generator::Serializable
               )
             elsif generated_schema
               one_of << generated_schema
-            elsif ref
-              one_of << ref
             end
           {% end %}
 

@@ -3,6 +3,8 @@
 class Array(T)
   # Converts an Array to an OpenAPI schema.
   def self.to_openapi_schema
+    schema_items = uninitialized OpenAPI::Schema | OpenAPI::Reference
+
     {% begin %}
 
       {% array_types = T.union_types %}
@@ -20,11 +22,9 @@ class Array(T)
           {% serialized_types << {"number", Nil} %}
         {% elsif type == Bool %}
           {% serialized_types << {"boolean", Nil} %}
-        {% elsif type <= Array %}
-          {% serialized_types << {"array", type.type_vars[0]} %}
         {% elsif OpenAPI::Generator::Serializable::SERIALIZABLE_CLASSES.includes? type %}
           {% serialized_types << {"object", type} %}
-        {% elsif (type.has_method? :to_openapi_schema) || (type.class.has_method? :to_openapi_schema) %}
+        {% elsif type.class.has_method? :to_openapi_schema %}
           {% serialized_types << {"self_schema", type} %}
         {% elsif type <= JSON::Any %}
           {% serialized_types << {"json", Nil} %}
@@ -37,7 +37,6 @@ class Array(T)
       {% if serialized_types.size == 1 %}
         # As there is only one supported type…
         items = nil
-        ref = nil
         generated_schema = nil
         additional_properties = nil
 
@@ -46,16 +45,11 @@ class Array(T)
         {% extra = serialized_type[1] %}
 
         {% if type == "object" %}
-          # Store a reference to another object.
           type = nil
-          ref = OpenAPI::Reference.new ref: "#/components/schemas/{{extra}}"
+          generated_schema = OpenAPI::Reference.new ref: "#/components/schemas/{{extra}}"
         {% elsif type == "self_schema" %}
           type = nil
           generated_schema = {{extra}}.to_openapi_schema
-        {% elsif type == "array" %}
-          type = "array"
-          # Recursively compute array items.
-          items = Array({{ extra }}).to_openapi_schema
         {% elsif type == "json" %}
           # Free form object
           type = "object"
@@ -66,15 +60,13 @@ class Array(T)
         {% end %}
 
         if type
-          OpenAPI::Schema.new(
+          schema_items = OpenAPI::Schema.new(
             type: type,
             items: items,
             additional_properties: additional_properties
           )
         elsif generated_schema
-          generated_schema
-        elsif ref
-          ref
+          schema_items = generated_schema
         end
 
       {% elsif serialized_types.size > 1 %}
@@ -86,21 +78,16 @@ class Array(T)
           {% extra = serialized_type[1] %}
 
           items = nil
-          ref = nil
           generated_schema = nil
           additional_properties = nil
 
           {% if type == "object" %}
             # Store a reference to another object.
             type = nil
-            ref = OpenAPI::Reference.new ref: "#/components/schemas/{{extra}}"
+            generated_schema = OpenAPI::Reference.new ref: "#/components/schemas/{{extra}}"
           {% elsif type == "self_schema" %}
             type = nil
             generated_schema = {{extra}}.to_openapi_schema
-          {% elsif type == "array" %}
-            type = "array"
-            # Recursively compute array items.
-            items = Array({{ extra }}).to_openapi_schema
           {% elsif type == "json" %}
             # Free form object
             type = "object"
@@ -119,15 +106,18 @@ class Array(T)
             )
           elsif generated_schema
            one_of << generated_schema
-          elsif ref
-            one_of << ref
           end
         {% end %}
 
-        OpenAPI::Schema.new(one_of: one_of)
+        schema_items = OpenAPI::Schema.new(one_of: one_of)
       {% end %}
 
     {% end %}
+
+    OpenAPI::Schema.new(
+      type: "array",
+      items: schema_items
+    )
   end
 end
 
@@ -136,7 +126,7 @@ end
 class Hash(K, V)
   # Returns the OpenAPI schema associated with the Hash.
   def self.to_openapi_schema
-    additional_properties = uninitialized (OpenAPI::Schema | OpenAPI::Reference)?
+    additional_properties = uninitialized (OpenAPI::Schema | OpenAPI::Reference | Bool)?
 
     {% begin %}
       {% value_types = V.union_types %}
@@ -154,11 +144,9 @@ class Hash(K, V)
           {% serialized_types << {"number", Nil} %}
         {% elsif type == Bool %}
           {% serialized_types << {"boolean", Nil} %}
-        {% elsif type <= Array %}
-          {% serialized_types << {"array", type.type_vars[0]} %}
         {% elsif OpenAPI::Generator::Serializable::SERIALIZABLE_CLASSES.includes? type %}
           {% serialized_types << {"object", type} %}
-        {% elsif (type.has_method? :to_openapi_schema) || (type.class.has_method? :to_openapi_schema) %}
+        {% elsif type.class.has_method? :to_openapi_schema %}
           {% serialized_types << {"self_schema", type} %}
         {% elsif type <= JSON::Any %}
           {% serialized_types << {"json", Nil} %}
@@ -172,7 +160,6 @@ class Hash(K, V)
       {% if serialized_types.size == 1 %}
         # As there is only one supported type…
         items = nil
-        ref = nil
         generated_schema = nil
         additional_properties = nil
 
@@ -183,14 +170,10 @@ class Hash(K, V)
         {% if type == "object" %}
           # Store a reference to another object.
           type = nil
-          ref = OpenAPI::Reference.new ref: "#/components/schemas/{{extra}}"
+          generated_schema = OpenAPI::Reference.new ref: "#/components/schemas/{{extra}}"
         {% elsif type == "self_schema" %}
           type = nil
           generated_schema = {{extra}}.to_openapi_schema
-        {% elsif type == "array" %}
-          type = "array"
-          # Recursively compute array items.
-          items = Array({{ extra }}).to_openapi_schema
         {% elsif type == "json" %}
           # Free form object
           type = "object"
@@ -207,9 +190,7 @@ class Hash(K, V)
             additional_properties: additional_properties
           )
         elsif generated_schema
-          additional_properties << generated_schema
-        elsif ref
-          additional_properties = ref
+          additional_properties = generated_schema
         end
 
       {% elsif serialized_types.size > 1 %}
@@ -221,21 +202,16 @@ class Hash(K, V)
           {% extra = serialized_type[1] %}
 
           items = nil
-          ref = nil
           generated_schema = nil
           additional_properties = nil
 
           {% if type == "object" %}
             # Store a reference to another object.
             type = nil
-            ref = OpenAPI::Reference.new ref: "#/components/schemas/{{extra}}"
+            generated_schema = OpenAPI::Reference.new ref: "#/components/schemas/{{extra}}"
           {% elsif type == "self_schema" %}
             type = nil
             generated_schema = {{extra}}.to_openapi_schema
-          {% elsif type == "array" %}
-            type = "array"
-            # Recursively compute array items.
-            items = Array({{ extra }}).to_openapi_schema
           {% elsif type == "json" %}
             # Free form object
             type = "object"
@@ -254,8 +230,6 @@ class Hash(K, V)
             )
           elsif generated_schema
             one_of << generated_schema
-          elsif ref
-            one_of << ref
           end
         {% end %}
 
