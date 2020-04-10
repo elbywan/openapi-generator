@@ -36,7 +36,7 @@
 #
 # The `Schema` module contains various helpers to generate YAML parts.
 module OpenAPI::Generator::Controller
-  CONTROLLER_OPS = {} of String => String
+  CONTROLLER_OPS = {} of String => YAML::Any
 
   # This annotation is used to register a controller method as an OpenAPI [Operation Object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#operationObject).
   #
@@ -67,7 +67,7 @@ module OpenAPI::Generator::Controller
       {% open_api_annotation = method.annotation(OpenAPI) %}
       {% if open_api_annotation %}
         {% for yaml_op in open_api_annotation.args %}
-          {% CONTROLLER_OPS["#{@type}::#{method.name}"] = yaml_op %}
+          CONTROLLER_OPS["{{@type}}::{{method.name}}"] = YAML.parse {{ yaml_op }}
         {% end %}
       {% end %}
     end

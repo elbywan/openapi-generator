@@ -219,7 +219,7 @@ module OpenAPI::Generator
       # Get the matching registered controller operation (in YAML format).
       if yaml_op = Controller::CONTROLLER_OPS[key]?
         begin
-          yaml_op_any = YAML.parse(yaml_op)
+          yaml_op_any = yaml_op
           path_items[full_path] ||= OpenAPI::PathItem.new
 
           op = OpenAPI::Operation.from_json yaml_op_any.to_json
