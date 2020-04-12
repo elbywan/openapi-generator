@@ -88,9 +88,9 @@ describe OpenAPI::Generator do
               type: string
             opt_string:
               type: string
+              readOnly: true
             inner_schema:
-              allOf:
-              - $ref: '#/components/schemas/Model::InnerModel'
+              $ref: '#/components/schemas/Model%3A%3AInnerModel'
             cast:
               type: string
         Model::InnerModel:
@@ -102,6 +102,7 @@ describe OpenAPI::Generator do
               type: array
               items:
                 type: integer
+              writeOnly: true
         Model::ComplexModel:
           required:
           - union_types
@@ -113,7 +114,7 @@ describe OpenAPI::Generator do
               oneOf:
               - type: object
                 additionalProperties:
-                  $ref: '#/components/schemas/Model::InnerModel'
+                  $ref: '#/components/schemas/Model%3A%3AInnerModel'
               - type: integer
               - type: string
             free_form:

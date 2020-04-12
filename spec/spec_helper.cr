@@ -7,6 +7,7 @@ struct Model
   include JSON::Serializable
 
   property string : String
+  @[OpenAPI::Field(read_only: true)]
   property opt_string : String?
   property inner_schema : InnerModel
   @[OpenAPI::Field(ignore: true)]
@@ -31,14 +32,11 @@ struct Model
         "type": "string"
       },
       "opt_string": {
-        "type": "string"
+        "type": "string",
+        "readOnly": true
       },
       "inner_schema": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Model::InnerModel"
-          }
-        ]
+        "$ref": "#/components/schemas/Model%3A%3AInnerModel"
       },
       "cast": {
         "type": "string"
@@ -51,6 +49,7 @@ struct Model
     extend OpenAPI::Generator::Serializable
     include JSON::Serializable
 
+    @[OpenAPI::Field(write_only: true)]
     property array_of_int : Array(Int32)
 
     SCHEMA = <<-JSON
@@ -64,7 +63,8 @@ struct Model
           "type": "array",
           "items": {
             "type": "integer"
-          }
+          },
+          "writeOnly": true
         }
       }
     }
@@ -93,7 +93,7 @@ struct Model
             {
               "type": "object",
               "additionalProperties": {
-                "$ref": "#/components/schemas/Model::InnerModel"
+                "$ref": "#/components/schemas/Model%3A%3AInnerModel"
               }
             },
             {
