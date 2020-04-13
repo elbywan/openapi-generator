@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.32.1">
+<meta name="generator" content="Crystal Docs 0.33.0">
 
 <link href="../../css/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../../js/doc.js"></script>
@@ -75,6 +75,21 @@
       
     </li>
   
+  <li class="parent " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Helpers" data-name="openapi::generator::helpers">
+      <a href="../../OpenAPI/Generator/Helpers.html">Helpers</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Helpers/Amber" data-name="openapi::generator::helpers::amber">
+      <a href="../../OpenAPI/Generator/Helpers/Amber.html">Amber</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
   <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/RouteMapping" data-name="openapi::generator::routemapping">
       <a href="../../OpenAPI/Generator/RouteMapping.html">RouteMapping</a>
       
@@ -112,6 +127,11 @@
   
 </ul>
 
+      
+    </li>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/String" data-name="string">
+      <a href="../../String.html">String</a>
       
     </li>
   
@@ -225,7 +245,7 @@ The <code><a href="../../OpenAPI/Generator.html">Generator</a></code> will take 
   </h2>
   
     
-      <a href="https://github.com/elbywan/openapi-generator/blob/8ccd5ad1d09eac4a7834559399b9ee928ca33315/src/openapi-generator/serializable.cr#L55" target="_blank">
+      <a href="https://github.com/elbywan/openapi-generator/blob/9368ea6a94dfe553d767afb96e5f8d50e99da478/src/openapi-generator/serializable.cr#L55" target="_blank">
         openapi-generator/serializable.cr
       </a>
     
@@ -274,15 +294,39 @@ The <code><a href="../../OpenAPI/Generator.html">Generator</a></code> will take 
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#to_openapi_schema-instance-method" class="signature"><strong>#to_openapi_schema</strong></a>
+        <a href="#generate_schema-instance-method" class="signature"><strong>#generate_schema</strong></a>
         
           <div class="summary"><p>Serialize the class into an <code>OpenAPI::Schema</code> representation.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#to_openapi_schema-instance-method" class="signature"><strong>#to_openapi_schema</strong></a>
+        
+          <div class="summary"><p>Serialize the class into an <code>OpenAPI::Reference</code> representation.</p></div>
         
       </li>
     
   </ul>
 
 
+
+  <h2>
+    <a id="macro-summary" class="anchor" href="#macro-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Macro Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#generate_schema(schema,types,as_type=nil,read_only=false,write_only=false,schema_key=nil)-macro" class="signature"><strong>generate_schema</strong>(schema, types, as_type = <span class="n">nil</span>, read_only = <span class="n">false</span>, write_only = <span class="n">false</span>, schema_key = <span class="n">nil</span>)</a>
+        
+      </li>
+    
+  </ul>
 
 
 
@@ -304,12 +348,12 @@ The <code><a href="../../OpenAPI/Generator.html">Generator</a></code> will take 
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="to_openapi_schema-instance-method">
+    <div class="entry-detail" id="generate_schema-instance-method">
       <div class="signature">
         
-        def <strong>to_openapi_schema</strong>
+        def <strong>generate_schema</strong>
 
-        <a class="method-permalink" href="#to_openapi_schema-instance-method">#</a>
+        <a class="method-permalink" href="#generate_schema-instance-method">#</a>
       </div>
       
         <div class="doc">
@@ -322,13 +366,62 @@ The <code><a href="../../OpenAPI/Generator.html">Generator</a></code> will take 
       <br/>
       <div>
         
-          [<a href="https://github.com/elbywan/openapi-generator/blob/8ccd5ad1d09eac4a7834559399b9ee928ca33315/src/openapi-generator/serializable.cr#L84" target="_blank">View source</a>]
+          [<a href="https://github.com/elbywan/openapi-generator/blob/9368ea6a94dfe553d767afb96e5f8d50e99da478/src/openapi-generator/serializable.cr#L231" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="to_openapi_schema-instance-method">
+      <div class="signature">
+        
+        def <strong>to_openapi_schema</strong>
+
+        <a class="method-permalink" href="#to_openapi_schema-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Serialize the class into an <code>OpenAPI::Reference</code> representation.</p>
+
+<p>Check the <a href="https://swagger.io/docs/specification/data-models/" target="_blank">swagger documentation</a> for more details</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/elbywan/openapi-generator/blob/9368ea6a94dfe553d767afb96e5f8d50e99da478/src/openapi-generator/serializable.cr#L268" target="_blank">View source</a>]
         
       </div>
     </div>
   
 
 
+
+  <h2>
+    <a id="macro-detail" class="anchor" href="#macro-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Macro Detail
+  </h2>
+  
+    <div class="entry-detail" id="generate_schema(schema,types,as_type=nil,read_only=false,write_only=false,schema_key=nil)-macro">
+      <div class="signature">
+        
+        macro <strong>generate_schema</strong>(schema, types, as_type = <span class="n">nil</span>, read_only = <span class="n">false</span>, write_only = <span class="n">false</span>, schema_key = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#generate_schema(schema,types,as_type=nil,read_only=false,write_only=false,schema_key=nil)-macro">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/elbywan/openapi-generator/blob/9368ea6a94dfe553d767afb96e5f8d50e99da478/src/openapi-generator/serializable.cr#L78" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
 
 
 </div>

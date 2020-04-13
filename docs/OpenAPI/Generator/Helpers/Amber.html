@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.33.0">
+
+<link href="../../../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../../js/doc.js"></script>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+
+  <meta id="repository-name" content="github.com/elbywan/openapi-generator">
+  <title>OpenAPI::Generator::Helpers::Amber - github.com/elbywan/openapi-generator</title>
+  <script type="text/javascript">
+    CrystalDoc.base_path = "../../../";
+  </script>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="repository-links">
+      <a href="../../../index.html">README</a>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="github.com/elbywan/openapi-generator/OpenAPI" data-name="openapi">
+      <a href="../../../OpenAPI.html">OpenAPI</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Field" data-name="openapi::field">
+      <a href="../../../OpenAPI/Field.html">Field</a>
+      
+    </li>
+  
+  <li class="parent open current" data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator" data-name="openapi::generator">
+      <a href="../../../OpenAPI/Generator.html">Generator</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Controller" data-name="openapi::generator::controller">
+      <a href="../../../OpenAPI/Generator/Controller.html">Controller</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Controller/OpenAPI" data-name="openapi::generator::controller::openapi">
+      <a href="../../../OpenAPI/Generator/Controller/OpenAPI.html">OpenAPI</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Controller/Schema" data-name="openapi::generator::controller::schema">
+      <a href="../../../OpenAPI/Generator/Controller/Schema.html">Schema</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent open current" data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Helpers" data-name="openapi::generator::helpers">
+      <a href="../../../OpenAPI/Generator/Helpers.html">Helpers</a>
+      
+        <ul>
+  
+  <li class=" current" data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Helpers/Amber" data-name="openapi::generator::helpers::amber">
+      <a href="../../../OpenAPI/Generator/Helpers/Amber.html">Amber</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/RouteMapping" data-name="openapi::generator::routemapping">
+      <a href="../../../OpenAPI/Generator/RouteMapping.html">RouteMapping</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/RoutesProvider" data-name="openapi::generator::routesprovider">
+      <a href="../../../OpenAPI/Generator/RoutesProvider.html">RoutesProvider</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/RoutesProvider/Amber" data-name="openapi::generator::routesprovider::amber">
+      <a href="../../../OpenAPI/Generator/RoutesProvider/Amber.html">Amber</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/RoutesProvider/Base" data-name="openapi::generator::routesprovider::base">
+      <a href="../../../OpenAPI/Generator/RoutesProvider/Base.html">Base</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/OpenAPI/Generator/Serializable" data-name="openapi::generator::serializable">
+      <a href="../../../OpenAPI/Generator/Serializable.html">Serializable</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/elbywan/openapi-generator/String" data-name="string">
+      <a href="../../../String.html">String</a>
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">module</span> OpenAPI::Generator::Helpers::Amber
+
+</h1>
+
+
+
+
+
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>Helpers that can be used to infer some properties of the OpenAPI operation.</p>
+
+<pre><code><span class="k">require</span> <span class="s">&quot;json&quot;</span>
+<span class="k">require</span> <span class="s">&quot;openapi_generator/helpers/amber&quot;</span>
+
+<span class="k">class</span> <span class="t">HelloPayloadController</span> <span class="o">&lt;</span> <span class="t">Amber</span><span class="t">::</span><span class="t">Controller</span><span class="t">::</span><span class="t">Base</span>
+  <span class="k">include</span> <span class="t">::</span><span class="t">OpenAPI</span><span class="t">::</span><span class="t">Generator</span><span class="t">::</span><span class="t">Controller</span>
+  <span class="k">include</span> <span class="t">::</span><span class="t">OpenAPI</span><span class="t">::</span><span class="t">Generator</span><span class="t">::</span><span class="t">Helpers</span><span class="t">::</span><span class="t">Amber</span>
+
+  @[<span class="t">OpenAPI</span>(
+    <span class="s">&lt;&lt;-YAML
+      summary: Sends a hello payload
+      responses:
+        200:
+          description: Hello
+    YAML</span>
+  )]
+  <span class="k">def</span> <span class="m">index</span>
+    respond_with <span class="n">200</span>, description: <span class="s">&quot;Overriden&quot;</span> <span class="k">do</span>
+      json <span class="t">Payload</span>.<span class="k">new</span>()
+      xml <span class="s">&quot;&lt;hello&gt;&lt;/hello&gt;&quot;</span>
+    <span class="k">end</span>
+    respond_with <span class="n">201</span>, description: <span class="s">&quot;Not Overriden&quot;</span> <span class="k">do</span>
+      text <span class="s">&quot;Good morning.&quot;</span>
+    <span class="k">end</span>
+    respond_with <span class="n">400</span> <span class="k">do</span>
+      text <span class="s">&quot;Ouch.&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="t">Payload</span>
+  <span class="k">include</span> <span class="t">JSON</span><span class="t">::</span><span class="t">Serializable</span>
+  <span class="k">extend</span> <span class="t">OpenAPI</span><span class="t">::</span><span class="t">Generator</span><span class="t">::</span><span class="t">Serializable</span>
+
+  <span class="k">def</span> <span class="m">initialize</span>(@hello : <span class="t">String</span> <span class="o">=</span> <span class="s">&quot;world&quot;</span>)
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="t">Amber</span><span class="t">::</span><span class="t">Server</span>.configure <span class="k">do</span>
+  routes <span class="n">:api</span> <span class="k">do</span>
+    route <span class="s">&quot;get&quot;</span>, <span class="s">&quot;/hello&quot;</span>, <span class="t">HelloPayloadController</span>, <span class="n">:index</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="t">OpenAPI</span><span class="t">::</span><span class="t">Generator</span><span class="t">::</span><span class="t">Helpers</span><span class="t">::</span><span class="t">Amber</span>.bootstrap
+<span class="t">OpenAPI</span><span class="t">::</span><span class="t">Generator</span>.generate(<span class="t">OpenAPI</span><span class="t">::</span><span class="t">Generator</span><span class="t">::</span><span class="t">RoutesProvider</span><span class="t">::</span><span class="t">Amber</span>.<span class="k">new</span>)</code></pre>
+
+<p>Will produce:</p>
+
+<pre><code class="language-yaml">---
+openapi: 3.0.1
+info:
+  title: Test
+  version: 0.0.1
+paths:
+  /hello:
+    get:
+      summary: Sends a hello payload
+      responses:
+        "200":
+          description: Hello
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Payload'
+            application/xml:
+              schema:
+                type: string
+        "201":
+          description: Not Overriden
+          content:
+            text/plain:
+              schema:
+                type: string
+        "400":
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                type: string
+components:
+  schemas:
+    Payload:
+      required:
+      - hello
+      type: object
+      properties:
+        hello:
+          type: string
+  responses: {}
+  parameters: {}
+  examples: {}
+  requestBodies: {}
+  headers: {}
+  securitySchemes: {}
+  links: {}
+  callbacks: {}</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+    
+      <a href="https://github.com/elbywan/openapi-generator/blob/9368ea6a94dfe553d767afb96e5f8d50e99da478/src/openapi-generator/helpers/amber.cr#L107" target="_blank">
+        openapi-generator/helpers/amber.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+
+
+  <h2>
+    <a id="class-method-summary" class="anchor" href="#class-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#bootstrap-class-method" class="signature"><strong>.bootstrap</strong></a>
+        
+          <div class="summary"><p>Run this method exactly once before generating the schema to register all the infered properties.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+  <h2>
+    <a id="macro-summary" class="anchor" href="#macro-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Macro Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#respond_with(code=200,description=nil,headers=nil,links=nil,&)-macro" class="signature"><strong>respond_with</strong>(code = <span class="n">200</span>, description = <span class="n">nil</span>, headers = <span class="n">nil</span>, links = <span class="n">nil</span>, &)</a>
+        
+          <div class="summary"><p>Same as the <a href="https://docs.amberframework.org/amber/guides/controllers/respond-with" target="_blank">Amber method</a> with automatic response inference.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+<div class="methods-inherited">
+  
+</div>
+
+
+
+
+  <h2>
+    <a id="class-method-detail" class="anchor" href="#class-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="bootstrap-class-method">
+      <div class="signature">
+        
+        def self.<strong>bootstrap</strong>
+
+        <a class="method-permalink" href="#bootstrap-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Run this method exactly once before generating the schema to register all the infered properties.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/elbywan/openapi-generator/blob/9368ea6a94dfe553d767afb96e5f8d50e99da478/src/openapi-generator/helpers/amber.cr#L182" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+
+  <h2>
+    <a id="macro-detail" class="anchor" href="#macro-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Macro Detail
+  </h2>
+  
+    <div class="entry-detail" id="respond_with(code=200,description=nil,headers=nil,links=nil,&amp;)-macro">
+      <div class="signature">
+        
+        macro <strong>respond_with</strong>(code = <span class="n">200</span>, description = <span class="n">nil</span>, headers = <span class="n">nil</span>, links = <span class="n">nil</span>, &)
+
+        <a class="method-permalink" href="#respond_with(code=200,description=nil,headers=nil,links=nil,&)-macro">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Same as the <a href="https://docs.amberframework.org/amber/guides/controllers/respond-with" target="_blank">Amber method</a> with automatic response inference.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/elbywan/openapi-generator/blob/9368ea6a94dfe553d767afb96e5f8d50e99da478/src/openapi-generator/helpers/amber.cr#L159" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+</div>
+
+</body>
+</html>
