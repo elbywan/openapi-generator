@@ -1,3 +1,4 @@
+require "log"
 require "./providers/base"
 
 # An OpenAPI yaml specifications file generator.
@@ -144,6 +145,8 @@ require "./providers/base"
 module OpenAPI::Generator
   extend self
 
+  Log = ::Log.for(self)
+
   # A RouteMapping type is a tuple with the following shape: `{method, full_path, key, path_params}`
   # - method: The HTTP Verb of the route. (ex: `"get"`)
   # - full_path: The full path representation of the route with path parameters between curly braces. (ex: `"/name/{id}"`)
@@ -250,11 +253,11 @@ module OpenAPI::Generator
 
           {% end %}
         rescue err
-          Amber.logger.error "Error while generating bindings for path [#{full_path}].\n\n#{err}\n\n#{yaml_op}", "OpenAPI Generation"
+          Log.error { "Error while generating bindings for path [#{full_path}].\n\n#{err}\n\n#{yaml_op}" }
         end
       else
         # Warn if there is not openapi documentation for a route.
-        Amber.logger.warn "#{full_path} (#{method.upcase}) : Route is undocumented.", "OpenAPI Generation"
+        Log.warn { "#{full_path} (#{method.upcase}) : Route is undocumented." }
       end
     end
 

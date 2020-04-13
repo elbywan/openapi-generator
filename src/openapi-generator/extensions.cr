@@ -44,6 +44,16 @@ class Hash(K, V)
   end
 end
 
+# :nodoc:
+class String
+  # :nodoc:
+  def self.to_openapi_schema
+    OpenAPI::Schema.new(
+      type: "string"
+    )
+  end
+end
+
 module OpenAPI
   # :nodoc:
   # Used to declare path parameters.

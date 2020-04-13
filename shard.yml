@@ -4,7 +4,7 @@ version: 0.2.2
 authors:
   - elbywan <elbywan@hotmail.com>
 
-crystal: 0.33.0
+crystal: 0.34.0
 
 dependencies:
   open_api:
@@ -14,5 +14,6 @@ dependencies:
 development_dependencies:
   amber:
     github: amberframework/amber
+    version: ~> 0.34.0
 
 license: MIT

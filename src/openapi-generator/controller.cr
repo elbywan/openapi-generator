@@ -1,3 +1,5 @@
+require "http"
+
 # This module, when included, will register every instance methods annotated with the `OpenAPI` annotation.
 #
 # ### Example

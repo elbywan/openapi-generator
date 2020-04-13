@@ -77,7 +77,7 @@ module OpenAPI::Generator::Serializable
 
   macro generate_schema(schema, types, as_type = nil, read_only = false, write_only = false, schema_key = nil)
     {% serialized_types = [] of {String, (TypeNode | ArrayLiteral(TypeNode))?} %}
-    {% nilable = types.any?{|t| t.resolve.nilable? } %}
+    {% nilable = types.any? { |t| t.resolve.nilable? } %}
 
     # For every type of the instance variable (can be a union, like String | Int32)…
     {% for type in (as_type || types) %}
@@ -101,7 +101,7 @@ module OpenAPI::Generator::Serializable
       {% else %}
         {% # Ignore other types.
 
-%}
+  %}
       {% end %}
     {% end %}
 
@@ -156,8 +156,8 @@ module OpenAPI::Generator::Serializable
           type: %type,
           items: %items,
           additional_properties: %additional_properties,
-          {% if read_only  %}read_only:  {{ read_only }},  {% end%}
-          {% if write_only %}write_only: {{ write_only }}, {% end%}
+          {% if read_only %}read_only:  {{ read_only }},  {% end %}
+          {% if write_only %}write_only: {{ write_only }}, {% end %}
         )
       elsif %generated_schema
         {% if schema_key %}{{schema}}.properties.not_nil!["{{schema_key}}"]{% else %}{{schema}}{% end %} = %generated_schema
@@ -214,7 +214,7 @@ module OpenAPI::Generator::Serializable
             items: %items,
             additional_properties: %additional_properties,
             {% if read_only %} read_only: {{ read_only }}, {% end %}
-            {% if write_only %}write_only: {{ write_only }}, {% end%}
+            {% if write_only %}write_only: {{ write_only }}, {% end %}
           )
         elsif %generated_schema
           %one_of << %generated_schema
@@ -228,7 +228,7 @@ module OpenAPI::Generator::Serializable
   # Serialize the class into an `OpenAPI::Schema` representation.
   #
   # Check the [swagger documentation](https://swagger.io/docs/specification/data-models/) for more details
-  def to_openapi_schema
+  def generate_schema
     schema = OpenAPI::Schema.new(
       type: "object",
       properties: Hash(String, (OpenAPI::Schema | OpenAPI::Reference)).new,
@@ -262,12 +262,23 @@ module OpenAPI::Generator::Serializable
     schema
   end
 
+  # Serialize the class into an `OpenAPI::Reference` representation.
+  #
+  # Check the [swagger documentation](https://swagger.io/docs/specification/data-models/) for more details
+  def to_openapi_schema
+    OpenAPI::Schema.new(
+      all_of: [
+        OpenAPI::Reference.new ref: "#/components/schemas/#{URI.encode_www_form({{@type.stringify}})}",
+      ]
+    )
+  end
+
   # :nodoc:
   def self.schemas
     # For every registered class, we get its schema and store it in the schemas.
     schemas = Hash(String, OpenAPI::Schema | OpenAPI::Reference).new
     {% for serializable_class in SERIALIZABLE_CLASSES %}
-      schemas["{{serializable_class.id}}"] = {{serializable_class}}.to_openapi_schema
+      schemas["{{serializable_class.id}}"] = {{serializable_class}}.generate_schema
     {% end %}
     # And we return the list of schemas.
     schemas

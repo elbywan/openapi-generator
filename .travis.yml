@@ -1,5 +1,7 @@
 language: crystal
 
-t:
-  - crystal spec
+script:
+  - crystal spec ./spec/core
+  - crystal spec ./spec/helpers
+  - crystal spec ./spec/providers
   - crystal tool format --check

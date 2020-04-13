@@ -1,22 +1,59 @@
-require "./spec_helper"
+require "json"
 require "file_utils"
+require "amber"
+require "../spec_helper"
+require "../../src/openapi-generator/helpers/amber"
 
-class MockProvider < OpenAPI::Generator::RoutesProvider::Base
-  def route_mappings : Array(OpenAPI::Generator::RouteMapping)
-    [
-      {"get", "/{id}", "HelloController::index", ["id"]},
-      {"head", "/{id}", "HelloController::index", ["id"]},
-      {"options", "/{id}", "HelloController::index", ["id"]},
-    ]
+class Payload
+  include JSON::Serializable
+  extend OpenAPI::Generator::Serializable
+
+  def initialize(@hello : String = "world")
   end
 end
 
-describe OpenAPI::Generator do
+class HelloPayloadController < Amber::Controller::Base
+  include ::OpenAPI::Generator::Controller
+  include ::OpenAPI::Generator::Helpers::Amber
+
+  @[OpenAPI(
+    <<-YAML
+      summary: Sends a hello payload
+      responses:
+        200:
+          description: Hello
+    YAML
+  )]
+  def index
+    respond_with 200, description: "Overriden" do
+      json Payload.new
+      xml "<hello></hello>"
+    end
+    respond_with 201, description: "Not Overriden" do
+      text "Good morning."
+    end
+    respond_with 400 do
+      text "Ouch."
+    end
+  end
+end
+
+Amber::Server.configure do
+  routes :api do
+    route "get", "/hello", HelloPayloadController, :index
+  end
+end
+
+require "../../src/openapi-generator/providers/amber.cr"
+
+OpenAPI::Generator::Helpers::Amber.bootstrap
+
+describe OpenAPI::Generator::Helpers::Amber do
   after_all {
     FileUtils.rm "openapi_test.yaml"
   }
 
-  it "should generate an openapi_test.yaml file" do
+  it "should infer the status codes and contents of the response body" do
     options = {
       output: Path[Dir.current] / "openapi_test.yaml",
     }
@@ -25,7 +62,7 @@ describe OpenAPI::Generator do
       components: NamedTuple.new,
     }
     OpenAPI::Generator.generate(
-      MockProvider.new,
+      OpenAPI::Generator::RoutesProvider::Amber.new,
       options: options,
       base_doc: base_doc
     )
@@ -38,43 +75,32 @@ describe OpenAPI::Generator do
       title: Test
       version: 0.0.1
     paths:
-      /{id}:
+      /hello:
         get:
-          summary: Says hello
-          parameters:
-          - name: id
-            in: path
-            required: true
-            schema:
-              type: string
-            example: id
+          summary: Sends a hello payload
           responses:
             "200":
-              description: OK
-        options:
-          summary: Says hello
-          parameters:
-          - name: id
-            in: path
-            required: true
-            schema:
-              type: string
-            example: id
-          responses:
-            "200":
-              description: OK
-        head:
-          summary: Says hello
-          parameters:
-          - name: id
-            in: path
-            required: true
-            schema:
-              type: string
-            example: id
-          responses:
-            "200":
-              description: OK
+              description: Hello
+              content:
+                application/json:
+                  schema:
+                    allOf:
+                    - $ref: '#/components/schemas/Payload'
+                application/xml:
+                  schema:
+                    type: string
+            "201":
+              description: Not Overriden
+              content:
+                text/plain:
+                  schema:
+                    type: string
+            "400":
+              description: Bad Request
+              content:
+                text/plain:
+                  schema:
+                    type: string
     components:
       schemas:
         Model:
@@ -128,6 +154,13 @@ describe OpenAPI::Generator do
                   oneOf:
                   - type: integer
                   - type: string
+        Payload:
+          required:
+          - hello
+          type: object
+          properties:
+            hello:
+              type: string
       responses: {}
       parameters: {}
       examples: {}
