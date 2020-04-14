@@ -164,7 +164,7 @@
   <p>Helpers that can be used to infer some properties of the OpenAPI operation.</p>
 
 <pre><code><span class="k">require</span> <span class="s">&quot;json&quot;</span>
-<span class="k">require</span> <span class="s">&quot;openapi_generator/helpers/amber&quot;</span>
+<span class="k">require</span> <span class="s">&quot;openapi-generator/helpers/amber&quot;</span>
 
 <span class="k">class</span> <span class="t">HelloPayloadController</span> <span class="o">&lt;</span> <span class="t">Amber</span><span class="t">::</span><span class="t">Controller</span><span class="t">::</span><span class="t">Base</span>
   <span class="k">include</span> <span class="t">::</span><span class="t">OpenAPI</span><span class="t">::</span><span class="t">Generator</span><span class="t">::</span><span class="t">Controller</span>
@@ -179,15 +179,20 @@
     YAML</span>
   )]
   <span class="k">def</span> <span class="m">index</span>
+    query_params <span class="s">&quot;mandatory&quot;</span>, description: <span class="s">&quot;A mandatory query parameter&quot;</span>
+    query_params? <span class="s">&quot;optional&quot;</span>, description: <span class="s">&quot;An optional query parameter&quot;</span>
+
     respond_with <span class="n">200</span>, description: <span class="s">&quot;Overriden&quot;</span> <span class="k">do</span>
-      json <span class="t">Payload</span>.<span class="k">new</span>()
-      xml <span class="s">&quot;&lt;hello&gt;&lt;/hello&gt;&quot;</span>
+      json <span class="t">Payload</span>.<span class="k">new</span>, <span class="k">type</span>: <span class="t">Payload</span>
+      xml <span class="s">&quot;&lt;hello&gt;&lt;/hello&gt;&quot;</span>, <span class="k">type</span>: <span class="t">String</span>
     <span class="k">end</span>
+
     respond_with <span class="n">201</span>, description: <span class="s">&quot;Not Overriden&quot;</span> <span class="k">do</span>
-      text <span class="s">&quot;Good morning.&quot;</span>
+      text <span class="s">&quot;Good morning.&quot;</span>, <span class="k">type</span>: <span class="t">String</span>
     <span class="k">end</span>
+
     respond_with <span class="n">400</span> <span class="k">do</span>
-      text <span class="s">&quot;Ouch.&quot;</span>
+      text <span class="s">&quot;Ouch.&quot;</span>, <span class="k">type</span>: <span class="t">String</span>
     <span class="k">end</span>
   <span class="k">end</span>
 <span class="k">end</span>
@@ -220,6 +225,19 @@ paths:
   /hello:
     get:
       summary: Sends a hello payload
+      parameters:
+      - name: mandatory
+        in: query
+        description: A mandatory query parameter
+        required: true
+        schema:
+          type: string
+      - name: optional
+        in: query
+        description: An optional query parameter
+        required: false
+        schema:
+          type: string
       responses:
         "200":
           description: Hello
@@ -284,7 +302,7 @@ components:
   </h2>
   
     
-      <a href="https://github.com/elbywan/openapi-generator/blob/9368ea6a94dfe553d767afb96e5f8d50e99da478/src/openapi-generator/helpers/amber.cr#L107" target="_blank">
+      <a href="https://github.com/elbywan/openapi-generator/blob/5ccbbc2ed1b29af3e6a3363843fddcd4397a352f/src/openapi-generator/helpers/amber.cr#L125" target="_blank">
         openapi-generator/helpers/amber.cr
       </a>
     
@@ -310,7 +328,7 @@ components:
       <li class="entry-summary">
         <a href="#bootstrap-class-method" class="signature"><strong>.bootstrap</strong></a>
         
-          <div class="summary"><p>Run this method exactly once before generating the schema to register all the infered properties.</p></div>
+          <div class="summary"><p>Run this method exactly once before generating the schema to register all the inferred properties.</p></div>
         
       </li>
     
@@ -329,6 +347,20 @@ components:
     Macro Summary
   </h2>
   <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#query_params(name,description=nil)-macro" class="signature"><strong>query_params</strong>(name, description = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Fetch a query parameter and register it in the OpenAPI operation related to the controller method.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#query_params?(name,description=nil,*,multiple=false)-macro" class="signature"><strong>query_params?</strong>(name, description = <span class="n">nil</span>, *, multiple = <span class="n">false</span>)</a>
+        
+          <div class="summary"><p>Fetch an optional query parameter and register it in the OpenAPI operation related to the controller method.</p></div>
+        
+      </li>
     
       <li class="entry-summary">
         <a href="#respond_with(code=200,description=nil,headers=nil,links=nil,&)-macro" class="signature"><strong>respond_with</strong>(code = <span class="n">200</span>, description = <span class="n">nil</span>, headers = <span class="n">nil</span>, links = <span class="n">nil</span>, &)</a>
@@ -367,13 +399,13 @@ components:
       
         <div class="doc">
           
-          <p>Run this method exactly once before generating the schema to register all the infered properties.</p>
+          <p>Run this method exactly once before generating the schema to register all the inferred properties.</p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/elbywan/openapi-generator/blob/9368ea6a94dfe553d767afb96e5f8d50e99da478/src/openapi-generator/helpers/amber.cr#L182" target="_blank">View source</a>]
+          [<a href="https://github.com/elbywan/openapi-generator/blob/5ccbbc2ed1b29af3e6a3363843fddcd4397a352f/src/openapi-generator/helpers/amber.cr#L232" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -392,6 +424,52 @@ components:
     Macro Detail
   </h2>
   
+    <div class="entry-detail" id="query_params(name,description=nil)-macro">
+      <div class="signature">
+        
+        macro <strong>query_params</strong>(name, description = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#query_params(name,description=nil)-macro">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Fetch a query parameter and register it in the OpenAPI operation related to the controller method.</p>
+
+<pre><code>query_params <span class="s">&quot;name&quot;</span>, <span class="s">&quot;A user name.&quot;</span></code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/elbywan/openapi-generator/blob/5ccbbc2ed1b29af3e6a3363843fddcd4397a352f/src/openapi-generator/helpers/amber.cr#L140" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="query_params?(name,description=nil,*,multiple=false)-macro">
+      <div class="signature">
+        
+        macro <strong>query_params?</strong>(name, description = <span class="n">nil</span>, *, multiple = <span class="n">false</span>)
+
+        <a class="method-permalink" href="#query_params?(name,description=nil,*,multiple=false)-macro">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Fetch an optional query parameter and register it in the OpenAPI operation related to the controller method.</p>
+
+<pre><code>query_params? <span class="s">&quot;name[]&quot;</span>, <span class="s">&quot;One or multiple user names. (optional)&quot;</span>, multiple <span class="o">=</span> <span class="n">true</span></code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/elbywan/openapi-generator/blob/5ccbbc2ed1b29af3e6a3363843fddcd4397a352f/src/openapi-generator/helpers/amber.cr#L155" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
     <div class="entry-detail" id="respond_with(code=200,description=nil,headers=nil,links=nil,&amp;)-macro">
       <div class="signature">
         
@@ -408,7 +486,7 @@ components:
       <br/>
       <div>
         
-          [<a href="https://github.com/elbywan/openapi-generator/blob/9368ea6a94dfe553d767afb96e5f8d50e99da478/src/openapi-generator/helpers/amber.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/elbywan/openapi-generator/blob/5ccbbc2ed1b29af3e6a3363843fddcd4397a352f/src/openapi-generator/helpers/amber.cr#L209" target="_blank">View source</a>]
         
       </div>
     </div>
