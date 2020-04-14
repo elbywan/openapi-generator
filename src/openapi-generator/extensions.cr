@@ -45,6 +45,32 @@ class Hash(K, V)
 end
 
 # :nodoc:
+# Define a `self.to_openapi_schema` method for the NamedTuple class.
+struct NamedTuple
+  # Returns the OpenAPI schema associated with the NamedTuple.
+  def self.to_openapi_schema
+    schema = OpenAPI::Schema.new(
+      type: "object",
+      properties: Hash(String, (OpenAPI::Schema | OpenAPI::Reference)).new,
+      required: [] of String
+    )
+
+    {% begin %}
+      {% for key, value in T %}
+        {% types = value.union_types %}
+        ::OpenAPI::Generator::Serializable.generate_schema(
+          schema,
+          types: {{types}},
+          schema_key: {{key}}
+        )
+      {% end %}
+    {% end %}
+
+    schema
+  end
+end
+
+# :nodoc:
 class String
   # :nodoc:
   def self.to_openapi_schema

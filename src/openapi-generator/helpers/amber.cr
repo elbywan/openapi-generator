@@ -179,16 +179,15 @@ module OpenAPI::Generator::Helpers::Amber
 
   class ::Amber::Controller::Helpers::Responders::Content
     {% for method_name, content_type in TYPE %}
-      macro {{method_name}}(body, type = nil, schema = nil, _ignore = 0)
+      macro {{method_name}}(body, type = nil, schema = nil)
         Content.{{method_name}}(
-          schema: \{% if schema %}\{{schema}}\{%elsif type%}\{{type}}.to_openapi_schema\{%else%}\{{body}}.class.to_openapi_schema\{%end%},
-          content_type: {{content_type}},
-          _ignore: 0
+          schema: \{% if schema %}\{{schema}}\{%elsif type%}\{{type}}.to_openapi_schema\{% else %}::OpenAPI::Schema.new\{%end%},
+          content_type: {{content_type}}
         )
         {{method_name}}(value: \{{body}}\{% if type %}.as(\{{type}})\{% end %}{% if method_name == "json" %}.to_json{% else %}.to_s{% end %})
       end
 
-      macro {{method_name}}(schema, content_type, _ignore)
+      macro {{method_name}}(schema, content_type)
         \{% hash_ref = ::OpenAPI::Generator::Helpers::Amber::HASH_ITEM_REF[0] %}
         \{% code = hash_ref[0] %}
         \{% response = hash_ref[1] %}
@@ -262,15 +261,21 @@ module OpenAPI::Generator::Helpers::Amber
         schemas.each { |content_type, schema|
           response.content.try(&.[content_type] = ::OpenAPI::MediaType.new(schema: schema))
         }
+        unless op["responses"]?
+          op.as_h[YAML::Any.new "responses"] = YAML::Any.new(Hash(YAML::Any, YAML::Any).new)
+        end
         original_yaml_response = op["responses"].as_h.find { |(key, value)|
           key.raw.to_s == code.to_s
         }
         if !original_yaml_response
           op["responses"].as_h[YAML::Any.new code.to_s] = YAML.parse response.to_yaml
         else
+          unless original_yaml_response[1]["description"]?
+            original_yaml_response[1].as_h[YAML::Any.new "description"] = YAML::Any.new ""
+          end
           original_response = ::OpenAPI::Response.from_json(original_yaml_response[1].to_json)
           op["responses"].as_h[YAML::Any.new code.to_s] = YAML.parse(::OpenAPI::Response.new(
-            description: original_response.description || response.description,
+            description: response.description || original_response.description,
             headers: original_response.headers || response.headers,
             links: original_response.links || response.links,
             content: original_response.content || response.content

@@ -21,7 +21,7 @@ class HelloPayloadController < Amber::Controller::Base
       summary: Sends a hello payload
       responses:
         200:
-          description: Hello
+          description: Overriden
     YAML
   )]
   def index
@@ -29,9 +29,9 @@ class HelloPayloadController < Amber::Controller::Base
     query_params? "optional", description: "An optional query parameter"
 
     payload = Payload.new
-    respond_with 200, description: "Overriden" do
+    respond_with 200, description: "Hello" do
       json payload, type: Payload
-      xml "<hello></hello>"
+      xml "<hello></hello>", type: String
     end
     respond_with 201, description: "Not Overriden" do
       text "Good morning.", type: String
