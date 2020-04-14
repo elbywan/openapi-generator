@@ -25,15 +25,19 @@ class HelloPayloadController < Amber::Controller::Base
     YAML
   )]
   def index
+    query_params "mandatory", description: "A mandatory query parameter"
+    query_params? "optional", description: "An optional query parameter"
+
+    payload = Payload.new
     respond_with 200, description: "Overriden" do
-      json Payload.new
+      json payload, type: Payload
       xml "<hello></hello>"
     end
     respond_with 201, description: "Not Overriden" do
-      text "Good morning."
+      text "Good morning.", type: String
     end
     respond_with 400 do
-      text "Ouch."
+      text "Ouch.", schema: String.to_openapi_schema
     end
   end
 end
@@ -78,6 +82,19 @@ describe OpenAPI::Generator::Helpers::Amber do
       /hello:
         get:
           summary: Sends a hello payload
+          parameters:
+          - name: mandatory
+            in: query
+            description: A mandatory query parameter
+            required: true
+            schema:
+              type: string
+          - name: optional
+            in: query
+            description: An optional query parameter
+            required: false
+            schema:
+              type: string
           responses:
             "200":
               description: Hello

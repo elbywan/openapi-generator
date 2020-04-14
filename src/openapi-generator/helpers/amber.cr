@@ -5,7 +5,7 @@ require "http"
 #
 # ```
 # require "json"
-# require "openapi_generator/helpers/amber"
+# require "openapi-generator/helpers/amber"
 #
 # class HelloPayloadController < Amber::Controller::Base
 #   include ::OpenAPI::Generator::Controller
@@ -20,15 +20,20 @@ require "http"
 #     YAML
 #   )]
 #   def index
+#     query_params "mandatory", description: "A mandatory query parameter"
+#     query_params? "optional", description: "An optional query parameter"
+#
 #     respond_with 200, description: "Overriden" do
-#       json Payload.new
-#       xml "<hello></hello>"
+#       json Payload.new, type: Payload
+#       xml "<hello></hello>", type: String
 #     end
+#
 #     respond_with 201, description: "Not Overriden" do
-#       text "Good morning."
+#       text "Good morning.", type: String
 #     end
+#
 #     respond_with 400 do
-#       text "Ouch."
+#       text "Ouch.", type: String
 #     end
 #   end
 # end
@@ -63,6 +68,19 @@ require "http"
 #   /hello:
 #     get:
 #       summary: Sends a hello payload
+#       parameters:
+#       - name: mandatory
+#         in: query
+#         description: A mandatory query parameter
+#         required: true
+#         schema:
+#           type: string
+#       - name: optional
+#         in: query
+#         description: An optional query parameter
+#         required: false
+#         schema:
+#           type: string
 #       responses:
 #         "200":
 #           description: Hello
@@ -111,6 +129,42 @@ module OpenAPI::Generator::Helpers::Amber
   HASH_ITEM_REF = [] of {Int32, OpenAPI::Response}
   # :nodoc:
   TYPE_REF = [] of String
+  # :nodoc:
+  QP_LIST = {} of String => Array({String, String, Bool})
+
+  # Fetch a query parameter and register it in the OpenAPI operation related to the controller method.
+  #
+  # ```
+  # query_params "name", "A user name."
+  # ```
+  macro query_params(name, description = nil)
+    {% qp_list = ::OpenAPI::Generator::Helpers::Amber::QP_LIST %}
+    {% method_name = "#{@type}::#{@def.name}" %}
+    {% unless qp_list.keys.includes? method_name %}
+      {% qp_list[method_name] = [] of ({String, String, Bool}) %}
+    {% end %}
+    {% qp_list[method_name] << {name, description || "", true} %}
+    params[{{name}}]
+  end
+
+  # Fetch an optional query parameter and register it in the OpenAPI operation related to the controller method.
+  #
+  # ```
+  # query_params? "name[]", "One or multiple user names. (optional)", multiple = true
+  # ```
+  macro query_params?(name, description = nil, *, multiple = false)
+    {% qp_list = ::OpenAPI::Generator::Helpers::Amber::QP_LIST %}
+    {% method_name = "#{@type}::#{@def.name}" %}
+    {% unless qp_list.keys.includes? method_name %}
+      {% qp_list[method_name] = [] of ({String, String, Bool}) %}
+    {% end %}
+    {% qp_list[method_name] << {name, description || "", false} %}
+    {% if multiple %}
+      params.fetch_all({{name}})
+    {% else %}
+      params[{{name}}]?
+    {% end %}
+  end
 
   # :nodoc:
   def self.init_openapi_response(description, headers, links, code)
@@ -125,13 +179,13 @@ module OpenAPI::Generator::Helpers::Amber
 
   class ::Amber::Controller::Helpers::Responders::Content
     {% for method_name, content_type in TYPE %}
-      macro {{method_name}}(body, schema = nil)
+      macro {{method_name}}(body, type = nil, schema = nil, _ignore = 0)
         Content.{{method_name}}(
-          schema: \{% if schema %}\{{schema}}\{%else%}\{{body}}.class.to_openapi_schema\{%end%},
+          schema: \{% if schema %}\{{schema}}\{%elsif type%}\{{type}}.to_openapi_schema\{%else%}\{{body}}.class.to_openapi_schema\{%end%},
           content_type: {{content_type}},
           _ignore: 0
         )
-        {{method_name}}(value: \{{body}}{% if method_name == "json" %}.to_json{% else %}.to_s{% end %})
+        {{method_name}}(value: \{{body}}\{% if type %}.as(\{{type}})\{% end %}{% if method_name == "json" %}.to_json{% else %}.to_s{% end %})
       end
 
       macro {{method_name}}(schema, content_type, _ignore)
@@ -175,10 +229,30 @@ module OpenAPI::Generator::Helpers::Amber
     end
   end
 
-  # Run this method exactly once before generating the schema to register all the infered properties.
+  # Run this method exactly once before generating the schema to register all the inferred properties.
   def self.bootstrap
+    ::OpenAPI::Generator::Helpers::Amber::QP_LIST.each { |method, params|
+      openapi_op = ::OpenAPI::Generator::Controller::CONTROLLER_OPS[method]?
+      next unless openapi_op
+      unless openapi_op["parameters"]?
+        openapi_op.as_h[YAML::Any.new "parameters"] = YAML::Any.new([] of YAML::Any)
+      end
+      params.each { |param|
+        description : String? = param[1].empty? ? nil : param[1]
+        query_parameter = YAML.parse({
+          "name" => param[0],
+          "in" => "query",
+          "description" => description,
+          "required" => param[2],
+          "schema" => {
+            "type" => "string"
+          }
+        }.to_yaml)
+        openapi_op["parameters"].as_a << query_parameter
+      }
+    }
+
     OpenAPI::Generator::Controller::CONTROLLER_OPS.each { |(method, op)|
-      # puts method
       matching_responses = CONTROLLER_RESPONSES.find { |(key, _)|
         key == method
       }
