@@ -141,7 +141,7 @@ module OpenAPI::Generator::Helpers::Amber
     {% qp_list = ::OpenAPI::Generator::Helpers::Amber::QP_LIST %}
     {% method_name = "#{@type}::#{@def.name}" %}
     {% unless qp_list.keys.includes? method_name %}
-      {% qp_list[method_name] = [] of ({String, String, Bool}) %}
+      {% qp_list[method_name] = [] of {String, String, Bool} %}
     {% end %}
     {% qp_list[method_name] << {name, description || "", true} %}
     params[{{name}}]
@@ -156,7 +156,7 @@ module OpenAPI::Generator::Helpers::Amber
     {% qp_list = ::OpenAPI::Generator::Helpers::Amber::QP_LIST %}
     {% method_name = "#{@type}::#{@def.name}" %}
     {% unless qp_list.keys.includes? method_name %}
-      {% qp_list[method_name] = [] of ({String, String, Bool}) %}
+      {% qp_list[method_name] = [] of {String, String, Bool} %}
     {% end %}
     {% qp_list[method_name] << {name, description || "", false} %}
     {% if multiple %}
@@ -239,13 +239,13 @@ module OpenAPI::Generator::Helpers::Amber
       params.each { |param|
         description : String? = param[1].empty? ? nil : param[1]
         query_parameter = YAML.parse({
-          "name" => param[0],
-          "in" => "query",
+          "name"        => param[0],
+          "in"          => "query",
           "description" => description,
-          "required" => param[2],
-          "schema" => {
-            "type" => "string"
-          }
+          "required"    => param[2],
+          "schema"      => {
+            "type" => "string",
+          },
         }.to_yaml)
         openapi_op["parameters"].as_a << query_parameter
       }
