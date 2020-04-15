@@ -28,6 +28,8 @@ class HelloPayloadController < Amber::Controller::Base
     query_params "mandatory", description: "A mandatory query parameter"
     query_params? "optional", description: "An optional query parameter"
 
+    body_as Payload?, description: "A Hello payload."
+
     payload = Payload.new
     respond_with 200, description: "Hello" do
       json payload, type: Payload
@@ -44,7 +46,7 @@ end
 
 Amber::Server.configure do
   routes :api do
-    route "get", "/hello", HelloPayloadController, :index
+    route "post", "/hello", HelloPayloadController, :index
   end
 end
 
@@ -80,7 +82,7 @@ describe OpenAPI::Generator::Helpers::Amber do
       version: 0.0.1
     paths:
       /hello:
-        get:
+        post:
           summary: Sends a hello payload
           parameters:
           - name: mandatory
@@ -95,6 +97,14 @@ describe OpenAPI::Generator::Helpers::Amber do
             required: false
             schema:
               type: string
+          requestBody:
+            description: A Hello payload.
+            content:
+              application_json:
+                schema:
+                  allOf:
+                  - $ref: '#/components/schemas/Payload'
+            required: false
           responses:
             "200":
               description: Hello

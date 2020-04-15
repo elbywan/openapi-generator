@@ -1,7 +1,17 @@
 require "amber"
 require "http"
 
-# Helpers that can be used to infer some properties of the OpenAPI operation.
+# Helpers that can be used inside an [Amber](https://amberframework.org/) Controller to enable inference
+# and ensure that the code matches the contract defined in the generated OpenAPI document.
+#
+# Include this module inside a Controller class to add various macros that you can use to make the generator
+# infer some properties of the OpenAPI declaration.
+#
+# - `body_as` can infer request body types and schemas.
+# - `respond_with` can infer responses types and schemas.
+# - `query_params` can infer query parameters.
+#
+# NOTE: Do not forget to call `bootstrap` once before calling `OpenAPI::Generator.generate`.
 #
 # ```
 # require "json"
@@ -14,24 +24,24 @@ require "http"
 #   @[OpenAPI(
 #     <<-YAML
 #       summary: Sends a hello payload
-#       responses:
-#         200:
-#           description: Hello
 #     YAML
 #   )]
 #   def index
+#     # Infers query parameters.
 #     query_params "mandatory", description: "A mandatory query parameter"
 #     query_params? "optional", description: "An optional query parameter"
 #
+#     # Infers request body.
+#     body_as Payload?, description: "A Hello payload."
+#
+#     # Infers responses.
 #     respond_with 200, description: "Overriden" do
 #       json Payload.new, type: Payload
 #       xml "<hello></hello>", type: String
 #     end
-#
 #     respond_with 201, description: "Not Overriden" do
 #       text "Good morning.", type: String
 #     end
-#
 #     respond_with 400 do
 #       text "Ouch.", type: String
 #     end
@@ -81,6 +91,14 @@ require "http"
 #         required: false
 #         schema:
 #           type: string
+#       requestBody:
+#         description: A Hello payload.
+#         content:
+#           application_json:
+#             schema:
+#               allOf:
+#               - $ref: '#/components/schemas/Payload'
+#         required: false
 #       responses:
 #         "200":
 #           description: Hello
@@ -131,6 +149,8 @@ module OpenAPI::Generator::Helpers::Amber
   TYPE_REF = [] of String
   # :nodoc:
   QP_LIST = {} of String => Array({String, String, Bool})
+  # :nodoc:
+  BODY_LIST = {} of String => {OpenAPI::RequestBody, Hash(String, OpenAPI::Schema)}
 
   # Fetch a query parameter and register it in the OpenAPI operation related to the controller method.
   #
@@ -166,6 +186,40 @@ module OpenAPI::Generator::Helpers::Amber
     {% end %}
   end
 
+  # Extracts and serialize the body from the request and registers it in the OpenAPI operation.
+  #
+  # ```
+  # # This will try to case the body as a SomeClass using the SomeClass.new method and assuming that the payload is a json.
+  # body_as SomeClass, description: "Some payload.", content_type: "application_json", constructor: new
+  # # The content_type, constructor and description can be omitted.
+  # body_as SomeClass
+  # ```
+  macro body_as(type, description = nil, content_type = "application_json", constructor = from_json)
+    {% non_nil_type = type.resolve.union_types.reject{|t| t == Nil}[0] %}
+    body_as(
+      request_body: ::OpenAPI::Generator::Helpers::Amber.init_openapi_request_body(
+        description: {{description}},
+        required: {{!type.resolve.nilable?}}
+      ),
+      schema: {{non_nil_type}}.to_openapi_schema,
+      content_type: {{content_type}}
+    )
+    %content = request.body.try &.gets_to_end
+    if %content
+      {{non_nil_type}}.{{constructor}}(%content)
+    end
+  end
+
+  # :nodoc:
+  private macro body_as(request_body, schema, content_type)
+    {% body_list = ::OpenAPI::Generator::Helpers::Amber::BODY_LIST %}
+    {% method_name = "#{@type}::#{@def.name}" %}
+    {% unless body_list.keys.includes? method_name %}
+      {% body_list[method_name] = {request_body, {} of String => OpenAPI::Schema} %}
+    {% end %}
+    {% body_list[method_name][1][content_type] = schema %}
+  end
+
   # :nodoc:
   def self.init_openapi_response(description, headers, links, code)
     description = description || HTTP::Status.new(code).description || "#{code}"
@@ -173,6 +227,15 @@ module OpenAPI::Generator::Helpers::Amber
       description: description,
       headers: headers,
       links: links,
+      content: {} of String => OpenAPI::MediaType
+    )
+  end
+
+  # :nodoc:
+  def self.init_openapi_request_body(description, required)
+    ::OpenAPI::RequestBody.new(
+      description: description,
+      required: required,
       content: {} of String => OpenAPI::MediaType
     )
   end
@@ -251,12 +314,10 @@ module OpenAPI::Generator::Helpers::Amber
       }
     }
 
-    OpenAPI::Generator::Controller::CONTROLLER_OPS.each { |(method, op)|
-      matching_responses = CONTROLLER_RESPONSES.find { |(key, _)|
-        key == method
-      }
-      next unless matching_responses
-      matching_responses[1].each { |(code, values)|
+    ::OpenAPI::Generator::Helpers::Amber::CONTROLLER_RESPONSES.each { |method, responses|
+      op = ::OpenAPI::Generator::Controller::CONTROLLER_OPS[method]?
+      next unless op
+      responses.each { |(code, values)|
         response, schemas = values
         schemas.each { |content_type, schema|
           response.content.try(&.[content_type] = ::OpenAPI::MediaType.new(schema: schema))
@@ -282,6 +343,18 @@ module OpenAPI::Generator::Helpers::Amber
           ).to_yaml)
         end
       }
+    }
+
+    ::OpenAPI::Generator::Helpers::Amber::BODY_LIST.each { |method, value|
+      op = ::OpenAPI::Generator::Controller::CONTROLLER_OPS[method]?
+      next unless op
+      request_body, schemas = value
+      schemas.each { |content_type, schema|
+        request_body.content.try(&.[content_type] = ::OpenAPI::MediaType.new(schema: schema))
+      }
+      unless op["requestBody"]?
+        op.as_h[YAML::Any.new "requestBody"] = YAML.parse(request_body.to_yaml)
+      end
     }
   end
 end
