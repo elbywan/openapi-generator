@@ -195,7 +195,7 @@ module OpenAPI::Generator::Helpers::Amber
   # body_as SomeClass
   # ```
   macro body_as(type, description = nil, content_type = "application_json", constructor = from_json)
-    {% non_nil_type = type.resolve.union_types.reject{|t| t == Nil}[0] %}
+    {% non_nil_type = type.resolve.union_types.reject { |t| t == Nil }[0] %}
     body_as(
       request_body: ::OpenAPI::Generator::Helpers::Amber.init_openapi_request_body(
         description: {{description}},
