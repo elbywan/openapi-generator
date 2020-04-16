@@ -148,7 +148,7 @@ module OpenAPI::Generator::Helpers::Amber
   # :nodoc:
   TYPE_REF = [] of String
   # :nodoc:
-  QP_LIST = {} of String => Array({String, String, Bool})
+  QP_LIST = {} of String => Array(OpenAPI::Parameter)
   # :nodoc:
   BODY_LIST = {} of String => {OpenAPI::RequestBody, Hash(String, OpenAPI::Schema)}
 
@@ -157,14 +157,27 @@ module OpenAPI::Generator::Helpers::Amber
   # ```
   # query_params "name", "A user name."
   # ```
-  macro query_params(name, description = nil)
-    {% qp_list = ::OpenAPI::Generator::Helpers::Amber::QP_LIST %}
-    {% method_name = "#{@type}::#{@def.name}" %}
-    {% unless qp_list.keys.includes? method_name %}
-      {% qp_list[method_name] = [] of {String, String, Bool} %}
-    {% end %}
-    {% qp_list[method_name] << {name, description || "", true} %}
-    params[{{name}}]
+  macro query_params(name, description, multiple = false, schema = nil, **args)
+    _query_params(
+      name: {{name}},
+      param: ::OpenAPI::Generator::Helpers::Amber.init_openapi_parameter(
+        name: {{name}},
+        "in": "query",
+        required: true,
+        schema: {% if schema %}{{schema}}{% elsif multiple %}::OpenAPI::Schema.new(
+          type: "array",
+          items: ::OpenAPI::Schema.new(
+            type: "string"
+          )
+        ){% else %}::OpenAPI::Schema.new(
+          type: "string",
+        ){% end %},
+        description: {{description}},
+        {{**args}}
+      ),
+      required: true,
+      multiple: {{multiple}}
+    )
   end
 
   # Fetch an optional query parameter and register it in the OpenAPI operation related to the controller method.
@@ -172,17 +185,47 @@ module OpenAPI::Generator::Helpers::Amber
   # ```
   # query_params? "name[]", "One or multiple user names. (optional)", multiple = true
   # ```
-  macro query_params?(name, description = nil, *, multiple = false)
+  macro query_params?(name, description, multiple = false, schema = nil, **args)
+    _query_params(
+      name: {{name}},
+      param: ::OpenAPI::Generator::Helpers::Amber.init_openapi_parameter(
+        name: {{name}},
+        "in": "query",
+        required: false,
+        schema: {% if schema %}{{schema}}{% elsif multiple %}::OpenAPI::Schema.new(
+          type: "array",
+          items: ::OpenAPI::Schema.new(
+            type: "string"
+          )
+        ){% else %}::OpenAPI::Schema.new(
+          type: "string",
+        ){% end %},
+        description: {{description}},
+        {{**args}}
+      ),
+      required: false,
+      multiple: {{multiple}}
+    )
+  end
+
+  # :nodoc:
+  private macro _query_params(name, param, required = true, multiple = false)
     {% qp_list = ::OpenAPI::Generator::Helpers::Amber::QP_LIST %}
-    {% method_name = "#{@type}::#{@def.name}" %}
-    {% unless qp_list.keys.includes? method_name %}
-      {% qp_list[method_name] = [] of {String, String, Bool} %}
-    {% end %}
-    {% qp_list[method_name] << {name, description || "", false} %}
-    {% if multiple %}
-      params.fetch_all({{name}})
-    {% else %}
-      params[{{name}}]?
+      {% method_name = "#{@type}::#{@def.name}" %}
+      {% unless qp_list.keys.includes? method_name %}
+        {% qp_list[method_name] = [] of OpenAPI::Parameter %}
+      {% end %}
+      {% qp_list[method_name] << param %}
+      {% if multiple %}
+        %results = params.fetch_all({{name}})
+        {% if required %}
+          raise NilAssertionError.new if %results.size < 1
+        {% end %}
+        %results
+      {% elsif required %}
+        params[{{name}}]
+      {% else %}
+        params[{{name}}]?
     {% end %}
   end
 
@@ -218,6 +261,11 @@ module OpenAPI::Generator::Helpers::Amber
       {% body_list[method_name] = {request_body, {} of String => OpenAPI::Schema} %}
     {% end %}
     {% body_list[method_name][1][content_type] = schema %}
+  end
+
+  # :nodoc:
+  def self.init_openapi_parameter(**args)
+    ::OpenAPI::Parameter.new(**args)
   end
 
   # :nodoc:
@@ -300,17 +348,7 @@ module OpenAPI::Generator::Helpers::Amber
         openapi_op.as_h[YAML::Any.new "parameters"] = YAML::Any.new([] of YAML::Any)
       end
       params.each { |param|
-        description : String? = param[1].empty? ? nil : param[1]
-        query_parameter = YAML.parse({
-          "name"        => param[0],
-          "in"          => "query",
-          "description" => description,
-          "required"    => param[2],
-          "schema"      => {
-            "type" => "string",
-          },
-        }.to_yaml)
-        openapi_op["parameters"].as_a << query_parameter
+        openapi_op["parameters"].as_a << YAML.parse(param.to_yaml)
       }
     }
 
