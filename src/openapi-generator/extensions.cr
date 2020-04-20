@@ -92,4 +92,9 @@ module OpenAPI
     setter read_only
     setter write_only
   end
+
+  # :nodoc:
+  struct Response
+    setter content
+  end
 end

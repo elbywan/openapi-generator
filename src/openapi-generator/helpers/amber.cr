@@ -142,7 +142,10 @@ require "http"
 # ```
 module OpenAPI::Generator::Helpers::Amber
   # :nodoc:
-  CONTROLLER_RESPONSES = {} of String => Hash(Int32, {OpenAPI::Response, Hash(String, OpenAPI::Schema)})
+  alias ControllerResponsesValue = Hash(Int32, {OpenAPI::Response, Hash(String, OpenAPI::Schema)}) | Hash(Int32, {OpenAPI::Response, Nil}) | Hash(Int32, Tuple(OpenAPI::Response, Hash(String, OpenAPI::Schema) | Nil))
+
+  # :nodoc:
+  CONTROLLER_RESPONSES = {} of String => ControllerResponsesValue
   # :nodoc:
   HASH_ITEM_REF = [] of {Int32, OpenAPI::Response}
   # :nodoc:
@@ -275,7 +278,7 @@ module OpenAPI::Generator::Helpers::Amber
       description: description,
       headers: headers,
       links: links,
-      content: {} of String => OpenAPI::MediaType
+      content: nil
     )
   end
 
@@ -339,6 +342,31 @@ module OpenAPI::Generator::Helpers::Amber
     end
   end
 
+  # Same as the [Amber method](https://docs.amberframework.org/amber/guides/controllers/respond-with) but without specifying any content and with automatic response inference.
+  macro respond_without_body(code = 200, description = nil, headers = nil, links = nil)
+    respond_without_body(code: {{code}}, response: ::OpenAPI::Generator::Helpers::Amber.init_openapi_response(
+      description: {{description}},
+      code: {{code}},
+      headers: {{headers}},
+      links: {{links}}
+    ))
+  end
+
+  # :nodoc:
+  macro respond_without_body(code, response)
+    {% type_name = @type.stringify %}
+    {% controller_responses = ::OpenAPI::Generator::Helpers::Amber::CONTROLLER_RESPONSES %}
+    {% method_name = type_name + "::#{@def.name}" %}
+    {% unless controller_responses[method_name] %}
+      {% controller_responses[method_name] = {} of Int32 => Hash(String, {OpenAPI::Response, Hash(String, OpenAPI::Schema)}) %}
+    {% end %}
+    {% unless controller_responses[method_name][code] %}
+      {% controller_responses[method_name][code] = {response, nil} %}
+    {% end %}
+    response.status_code = {{code}}
+    response.close
+  end
+
   # Run this method exactly once before generating the schema to register all the inferred properties.
   def self.bootstrap
     ::OpenAPI::Generator::Helpers::Amber::QP_LIST.each { |method, params|
@@ -357,7 +385,10 @@ module OpenAPI::Generator::Helpers::Amber
       next unless op
       responses.each { |(code, values)|
         response, schemas = values
-        schemas.each { |content_type, schema|
+        schemas.try &.each { |content_type, schema|
+          unless response.content
+            response.content = {} of String => OpenAPI::MediaType
+          end
           response.content.try(&.[content_type] = ::OpenAPI::MediaType.new(schema: schema))
         }
         unless op["responses"]?
