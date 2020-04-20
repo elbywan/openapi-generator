@@ -32,14 +32,14 @@ require "http"
 #     query_params? "optional", description: "An optional query parameter"
 #
 #     # Infers request body.
-#     body_as Payload?, description: "A Hello payload."
+#     body_as Payload?, description: "The request payload."
 #
 #     # Infers responses.
-#     respond_with 200, description: "Overriden" do
+#     respond_with 200, description: "A hello payload." do
 #       json Payload.new, type: Payload
 #       xml "<hello></hello>", type: String
 #     end
-#     respond_with 201, description: "Not Overriden" do
+#     respond_with 201, description: "A good morning message." do
 #       text "Good morning.", type: String
 #     end
 #     respond_with 400 do
@@ -92,7 +92,7 @@ require "http"
 #         schema:
 #           type: string
 #       requestBody:
-#         description: A Hello payload.
+#         description: The request payload.
 #         content:
 #           application_json:
 #             schema:
@@ -101,7 +101,7 @@ require "http"
 #         required: false
 #       responses:
 #         "200":
-#           description: Hello
+#           description: A hello payload?
 #           content:
 #             application/json:
 #               schema:
@@ -111,7 +111,7 @@ require "http"
 #               schema:
 #                 type: string
 #         "201":
-#           description: Not Overriden
+#           description: A good morning message.
 #           content:
 #             text/plain:
 #               schema:
