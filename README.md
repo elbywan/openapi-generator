@@ -24,6 +24,9 @@ dependencies:
 
 ## 🔨Minimal Working Example
 
+**Important:** When using `Amber Framework` most of the OpenAPI values can be automatically inferred from the code!
+Just include the [helper](https://elbywan.github.io/openapi-generator/OpenAPI/Generator/Helpers/Amber.html) in your `Controller` classes and use the provided macros.
+
 ```crystal
 require "openapi-generator"
 
