@@ -94,7 +94,7 @@ require "http"
 #       requestBody:
 #         description: The request payload.
 #         content:
-#           application_json:
+#           application/json:
 #             schema:
 #               allOf:
 #               - $ref: '#/components/schemas/Payload'
@@ -236,11 +236,11 @@ module OpenAPI::Generator::Helpers::Amber
   #
   # ```
   # # This will try to case the body as a SomeClass using the SomeClass.new method and assuming that the payload is a json.
-  # body_as SomeClass, description: "Some payload.", content_type: "application_json", constructor: new
+  # body_as SomeClass, description: "Some payload.", content_type: "application/json", constructor: new
   # # The content_type, constructor and description can be omitted.
   # body_as SomeClass
   # ```
-  macro body_as(type, description = nil, content_type = "application_json", constructor = from_json)
+  macro body_as(type, description = nil, content_type = "application/json", constructor = from_json)
     {% non_nil_type = type.resolve.union_types.reject { |t| t == Nil }[0] %}
     body_as(
       request_body: ::OpenAPI::Generator::Helpers::Amber.init_openapi_request_body(

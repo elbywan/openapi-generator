@@ -167,7 +167,7 @@ and ensure that the code matches the contract defined in the generated OpenAPI d
 <p>Include this module inside a Controller class to add various macros that you can use to make the generator
 infer some properties of the OpenAPI declaration.</p>
 
-<ul><li><code><a href="../../../OpenAPI/Generator/Helpers/Amber.html#body_as(type,description=nil,content_type=&quot;application_json&quot;,constructor=from_json)-macro">body_as</a></code> can infer request body types and schemas.</li><li><code><a href="../../../OpenAPI/Generator/Helpers/Amber.html#respond_with(code=200,description=nil,headers=nil,links=nil,&)-macro">respond_with</a></code> can infer responses types and schemas.</li><li><code><a href="../../../OpenAPI/Generator/Helpers/Amber.html#query_params(name,description,multiple=false,schema=nil,**args)-macro">query_params</a></code> can infer query parameters.</li></ul>
+<ul><li><code><a href="../../../OpenAPI/Generator/Helpers/Amber.html#body_as(type,description=nil,content_type=&quot;application/json&quot;,constructor=from_json)-macro">body_as</a></code> can infer request body types and schemas.</li><li><code><a href="../../../OpenAPI/Generator/Helpers/Amber.html#respond_with(code=200,description=nil,headers=nil,links=nil,&)-macro">respond_with</a></code> can infer responses types and schemas.</li><li><code><a href="../../../OpenAPI/Generator/Helpers/Amber.html#query_params(name,description,multiple=false,schema=nil,**args)-macro">query_params</a></code> can infer query parameters.</li></ul>
 
 <p><span class="flag purple">NOTE</span>  Do not forget to call <code><a href="../../../OpenAPI/Generator/Helpers/Amber.html#bootstrap-class-method">.bootstrap</a></code> once before calling <code><a href="../../../OpenAPI/Generator.html#generate(provider:OpenAPI::Generator::RoutesProvider::Base,*,options=NamedTuple.new,base_doc=%7Binfo:%7Btitle:&quot;Server&quot;,version:&quot;1&quot;%7D,components:NamedTuple.new%7D)-instance-method">OpenAPI::Generator.generate</a></code>.</p>
 
@@ -249,7 +249,7 @@ paths:
       requestBody:
         description: The request payload.
         content:
-          application_json:
+          application/json:
             schema:
               allOf:
               - $ref: '#/components/schemas/Payload'
@@ -318,7 +318,7 @@ components:
   </h2>
   
     
-      <a href="https://github.com/elbywan/openapi-generator/blob/ff7d7899d80eb8106da68f8870da861777ed14ed/src/openapi-generator/helpers/amber.cr#L143" target="_blank">
+      <a href="https://github.com/elbywan/openapi-generator/blob/8f6010b288b956188369086a08174189c4f3c289/src/openapi-generator/helpers/amber.cr#L143" target="_blank">
         openapi-generator/helpers/amber.cr
       </a>
     
@@ -365,7 +365,7 @@ components:
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#body_as(type,description=nil,content_type=&quot;application_json&quot;,constructor=from_json)-macro" class="signature"><strong>body_as</strong>(type, description = <span class="n">nil</span>, content_type = <span class="s">&quot;application_json&quot;</span>, constructor = from_json)</a>
+        <a href="#body_as(type,description=nil,content_type=&quot;application/json&quot;,constructor=from_json)-macro" class="signature"><strong>body_as</strong>(type, description = <span class="n">nil</span>, content_type = <span class="s">&quot;application/json&quot;</span>, constructor = from_json)</a>
         
           <div class="summary"><p>Extracts and serialize the body from the request and registers it in the OpenAPI operation.</p></div>
         
@@ -435,7 +435,7 @@ components:
       <br/>
       <div>
         
-          [<a href="https://github.com/elbywan/openapi-generator/blob/ff7d7899d80eb8106da68f8870da861777ed14ed/src/openapi-generator/helpers/amber.cr#L371" target="_blank">View source</a>]
+          [<a href="https://github.com/elbywan/openapi-generator/blob/8f6010b288b956188369086a08174189c4f3c289/src/openapi-generator/helpers/amber.cr#L371" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -454,12 +454,12 @@ components:
     Macro Detail
   </h2>
   
-    <div class="entry-detail" id="body_as(type,description=nil,content_type=&amp;quot;application_json&amp;quot;,constructor=from_json)-macro">
+    <div class="entry-detail" id="body_as(type,description=nil,content_type=&amp;quot;application/json&amp;quot;,constructor=from_json)-macro">
       <div class="signature">
         
-        macro <strong>body_as</strong>(type, description = <span class="n">nil</span>, content_type = <span class="s">&quot;application_json&quot;</span>, constructor = from_json)
+        macro <strong>body_as</strong>(type, description = <span class="n">nil</span>, content_type = <span class="s">&quot;application/json&quot;</span>, constructor = from_json)
 
-        <a class="method-permalink" href="#body_as(type,description=nil,content_type=&quot;application_json&quot;,constructor=from_json)-macro">#</a>
+        <a class="method-permalink" href="#body_as(type,description=nil,content_type=&quot;application/json&quot;,constructor=from_json)-macro">#</a>
       </div>
       
         <div class="doc">
@@ -467,7 +467,7 @@ components:
           <p>Extracts and serialize the body from the request and registers it in the OpenAPI operation.</p>
 
 <pre><code><span class="c"># This will try to case the body as a SomeClass using the SomeClass.new method and assuming that the payload is a json.</span>
-body_as <span class="t">SomeClass</span>, description: <span class="s">&quot;Some payload.&quot;</span>, content_type: <span class="s">&quot;application_json&quot;</span>, constructor: <span class="k">new</span>
+body_as <span class="t">SomeClass</span>, description: <span class="s">&quot;Some payload.&quot;</span>, content_type: <span class="s">&quot;application/json&quot;</span>, constructor: <span class="k">new</span>
 <span class="c"># The content_type, constructor and description can be omitted.</span>
 body_as <span class="t">SomeClass</span></code></pre>
         </div>
@@ -475,7 +475,7 @@ body_as <span class="t">SomeClass</span></code></pre>
       <br/>
       <div>
         
-          [<a href="https://github.com/elbywan/openapi-generator/blob/ff7d7899d80eb8106da68f8870da861777ed14ed/src/openapi-generator/helpers/amber.cr#L243" target="_blank">View source</a>]
+          [<a href="https://github.com/elbywan/openapi-generator/blob/8f6010b288b956188369086a08174189c4f3c289/src/openapi-generator/helpers/amber.cr#L243" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -498,7 +498,7 @@ body_as <span class="t">SomeClass</span></code></pre>
       <br/>
       <div>
         
-          [<a href="https://github.com/elbywan/openapi-generator/blob/ff7d7899d80eb8106da68f8870da861777ed14ed/src/openapi-generator/helpers/amber.cr#L163" target="_blank">View source</a>]
+          [<a href="https://github.com/elbywan/openapi-generator/blob/8f6010b288b956188369086a08174189c4f3c289/src/openapi-generator/helpers/amber.cr#L163" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -521,7 +521,7 @@ body_as <span class="t">SomeClass</span></code></pre>
       <br/>
       <div>
         
-          [<a href="https://github.com/elbywan/openapi-generator/blob/ff7d7899d80eb8106da68f8870da861777ed14ed/src/openapi-generator/helpers/amber.cr#L191" target="_blank">View source</a>]
+          [<a href="https://github.com/elbywan/openapi-generator/blob/8f6010b288b956188369086a08174189c4f3c289/src/openapi-generator/helpers/amber.cr#L191" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -542,7 +542,7 @@ body_as <span class="t">SomeClass</span></code></pre>
       <br/>
       <div>
         
-          [<a href="https://github.com/elbywan/openapi-generator/blob/ff7d7899d80eb8106da68f8870da861777ed14ed/src/openapi-generator/helpers/amber.cr#L323" target="_blank">View source</a>]
+          [<a href="https://github.com/elbywan/openapi-generator/blob/8f6010b288b956188369086a08174189c4f3c289/src/openapi-generator/helpers/amber.cr#L323" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -563,7 +563,7 @@ body_as <span class="t">SomeClass</span></code></pre>
       <br/>
       <div>
         
-          [<a href="https://github.com/elbywan/openapi-generator/blob/ff7d7899d80eb8106da68f8870da861777ed14ed/src/openapi-generator/helpers/amber.cr#L346" target="_blank">View source</a>]
+          [<a href="https://github.com/elbywan/openapi-generator/blob/8f6010b288b956188369086a08174189c4f3c289/src/openapi-generator/helpers/amber.cr#L346" target="_blank">View source</a>]
         
       </div>
     </div>

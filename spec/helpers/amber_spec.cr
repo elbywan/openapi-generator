@@ -100,7 +100,7 @@ describe OpenAPI::Generator::Helpers::Amber do
           requestBody:
             description: A Hello payload.
             content:
-              application_json:
+              application/json:
                 schema:
                   allOf:
                   - $ref: '#/components/schemas/Payload'
