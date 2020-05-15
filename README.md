@@ -6,7 +6,7 @@
 
 Then serve it from a [Swagger UI](https://swagger.io/tools/swagger-ui/) instance.
 
-## 💾 Installation
+## 💾 - Installation
 
 1. Add the dependency to your `shard.yml`:
 
@@ -18,11 +18,11 @@ dependencies:
 
 2. Run `shards install`
 
-## 📚 Full Documentation
+## 📚 - Full Documentation
 
 [**Please check this link for the full documentation.**](https://elbywan.github.io/openapi-generator/OpenAPI/Generator.html)
 
-## 🔨Minimal Working Example
+## ✨ - Minimal Working Example
 
 **Important:** When using `Amber Framework` most of the OpenAPI values can be automatically inferred from the code!
 Just include the [helper](https://elbywan.github.io/openapi-generator/OpenAPI/Generator/Helpers/Amber.html) in your `Controller` classes and use the provided macros.
@@ -161,7 +161,7 @@ components:
   callbacks: {}
 ```
 
-## 🤝 Contributing
+## 🛠️ - Contributing
 
 1. Fork it (<https://github.com/your-github-user/openapi-generator/fork>)
 2. Create your feature branch (`git checkout -b my-new-feature`)
@@ -169,6 +169,6 @@ components:
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
 
-## 🧑‍🤝‍🧑 Contributors
+## 🤝 - Contributors
 
 - [elbywan](https://github.com/your-github-user) - creator and maintainer
