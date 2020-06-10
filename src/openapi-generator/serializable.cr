@@ -11,7 +11,7 @@
 #   property opt_string : String?
 #   @[OpenAPI::Field(ignore: true)]
 #   property ignored : Nil
-#   @[OpenAPI::Field(type: String)]
+#   @[OpenAPI::Field(type: String, example: "1")]
 #   @cast : Int32
 #
 #   def cast
@@ -34,7 +34,8 @@
 # #       "type": "string"
 # #     },
 # #     "cast": {
-# #       "type": "string"
+# #       "type": "string",
+# #       "example": "1"
 # #     }
 # #   }
 # # }
@@ -75,7 +76,7 @@ module OpenAPI::Generator::Serializable
     {% end %}
   end
 
-  macro generate_schema(schema, types, as_type = nil, read_only = false, write_only = false, schema_key = nil)
+  macro generate_schema(schema, types, as_type = nil, read_only = false, write_only = false, schema_key = nil, example = nil)
     {% serialized_types = [] of {String, (TypeNode | ArrayLiteral(TypeNode))?} %}
     {% nilable = types.any? { |t| t.resolve.nilable? } %}
 
@@ -156,8 +157,9 @@ module OpenAPI::Generator::Serializable
           type: %type,
           items: %items,
           additional_properties: %additional_properties,
-          {% if read_only %}read_only:  {{ read_only }},  {% end %}
-          {% if write_only %}write_only: {{ write_only }}, {% end %}
+          {% if read_only %}  read_only:  {{ read_only }},  {% end %}
+          {% if write_only %} write_only: {{ write_only }}, {% end %}
+          {% if example != nil %}example: {{ example }},    {% end %}
         )
       elsif %generated_schema
         {% if schema_key %}{{schema}}.properties.not_nil!["{{schema_key}}"]{% else %}{{schema}}{% end %} = %generated_schema
@@ -213,8 +215,9 @@ module OpenAPI::Generator::Serializable
             type: %type,
             items: %items,
             additional_properties: %additional_properties,
-            {% if read_only %} read_only: {{ read_only }}, {% end %}
-            {% if write_only %}write_only: {{ write_only }}, {% end %}
+            {% if read_only %}  read_only:  {{ read_only }},  {% end %}
+            {% if write_only %} write_only: {{ write_only }}, {% end %}
+            {% if example != nil %}example: {{ example }},    {% end %}
           )
         elsif %generated_schema
           %one_of << %generated_schema
@@ -245,6 +248,7 @@ module OpenAPI::Generator::Serializable
       {% as_type = openapi_ann && openapi_ann[:type] && openapi_ann[:type].types.map(&.resolve) %}
       {% read_only = openapi_ann && openapi_ann[:read_only] %}
       {% write_only = openapi_ann && openapi_ann[:write_only] %}
+      {% example = openapi_ann && openapi_ann[:example] %}
 
       {% unless json_ann && json_ann[:ignore] %}
         ::OpenAPI::Generator::Serializable.generate_schema(
@@ -253,7 +257,8 @@ module OpenAPI::Generator::Serializable
           schema_key: {{schema_key}},
           as_type: {{as_type}},
           read_only: {{read_only}},
-          write_only: {{write_only}}
+          write_only: {{write_only}},
+          example: {{example}}
         )
       {% end %}
 

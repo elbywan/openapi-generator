@@ -12,7 +12,7 @@ struct Model
   property inner_schema : InnerModel
   @[OpenAPI::Field(ignore: true)]
   property ignored : Nil
-  @[OpenAPI::Field(type: String)]
+  @[OpenAPI::Field(type: String, example: "1")]
   @cast : Int32
 
   def cast
@@ -39,7 +39,8 @@ struct Model
         "$ref": "#/components/schemas/Model%3A%3AInnerModel"
       },
       "cast": {
-        "type": "string"
+        "type": "string",
+        "example": "1"
       }
     }
   }

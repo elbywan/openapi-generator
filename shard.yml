@@ -8,8 +8,8 @@ crystal: 0.34.0
 
 dependencies:
   open_api:
-    github: repomaa/open_api.cr
-    commit: 95e4df2ca10b1fe88b8b35c62a18b06a10267b6c
+    github: elbywan/open_api.cr
+    commit: 7ad39e980ff64dfa88414ca0d2c8515159ab51ae
 
 development_dependencies:
   amber:

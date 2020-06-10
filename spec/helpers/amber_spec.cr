@@ -146,6 +146,7 @@ describe OpenAPI::Generator::Helpers::Amber do
               $ref: '#/components/schemas/Model%3A%3AInnerModel'
             cast:
               type: string
+              example: "1"
         Model::InnerModel:
           required:
           - array_of_int
