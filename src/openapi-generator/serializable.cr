@@ -62,6 +62,10 @@ module OpenAPI::Generator::Serializable
   #
   # @[OpenAPI::Field(type: String)] # Enforce a type
   # property str_field : Int32
+  #
+  # # The example value can be any value of type JSON::Any::Type, meaning a string, numbers, booleans, or an array or a hash of json values.
+  # @[OpenAPI::Field(example: "an example value")]
+  # property a_field : String
   # ```
   annotation OpenAPI::Field
   end

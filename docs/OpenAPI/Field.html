@@ -167,7 +167,11 @@
 property ignored_field
 
 @[<span class="t">OpenAPI</span><span class="t">::</span><span class="t">Field</span>(<span class="k">type</span>: <span class="t">String</span>)] <span class="c"># Enforce a type</span>
-property str_field : <span class="t">Int32</span></code></pre>
+property str_field : <span class="t">Int32</span>
+
+<span class="c"># The example value can be any value of type JSON::Any::Type, meaning a string, numbers, booleans, or an array or a hash of json values.</span>
+@[<span class="t">OpenAPI</span><span class="t">::</span><span class="t">Field</span>(example: <span class="s">&quot;an example value&quot;</span>)]
+property a_field : <span class="t">String</span></code></pre>
 
 
 
@@ -192,7 +196,7 @@ property str_field : <span class="t">Int32</span></code></pre>
   </h2>
   
     
-      <a href="https://github.com/elbywan/openapi-generator/blob/8f6010b288b956188369086a08174189c4f3c289/src/openapi-generator/serializable.cr#L65" target="_blank">
+      <a href="https://github.com/elbywan/openapi-generator/blob/c89826823bc6ed258d6c65491d1b4a9c17e84fbf/src/openapi-generator/serializable.cr#L70" target="_blank">
         openapi-generator/serializable.cr
       </a>
     

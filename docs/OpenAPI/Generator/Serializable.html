@@ -177,7 +177,7 @@
   property opt_string : <span class="t">String</span>?
   @[<span class="t">OpenAPI</span><span class="t">::</span><span class="t">Field</span>(ignore: <span class="n">true</span>)]
   property ignored : <span class="t">Nil</span>
-  @[<span class="t">OpenAPI</span><span class="t">::</span><span class="t">Field</span>(<span class="k">type</span>: <span class="t">String</span>)]
+  @[<span class="t">OpenAPI</span><span class="t">::</span><span class="t">Field</span>(<span class="k">type</span>: <span class="t">String</span>, example: <span class="s">&quot;1&quot;</span>)]
   @cast : <span class="t">Int32</span>
 
   <span class="k">def</span> <span class="m">cast</span>
@@ -200,7 +200,8 @@ puts <span class="t">Model</span>.to_openapi_schema.to_pretty_json
 <span class="c">#       &quot;type&quot;: &quot;string&quot;</span>
 <span class="c">#     },</span>
 <span class="c">#     &quot;cast&quot;: {</span>
-<span class="c">#       &quot;type&quot;: &quot;string&quot;</span>
+<span class="c">#       &quot;type&quot;: &quot;string&quot;,</span>
+<span class="c">#       &quot;example&quot;: &quot;1&quot;</span>
 <span class="c">#     }</span>
 <span class="c">#   }</span>
 <span class="c"># }</span></code></pre>
@@ -245,7 +246,7 @@ The <code><a href="../../OpenAPI/Generator.html">Generator</a></code> will take 
   </h2>
   
     
-      <a href="https://github.com/elbywan/openapi-generator/blob/8f6010b288b956188369086a08174189c4f3c289/src/openapi-generator/serializable.cr#L55" target="_blank">
+      <a href="https://github.com/elbywan/openapi-generator/blob/c89826823bc6ed258d6c65491d1b4a9c17e84fbf/src/openapi-generator/serializable.cr#L56" target="_blank">
         openapi-generator/serializable.cr
       </a>
     
@@ -322,7 +323,7 @@ The <code><a href="../../OpenAPI/Generator.html">Generator</a></code> will take 
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#generate_schema(schema,types,as_type=nil,read_only=false,write_only=false,schema_key=nil)-macro" class="signature"><strong>generate_schema</strong>(schema, types, as_type = <span class="n">nil</span>, read_only = <span class="n">false</span>, write_only = <span class="n">false</span>, schema_key = <span class="n">nil</span>)</a>
+        <a href="#generate_schema(schema,types,as_type=nil,read_only=false,write_only=false,schema_key=nil,example=nil)-macro" class="signature"><strong>generate_schema</strong>(schema, types, as_type = <span class="n">nil</span>, read_only = <span class="n">false</span>, write_only = <span class="n">false</span>, schema_key = <span class="n">nil</span>, example = <span class="n">nil</span>)</a>
         
       </li>
     
@@ -366,7 +367,7 @@ The <code><a href="../../OpenAPI/Generator.html">Generator</a></code> will take 
       <br/>
       <div>
         
-          [<a href="https://github.com/elbywan/openapi-generator/blob/8f6010b288b956188369086a08174189c4f3c289/src/openapi-generator/serializable.cr#L231" target="_blank">View source</a>]
+          [<a href="https://github.com/elbywan/openapi-generator/blob/c89826823bc6ed258d6c65491d1b4a9c17e84fbf/src/openapi-generator/serializable.cr#L238" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -389,7 +390,7 @@ The <code><a href="../../OpenAPI/Generator.html">Generator</a></code> will take 
       <br/>
       <div>
         
-          [<a href="https://github.com/elbywan/openapi-generator/blob/8f6010b288b956188369086a08174189c4f3c289/src/openapi-generator/serializable.cr#L268" target="_blank">View source</a>]
+          [<a href="https://github.com/elbywan/openapi-generator/blob/c89826823bc6ed258d6c65491d1b4a9c17e84fbf/src/openapi-generator/serializable.cr#L277" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -406,18 +407,18 @@ The <code><a href="../../OpenAPI/Generator.html">Generator</a></code> will take 
     Macro Detail
   </h2>
   
-    <div class="entry-detail" id="generate_schema(schema,types,as_type=nil,read_only=false,write_only=false,schema_key=nil)-macro">
+    <div class="entry-detail" id="generate_schema(schema,types,as_type=nil,read_only=false,write_only=false,schema_key=nil,example=nil)-macro">
       <div class="signature">
         
-        macro <strong>generate_schema</strong>(schema, types, as_type = <span class="n">nil</span>, read_only = <span class="n">false</span>, write_only = <span class="n">false</span>, schema_key = <span class="n">nil</span>)
+        macro <strong>generate_schema</strong>(schema, types, as_type = <span class="n">nil</span>, read_only = <span class="n">false</span>, write_only = <span class="n">false</span>, schema_key = <span class="n">nil</span>, example = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#generate_schema(schema,types,as_type=nil,read_only=false,write_only=false,schema_key=nil)-macro">#</a>
+        <a class="method-permalink" href="#generate_schema(schema,types,as_type=nil,read_only=false,write_only=false,schema_key=nil,example=nil)-macro">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/elbywan/openapi-generator/blob/8f6010b288b956188369086a08174189c4f3c289/src/openapi-generator/serializable.cr#L78" target="_blank">View source</a>]
+          [<a href="https://github.com/elbywan/openapi-generator/blob/c89826823bc6ed258d6c65491d1b4a9c17e84fbf/src/openapi-generator/serializable.cr#L83" target="_blank">View source</a>]
         
       </div>
     </div>
