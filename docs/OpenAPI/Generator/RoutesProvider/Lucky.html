@@ -18,7 +18,7 @@
 </svg>
 
   <meta id="repository-name" content="openapi-generator">
-  <title>OpenAPI::Generator::RoutesProvider::Amber - openapi-generator lucky-support-dev</title>
+  <title>OpenAPI::Generator::RoutesProvider::Lucky - openapi-generator lucky-support-dev</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../../";
   </script>
@@ -116,7 +116,7 @@
       
         <ul>
   
-  <li class=" current" data-id="openapi-generator/OpenAPI/Generator/RoutesProvider/Amber" data-name="openapi::generator::routesprovider::amber">
+  <li class=" " data-id="openapi-generator/OpenAPI/Generator/RoutesProvider/Amber" data-name="openapi::generator::routesprovider::amber">
       <a href="../../../OpenAPI/Generator/RoutesProvider/Amber.html">Amber</a>
       
     </li>
@@ -126,7 +126,7 @@
       
     </li>
   
-  <li class=" " data-id="openapi-generator/OpenAPI/Generator/RoutesProvider/Lucky" data-name="openapi::generator::routesprovider::lucky">
+  <li class=" current" data-id="openapi-generator/OpenAPI/Generator/RoutesProvider/Lucky" data-name="openapi::generator::routesprovider::lucky">
       <a href="../../../OpenAPI/Generator/RoutesProvider/Lucky.html">Lucky</a>
       
     </li>
@@ -165,12 +165,12 @@
 <div class="main-content">
 <h1 class="type-name">
 
-  <span class="kind">class</span> OpenAPI::Generator::RoutesProvider::Amber
+  <span class="kind">class</span> OpenAPI::Generator::RoutesProvider::Lucky
 
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../../OpenAPI/Generator/RoutesProvider/Amber.html">OpenAPI::Generator::RoutesProvider::Amber</a></li><li class="superclass"><a href="../../../OpenAPI/Generator/RoutesProvider/Base.html">OpenAPI::Generator::RoutesProvider::Base</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../../OpenAPI/Generator/RoutesProvider/Lucky.html">OpenAPI::Generator::RoutesProvider::Lucky</a></li><li class="superclass"><a href="../../../OpenAPI/Generator/RoutesProvider/Base.html">OpenAPI::Generator::RoutesProvider::Base</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
 
 
 
@@ -184,7 +184,7 @@
     Overview
   </h2>
 
-  <p>Provides the list of routes declared in an Amber Framework instance.</p>
+  <p>Provides the list of declared routes.</p>
 
 
 
@@ -213,25 +213,6 @@
 
 
 
-  <h2>
-    <a id="constructors" class="anchor" href="#constructors">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Constructors
-  </h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#new(included_methods:Array(String)?=nil,included_paths:Array(String)?=nil)-class-method" class="signature"><strong>.new</strong>(included_methods : Array(String)? = <span class="n">nil</span>, included_paths : Array(String)? = <span class="n">nil</span>)</a>
-        
-          <div class="summary"><p>Initialize the provider with a list of allowed HTTP verbs and path prefixes to filter the routes.</p></div>
-        
-      </li>
-    
-  </ul>
-
 
 
 
@@ -249,7 +230,7 @@
       <li class="entry-summary">
         <a href="#route_mappings:Array(RouteMapping)-instance-method" class="signature"><strong>#route_mappings</strong> : Array(RouteMapping)</a>
         
-          <div class="summary"><p>Return a list of routes mapped with the controllers and methods.</p></div>
+          <div class="summary"><p>Return a list of routes mapped with the action classes.</p></div>
         
       </li>
     
@@ -303,35 +284,6 @@
 </div>
 
 
-  <h2>
-    <a id="constructor-detail" class="anchor" href="#constructor-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Constructor Detail
-  </h2>
-  
-    <div class="entry-detail" id="new(included_methods:Array(String)?=nil,included_paths:Array(String)?=nil)-class-method">
-      <div class="signature">
-        
-        def self.<strong>new</strong>(included_methods : Array(<a href="../../../String.html">String</a>)? = <span class="n">nil</span>, included_paths : Array(<a href="../../../String.html">String</a>)? = <span class="n">nil</span>)
-
-        <a class="method-permalink" href="#new(included_methods:Array(String)?=nil,included_paths:Array(String)?=nil)-class-method">#</a>
-      </div>
-      
-        <div class="doc">
-          
-          <p>Initialize the provider with a list of allowed HTTP verbs and path prefixes to filter the routes.</p>
-        </div>
-      
-      <br/>
-      <div>
-        
-      </div>
-    </div>
-  
-
 
 
 
@@ -355,7 +307,7 @@
       
         <div class="doc">
           
-          <p>Return a list of routes mapped with the controllers and methods.</p>
+          <p>Return a list of routes mapped with the action classes.</p>
         </div>
       
       <br/>
