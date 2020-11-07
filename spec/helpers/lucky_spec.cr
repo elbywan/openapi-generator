@@ -51,14 +51,14 @@ describe OpenAPI::Generator::Helpers::Lucky do
     options = {
       output: Path[Dir.current] / "openapi_test.yaml",
     }
-    base_doc = {
+    base_document = {
       info:       {title: "Test", version: "0.0.1"},
       components: NamedTuple.new,
     }
     OpenAPI::Generator.generate(
       OpenAPI::Generator::RoutesProvider::Lucky.new,
       options: options,
-      base_doc: base_doc
+      base_document: base_document
     )
 
     openapi_file_contents = File.read "openapi_test.yaml"

@@ -10,7 +10,7 @@ module OpenAPI::Generator::Helpers::Lucky
   # # The content_type, constructor and description can be omitted.
   # body_as SomeClass
   # ```
-  macro body_as(type, description = nil, content_type = "application/json", constructor = from_json)
+  macro body_as(type, description = nil, content_type = "application/json", constructor = :from_json)
     {% not_nil_type = type.resolve.union_types.reject { |t| t == Nil }[0] %}
     _body_as(
       request_body: ::OpenAPI::Generator::Helpers::Lucky._init_openapi_request_body(
@@ -21,7 +21,7 @@ module OpenAPI::Generator::Helpers::Lucky
       content_type: {{content_type}}
     )
     if %content = request.body.try &.gets_to_end
-      {{not_nil_type}}.{{constructor}}(%content)
+      ::{{not_nil_type}}.{{constructor.id}}(%content)
     end
   end
 

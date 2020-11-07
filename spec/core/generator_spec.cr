@@ -20,14 +20,14 @@ describe OpenAPI::Generator do
     options = {
       output: Path[Dir.current] / "openapi_test.yaml",
     }
-    base_doc = {
+    base_document = {
       info:       {title: "Test", version: "0.0.1"},
       components: NamedTuple.new,
     }
     OpenAPI::Generator.generate(
       MockProvider.new,
       options: options,
-      base_doc: base_doc
+      base_document: base_document
     )
 
     openapi_file_contents = File.read "openapi_test.yaml"
