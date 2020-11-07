@@ -60,6 +60,23 @@ module OpenAPI::Generator::Controller
   annotation OpenAPI
   end
 
+  # This macro is used to register a class as an OpenAPI [Operation Object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#operationObject).
+  #
+  # The argument must be a valid YAML representation of an OpenAPI operation object.
+  #
+  # ```
+  # opan_api <<-YAML
+  #   tags:
+  #   - tag
+  #   summary: A brief summary of the method.
+  #   responses:
+  #     200:
+  #       description: Ok.
+  # YAML
+  macro open_api(yaml_op = "{}")
+    ::OpenAPI::Generator::Controller::CONTROLLER_OPS["{{@type}}"] = YAML.parse {{ yaml_op }}
+  end
+
   # When included
   macro included
     {% verbatim do %}

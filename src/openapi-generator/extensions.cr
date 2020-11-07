@@ -80,6 +80,36 @@ class String
   end
 end
 
+# :nodoc:
+abstract struct Number
+  # :nodoc:
+  def self.to_openapi_schema
+    OpenAPI::Schema.new(
+      type: "number"
+    )
+  end
+end
+
+# :nodoc:
+abstract struct Int
+  # :nodoc:
+  def self.to_openapi_schema
+    OpenAPI::Schema.new(
+      type: "integer"
+    )
+  end
+end
+
+# :nodoc:
+struct Bool
+  # :nodoc:
+  def self.to_openapi_schema
+    OpenAPI::Schema.new(
+      type: "boolean"
+    )
+  end
+end
+
 module OpenAPI
   # :nodoc:
   # Used to declare path parameters.
