@@ -417,6 +417,15 @@ end
 - `macro xml(body, status = 200, description = nil, type = String, schema = nil, headers = nil, links = nil)`
 - `macro plain_text(body, status = 200, description = nil, type = String, schema = nil, headers = nil, links = nil)`
 
+## Swagger UI
+
+The method to serve a Swagger UI instance depends on which framework you are using.
+
+1. Setup a static file handler. (ex: [Lucky](https://luckyframework.org/guides/http-and-routing/http-handlers#built-in-handlers), [Amber](https://docs.amberframework.org/amber/guides/routing/pipelines))
+2. Download [the latest release archive](https://github.com/swagger-api/swagger-ui/releases)
+3. Move the `/dist` folder to your static file directory.
+4. Edit the `index.html` file and change the assets and `openapi.yaml` paths.
+
 ## Contributing
 
 1. Fork it (<https://github.com/your-github-user/openapi-generator/fork>)
