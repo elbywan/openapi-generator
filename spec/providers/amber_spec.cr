@@ -17,6 +17,18 @@ class HelloController < Amber::Controller::Base
   end
 end
 
+class Amber::Environment::Logging
+  def initialize(initial_logging : OptionsType)
+    logging = DEFAULTS.merge(initial_logging)
+    @colorize = logging["colorize"].as(Bool)
+    @color = logging["color"].as(String)
+    # Replace severity assignment otherwise it prevents compilation…
+    @severity = "debug"
+    @filter = logging["filter"].as(Array(String))
+    @skip = logging["skip"].as(Array(String))
+  end
+end
+
 Amber::Server.configure do
   routes :api do
     get "/:id", HelloController, :index

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.34.0">
+<meta name="crystal_docs.project_version" content="lucky-support-dev">
+<meta name="crystal_docs.project_name" content="openapi-generator">
+
+
+<link href="../../../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../../js/doc.js"></script>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+
+  <meta id="repository-name" content="openapi-generator">
+  <title>OpenAPI::Generator::Helpers::Lucky - openapi-generator lucky-support-dev</title>
+  <script type="text/javascript">
+    CrystalDocs.base_path = "../../../";
+  </script>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="../../../index.html">
+          openapi-generator
+        </a>
+      </h1>
+
+      <span class="project-version">
+        lucky-support-dev
+      </span>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="openapi-generator/OpenAPI" data-name="openapi">
+      <a href="../../../OpenAPI.html">OpenAPI</a>
+      
+        <ul>
+  
+  <li class=" " data-id="openapi-generator/OpenAPI/Field" data-name="openapi::field">
+      <a href="../../../OpenAPI/Field.html">Field</a>
+      
+    </li>
+  
+  <li class="parent open current" data-id="openapi-generator/OpenAPI/Generator" data-name="openapi::generator">
+      <a href="../../../OpenAPI/Generator.html">Generator</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="openapi-generator/OpenAPI/Generator/Controller" data-name="openapi::generator::controller">
+      <a href="../../../OpenAPI/Generator/Controller.html">Controller</a>
+      
+        <ul>
+  
+  <li class=" " data-id="openapi-generator/OpenAPI/Generator/Controller/OpenAPI" data-name="openapi::generator::controller::openapi">
+      <a href="../../../OpenAPI/Generator/Controller/OpenAPI.html">OpenAPI</a>
+      
+    </li>
+  
+  <li class=" " data-id="openapi-generator/OpenAPI/Generator/Controller/Schema" data-name="openapi::generator::controller::schema">
+      <a href="../../../OpenAPI/Generator/Controller/Schema.html">Schema</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent open current" data-id="openapi-generator/OpenAPI/Generator/Helpers" data-name="openapi::generator::helpers">
+      <a href="../../../OpenAPI/Generator/Helpers.html">Helpers</a>
+      
+        <ul>
+  
+  <li class=" " data-id="openapi-generator/OpenAPI/Generator/Helpers/Amber" data-name="openapi::generator::helpers::amber">
+      <a href="../../../OpenAPI/Generator/Helpers/Amber.html">Amber</a>
+      
+    </li>
+  
+  <li class=" current" data-id="openapi-generator/OpenAPI/Generator/Helpers/Lucky" data-name="openapi::generator::helpers::lucky">
+      <a href="../../../OpenAPI/Generator/Helpers/Lucky.html">Lucky</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="openapi-generator/OpenAPI/Generator/RouteMapping" data-name="openapi::generator::routemapping">
+      <a href="../../../OpenAPI/Generator/RouteMapping.html">RouteMapping</a>
+      
+    </li>
+  
+  <li class="parent " data-id="openapi-generator/OpenAPI/Generator/RoutesProvider" data-name="openapi::generator::routesprovider">
+      <a href="../../../OpenAPI/Generator/RoutesProvider.html">RoutesProvider</a>
+      
+        <ul>
+  
+  <li class=" " data-id="openapi-generator/OpenAPI/Generator/RoutesProvider/Amber" data-name="openapi::generator::routesprovider::amber">
+      <a href="../../../OpenAPI/Generator/RoutesProvider/Amber.html">Amber</a>
+      
+    </li>
+  
+  <li class=" " data-id="openapi-generator/OpenAPI/Generator/RoutesProvider/Base" data-name="openapi::generator::routesprovider::base">
+      <a href="../../../OpenAPI/Generator/RoutesProvider/Base.html">Base</a>
+      
+    </li>
+  
+  <li class=" " data-id="openapi-generator/OpenAPI/Generator/RoutesProvider/Lucky" data-name="openapi::generator::routesprovider::lucky">
+      <a href="../../../OpenAPI/Generator/RoutesProvider/Lucky.html">Lucky</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="openapi-generator/OpenAPI/Generator/Serializable" data-name="openapi::generator::serializable">
+      <a href="../../../OpenAPI/Generator/Serializable.html">Serializable</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="openapi-generator/String" data-name="string">
+      <a href="../../../String.html">String</a>
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">module</span> OpenAPI::Generator::Helpers::Lucky
+
+</h1>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+
+
+
+
+
+
+
+  <h2>
+    <a id="class-method-summary" class="anchor" href="#class-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#bootstrap-class-method" class="signature"><strong>.bootstrap</strong></a>
+        
+          <div class="summary"><p>Run this method exactly once before generating the schema to register all the inferred properties.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+  <h2>
+    <a id="macro-summary" class="anchor" href="#macro-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Macro Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#body_as(type,description=nil,content_type=&quot;application/json&quot;,constructor=:from_json)-macro" class="signature"><strong>body_as</strong>(type, description = <span class="n">nil</span>, content_type = <span class="s">&quot;application/json&quot;</span>, constructor = <span class="n">:from_json</span>)</a>
+        
+          <div class="summary"><p>Extracts and serialize the body from the request and registers it in the OpenAPI operation.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#body_as!(*args,**named_args)-macro" class="signature"><strong>body_as!</strong>(*args, **named_args)</a>
+        
+          <div class="summary"><p>Same as <code><a href="../../../OpenAPI/Generator/Helpers/Lucky.html#body_as(type,description=nil,content_type=&quot;application/json&quot;,constructor=:from_json)-macro">body_as</a></code> but will raise if the body is missing or badly formatted.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#head(status,description=nil,headers=nil,links=nil)-macro" class="signature"><strong>head</strong>(status, description = <span class="n">nil</span>, headers = <span class="n">nil</span>, links = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Declare a head response.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#json(body,status=200,description=nil,type=nil,schema=nil,headers=nil,links=nil)-macro" class="signature"><strong>json</strong>(body, status = <span class="n">200</span>, description = <span class="n">nil</span>, type = <span class="n">nil</span>, schema = <span class="n">nil</span>, headers = <span class="n">nil</span>, links = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Declare a json response.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#param(declaration,description=nil,multiple=false,schema=nil,**args)-macro" class="signature"><strong>param</strong>(declaration, description = <span class="n">nil</span>, multiple = <span class="n">false</span>, schema = <span class="n">nil</span>, **args)</a>
+        
+          <div class="summary"><p>Declare a query parameter.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#plain_text(body,status=200,description=nil,type=String,schema=nil,headers=nil,links=nil)-macro" class="signature"><strong>plain_text</strong>(body, status = <span class="n">200</span>, description = <span class="n">nil</span>, type = <span class="t">String</span>, schema = <span class="n">nil</span>, headers = <span class="n">nil</span>, links = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Declare a plain text response.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#xml(body,status=200,description=nil,type=String,schema=nil,headers=nil,links=nil)-macro" class="signature"><strong>xml</strong>(body, status = <span class="n">200</span>, description = <span class="n">nil</span>, type = <span class="t">String</span>, schema = <span class="n">nil</span>, headers = <span class="n">nil</span>, links = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Declare an xml response.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+<div class="methods-inherited">
+  
+</div>
+
+
+
+
+  <h2>
+    <a id="class-method-detail" class="anchor" href="#class-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="bootstrap-class-method">
+      <div class="signature">
+        
+        def self.<strong>bootstrap</strong>
+
+        <a class="method-permalink" href="#bootstrap-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Run this method exactly once before generating the schema to register all the inferred properties.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+
+
+
+
+
+  <h2>
+    <a id="macro-detail" class="anchor" href="#macro-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Macro Detail
+  </h2>
+  
+    <div class="entry-detail" id="body_as(type,description=nil,content_type=&amp;quot;application/json&amp;quot;,constructor=:from_json)-macro">
+      <div class="signature">
+        
+        macro <strong>body_as</strong>(type, description = <span class="n">nil</span>, content_type = <span class="s">&quot;application/json&quot;</span>, constructor = <span class="n">:from_json</span>)
+
+        <a class="method-permalink" href="#body_as(type,description=nil,content_type=&quot;application/json&quot;,constructor=:from_json)-macro">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Extracts and serialize the body from the request and registers it in the OpenAPI operation.</p>
+
+<pre><code><span class="c"># This will try to case the body as a SomeClass using the SomeClass.new method and assuming that the payload is a json.</span>
+body_as <span class="t">SomeClass</span>, description: <span class="s">&quot;Some payload.&quot;</span>, content_type: <span class="s">&quot;application/json&quot;</span>, constructor: from_json
+<span class="c"># The content_type, constructor and description can be omitted.</span>
+body_as <span class="t">SomeClass</span></code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="body_as!(*args,**named_args)-macro">
+      <div class="signature">
+        
+        macro <strong>body_as!</strong>(*args, **named_args)
+
+        <a class="method-permalink" href="#body_as!(*args,**named_args)-macro">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Same as <code><a href="../../../OpenAPI/Generator/Helpers/Lucky.html#body_as(type,description=nil,content_type=&quot;application/json&quot;,constructor=:from_json)-macro">body_as</a></code> but will raise if the body is missing or badly formatted.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="head(status,description=nil,headers=nil,links=nil)-macro">
+      <div class="signature">
+        
+        macro <strong>head</strong>(status, description = <span class="n">nil</span>, headers = <span class="n">nil</span>, links = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#head(status,description=nil,headers=nil,links=nil)-macro">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Declare a head response.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="json(body,status=200,description=nil,type=nil,schema=nil,headers=nil,links=nil)-macro">
+      <div class="signature">
+        
+        macro <strong>json</strong>(body, status = <span class="n">200</span>, description = <span class="n">nil</span>, type = <span class="n">nil</span>, schema = <span class="n">nil</span>, headers = <span class="n">nil</span>, links = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#json(body,status=200,description=nil,type=nil,schema=nil,headers=nil,links=nil)-macro">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Declare a json response.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="param(declaration,description=nil,multiple=false,schema=nil,**args)-macro">
+      <div class="signature">
+        
+        macro <strong>param</strong>(declaration, description = <span class="n">nil</span>, multiple = <span class="n">false</span>, schema = <span class="n">nil</span>, **args)
+
+        <a class="method-permalink" href="#param(declaration,description=nil,multiple=false,schema=nil,**args)-macro">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Declare a query parameter.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="plain_text(body,status=200,description=nil,type=String,schema=nil,headers=nil,links=nil)-macro">
+      <div class="signature">
+        
+        macro <strong>plain_text</strong>(body, status = <span class="n">200</span>, description = <span class="n">nil</span>, type = <span class="t">String</span>, schema = <span class="n">nil</span>, headers = <span class="n">nil</span>, links = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#plain_text(body,status=200,description=nil,type=String,schema=nil,headers=nil,links=nil)-macro">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Declare a plain text response.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="xml(body,status=200,description=nil,type=String,schema=nil,headers=nil,links=nil)-macro">
+      <div class="signature">
+        
+        macro <strong>xml</strong>(body, status = <span class="n">200</span>, description = <span class="n">nil</span>, type = <span class="t">String</span>, schema = <span class="n">nil</span>, headers = <span class="n">nil</span>, links = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#xml(body,status=200,description=nil,type=String,schema=nil,headers=nil,links=nil)-macro">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Declare an xml response.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+
+
+</div>
+
+</body>
+</html>

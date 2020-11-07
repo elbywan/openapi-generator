@@ -240,7 +240,7 @@ module OpenAPI::Generator::Helpers::Amber
   # # The content_type, constructor and description can be omitted.
   # body_as SomeClass
   # ```
-  macro body_as(type, description = nil, content_type = "application/json", constructor = from_json)
+  macro body_as(type, description = nil, content_type = "application/json", constructor = :from_json)
     {% non_nil_type = type.resolve.union_types.reject { |t| t == Nil }[0] %}
     body_as(
       request_body: ::OpenAPI::Generator::Helpers::Amber.init_openapi_request_body(
@@ -252,7 +252,7 @@ module OpenAPI::Generator::Helpers::Amber
     )
     %content = request.body.try &.gets_to_end
     if %content
-      {{non_nil_type}}.{{constructor}}(%content)
+      ::{{non_nil_type}}.{{constructor.id}}(%content)
     end
   end
 

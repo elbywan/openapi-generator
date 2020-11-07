@@ -162,7 +162,7 @@ module OpenAPI::Generator
   #
   # An `OpenAPI::Generator::RoutesProvider::Base` implementation must be provided.
   #
-  # Currently, only the [Amber](https://amberframework.org/) provider is included out of the box
+  # Currently, only the [Amber](https://amberframework.org/) and [Lucky](https://luckyframework.org) providers are included out of the box
   # but writing a custom provider should be easy.
   #
   # ### Example
@@ -181,7 +181,7 @@ module OpenAPI::Generator
   # options = {
   #   output: Path[Dir.current] / "public" / "openapi.yaml",
   # }
-  # base_doc = {
+  # base_document = {
   #   info: {
   #     title:   "Test",
   #     version: "0.0.1",
@@ -191,19 +191,18 @@ module OpenAPI::Generator
   # OpenAPI::Generator.generate(
   #   MockProvider.new,
   #   options: options,
-  #   base_doc: base_doc
+  #   base_document: base_document
   # )
   # ```
   def generate(
     provider : OpenAPI::Generator::RoutesProvider::Base,
     *,
     options = NamedTuple.new,
-    base_doc = {
+    base_document = {
       info: {
         title:   "Server",
         version: "1",
       },
-      components: NamedTuple.new,
     }
   )
     routes = provider.route_mappings
@@ -261,18 +260,18 @@ module OpenAPI::Generator
       end
     end
 
-    base_doc = base_doc.merge({
+    base_document = base_document.merge({
       openapi:    "3.0.1",
-      info:       base_doc["info"],
+      info:       base_document["info"],
       paths:      path_items,
-      components: base_doc["components"].merge({
+      components: (base_document["components"]? || NamedTuple.new).merge({
         # Generate schemas.
         schemas: Serializable.schemas,
       }),
     })
 
     doc = OpenAPI.build do |api|
-      api.document **base_doc
+      api.document **base_document
     end
     File.write options["output"].to_s, doc.to_yaml
   end
