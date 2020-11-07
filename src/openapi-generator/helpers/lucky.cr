@@ -1,6 +1,6 @@
 require "lucky"
 require "open_api"
-require "./*"
+require "./lucky/*"
 
 module OpenAPI::Generator::Helpers::Lucky
   macro included

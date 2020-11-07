@@ -202,7 +202,7 @@ module OpenAPI::Generator
       info: {
         title:   "Server",
         version: "1",
-      }
+      },
     }
   )
     routes = provider.route_mappings
