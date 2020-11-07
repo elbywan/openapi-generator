@@ -6,7 +6,7 @@
 
 Then serve it from a [Swagger UI](https://swagger.io/tools/swagger-ui/) instance.
 
-## 💾 - Installation
+## Setup
 
 1. Add the dependency to your `shard.yml`:
 
@@ -18,26 +18,164 @@ dependencies:
 
 2. Run `shards install`
 
-## 📚 - Full Documentation
-
-[**Please check this link for the full documentation.**](https://elbywan.github.io/openapi-generator/OpenAPI/Generator.html)
-
-## ✨ - Minimal Working Example
-
-**Important:** When using `Amber Framework` most of the OpenAPI values can be automatically inferred from the code!
-Just include the [helper](https://elbywan.github.io/openapi-generator/OpenAPI/Generator/Helpers/Amber.html) in your `Controller` classes and use the provided macros.
+3. Require the shard
 
 ```crystal
 require "openapi-generator"
+```
 
-# The following example is using [Amber](https://amberframework.org/)
-# but this library is compatible with any web framework.
+## API Documentation
 
-require "amber"
+[**Please check this link for the API documentation.**](https://elbywan.github.io/openapi-generator/OpenAPI/Generator.html)
+
+## Concepts
+
+### Declare Operations
+
+*From the [OpenAPI specification](https://swagger.io/docs/specification/paths-and-operations/).*
+
+> In OpenAPI terms, paths are endpoints (resources), such as /users or /reports/summary/, that your API exposes, and operations are the HTTP methods used to manipulate these paths, such as GET, POST or DELETE.
+
+#### Method based (`Amber`)
+
+Use the `@[OpenAPI]` annotationa with a `yaml` encoded string argument.
+
+```crystal
+class Controller
+  include OpenAPI::Generator::Controller
+
+  @[OpenAPI(<<-YAML
+    tags:
+      - tag
+    summary:
+      A brief summary.
+  YAML
+  )]
+  def handler
+    # …
+  end
+end
+```
+
+#### Class based (`Lucky`)
+
+Use the `open_api` macro with a `yaml` encoded string argument.
+
+```crystal
+class Handler
+  include OpenAPI::Generator::Controller
+
+  open_api <<-YAML
+    tags:
+      - tag
+    summary:
+      A brief summary.
+  YAML
+
+  route do
+    # …
+  end
+end
+```
+
+#### Shorthands
+
+The [`OpenAPI::Generator::Controller::Schema`](https://elbywan.github.io/openapi-generator/OpenAPI/Generator/Controller/Schema.html) class exposes shorthands for common OpenAPI yaml constructs.
+
+```crystal
+# Example:
+
+open_api <<-YAML
+  tags:
+    - tag
+  summary:
+    A brief summary.
+  parameters:
+    #{Schema.qp name: "id", description: "Filter by id.", required: true}
+  responses:
+    200:
+      description: OK
+    #{Schema.error 404}
+YAML
+```
+
+- [`Schema.error(code, message = nil)`](https://elbywan.github.io/openapi-generator/OpenAPI/Generator/Controller/Schema.html#error(code,message=nil)-instance-method)
+- [`Schema.header(name, description, type = "string")`](https://elbywan.github.io/openapi-generator/OpenAPI/Generator/Controller/Schema.html#header(name,description,type=%22string%22)-instance-method)
+- [`Schema.header_param(name, description, *, required = false, type = "string")`](https://elbywan.github.io/openapi-generator/OpenAPI/Generator/Controller/Schema.html#header_param(name,description,*,required=false,type=%22string%22)-instance-method)
+- [`Schema.qp(name, description, *, required = false, type = "string")`](https://elbywan.github.io/openapi-generator/OpenAPI/Generator/Controller/Schema.html#qp(name,description,*,required=false,type=%22string%22)-instance-method)
+- [`Schema.ref(schema, *, content_type = "application/json")`](https://elbywan.github.io/openapi-generator/OpenAPI/Generator/Controller/Schema.html#ref(schema,*,content_type=%22application/json%22)-instance-method)
+- [`Schema.ref_array(schema, *, content_type = "application/json")`](https://elbywan.github.io/openapi-generator/OpenAPI/Generator/Controller/Schema.html#ref_array(schema,*,content_type=%22application/json%22)-instance-method)
+- [`Schema.string_array(*, content_type = "application/json")`](https://elbywan.github.io/openapi-generator/OpenAPI/Generator/Controller/Schema.html#string_array(*,content_type=%22application/json%22)-instance-method)
+
+### `openapi.yaml` Generation
+
+**After** declaring the operations, you can call `OpenAPI::Generator.generate` to generate the `openapi.yaml` file that will describe your server.
+
+**Note**: An [`OpenAPI::Generator::RoutesProvider::Base`](https://elbywan.github.io/openapi-generator/OpenAPI/Generator/RoutesProvider.html) implementation must be provided. A `RoutesProvider` is responsible from extracting the [server routes and mapping these routes with the declared operations](https://elbywan.github.io/openapi-generator/OpenAPI/Generator/RouteMapping.html) in order to produce the final openapi file.
+
+Currently, the [Amber](https://amberframework.org/) and [Lucky](https://luckyframework.org) providers are included out of the box.
+
+```crystal
+# Amber provider
 require "openapi-generator/providers/amber"
 
-# Optional: auto-serialize classes into openapi schema.
-# Benefit: a typed Model class can then be used as the source of truth.
+OpenAPI::Generator.generate(
+  provider: OpenAPI::Generator::RoutesProvider::Amber.new
+)
+```
+
+```crystal
+# Lucky provider
+require "openapi-generator/providers/lucky"
+
+OpenAPI::Generator.generate(
+  provider: OpenAPI::Generator::RoutesProvider::Lucky.new
+)
+```
+
+```crystal
+# Or define your own…
+class MockProvider < OpenAPI::Generator::RoutesProvider::Base
+  def route_mappings : Array(OpenAPI::Generator::RouteMapping)
+    [
+      {"get", "/{id}", "HelloController::index", ["id"]},
+      {"head", "/{id}", "HelloController::index", ["id"]},
+      {"options", "/{id}", "HelloController::index", ["id"]},
+    ]
+  end
+end
+
+OpenAPI::Generator.generate(
+  provider: MockProvider.new
+)
+```
+
+The `.generate` method accepts additional options:
+
+```crystal
+OpenAPI::Generator.generate(
+  provider: provider,
+  options: {
+    # Customize output path
+    output: Path[Dir.current] / "public" / "openapi.yaml"
+  },
+  # Customize openapi.yaml base document fields
+  base_document: {
+    info: {
+        title:   "My Server",
+        version: "v0.1",
+      }
+  }
+)
+```
+
+### Schema Serialization
+
+Adding `extend OpenAPI::Generator::Serializable` to an existing class or struct will:
+- register the object as a reference making it useable anywhere in the openapi file
+- add a `.to_openapi_schema` method that will produce the associated `OpenAPI::Schema`
+
+```crystal
 class Coordinates
   extend OpenAPI::Generator::Serializable
 
@@ -47,98 +185,16 @@ class Coordinates
   property long : Int32
 end
 
-# Annotate the methods that will appear in the openapi file.
-class Controller < Amber::Controller::Base
-  include OpenAPI::Generator::Controller
-
-  @[OpenAPI(<<-YAML
-    tags:
-    - tag
-    summary: A brief summary of the method.
-    requestBody:
-      required: true
-      content:
-        #{Schema.ref Coordinates}
-    required: true
-    responses:
-      200:
-        description: OK
-      #{Schema.error 404}
-  YAML
-  )]
-  def method
-    # Some code…
-  end
-end
-
-# Add the routes.
-Amber::Server.configure do
-  routes :api do
-    post "/method/:id", Controller, :method
-  end
-end
-
-# Generate the openapi file.
-
-OpenAPI::Generator.generate(
-  provider: OpenAPI::Generator::RoutesProvider::Amber.new
-)
+# Produces an OpenAPI::Schema reference.
+puts Coordinates.to_openapi_schema.to_yaml
+# ---
+# allOf:
+# - $ref: '#/components/schemas/Coordinates'
 ```
 
-Will produce an `./openapi.yaml` file with the following contents:
+And in the `openapi.yaml` file that gets generated, the `Coordinates` object is registered as a `/components/schemas/Coordinates` reference.
 
 ```yaml
----
-openapi: 3.0.1
-info:
-  title: Server
-  version: "1"
-paths:
-  /method/{id}:
-    post:
-      tags:
-      - tag
-      summary: A brief summary of the method.
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-        example: id
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Coordinates'
-        required: true
-      responses:
-        "200":
-          description: OK
-        "404":
-          description: Not Found.
-    options:
-      tags:
-      - tag
-      summary: A brief summary of the method.
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-        example: id
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Coordinates'
-        required: true
-      responses:
-        "200":
-          description: OK
-        "404":
-          description: Not Found.
 components:
   schemas:
     Coordinates:
@@ -151,17 +207,217 @@ components:
           type: integer
         long:
           type: integer
-  responses: {}
-  parameters: {}
-  examples: {}
-  requestBodies: {}
-  headers: {}
-  securitySchemes: {}
-  links: {}
-  callbacks: {}
 ```
 
-## 🛠️ - Contributing
+#### In practice
+
+The object can now be referenced from the yaml declaration…
+
+```crystal
+class Controller
+  include OpenAPI::Generator::Controller
+
+  @[OpenAPI(<<-YAML
+    requestBody:
+      required: true
+      content:
+        #{Schema.ref Coordinates}
+  YAML
+  )]
+  def method
+    # …
+  end
+end
+```
+
+…and it can be used by the schema inference (more on that later).
+
+```crystal
+class Hello::Index < Lucky::Action
+  include OpenAPI::Generator::Helpers::Lucky
+
+  disable_cookies
+  default_format :text
+
+  post "/hello" do
+    coordinates = body_as Coordinates?, description: "Some coordinates."
+
+    plain_text "Hello (#{coordinates.x}, #{coordinates.y})"
+  end
+end
+```
+
+## Inference (Optional)
+
+`openapi-generator` can infer some schema properties from the code, removing the need to declare it with yaml.
+
+**Can be inferred:**
+- Request body
+- Response body
+- Query parameters
+
+**Supported Frameworks:**
+- Lucky
+- Amber
+
+### Amber
+
+```crystal
+require "openapi-generator/helpers/amber"
+
+# …declare routes and operations… #
+
+# Before calling .generate you need to bootstrap the amber inference:
+OpenAPI::Generator::Helpers::Amber.bootstrap
+```
+
+#### Example
+
+```crystal
+require "openapi-generator/helpers/amber"
+
+class Coordinates
+  include JSON::Serializable
+  extend OpenAPI::Generator::Serializable
+
+  def initialize(@x, @y); end
+
+  property x  : Int32
+  property y  : Int32
+end
+
+class CoordinatesController < Amber::Controller::Base
+  include ::OpenAPI::Generator::Controller
+  include ::OpenAPI::Generator::Helpers::Amber
+
+  @[OpenAPI(
+    <<-YAML
+      summary: Adds up a Coordinate object and a number.
+    YAML
+  )]
+  def add
+    # Infer query parameter.
+    add = query_params("add", description: "Add this number to the coordinates.").to_i32
+    # Infer body as a Coordinate json payload.
+    coordinates = body_as(::Coordinates, description: "Some coordinates").not_nil!
+    coordinates.x += add
+    coordinates.y += add
+
+    # Infer responses.
+    respond_with 200, description: "Returns a Coordinate object with the number added up." do
+      json coordinates, type: ::Coordinates
+      xml %(<coordinate x="#{coordinates.x}" y="#{coordinates.y}"></coordinate>), type: String
+      text "Coordinates (#{coordinates.x}, #{coordinates.y})", type: String
+    end
+  end
+end
+```
+
+#### API
+
+`openapi-generator` overload existing or adds similar methods and macros to intercept calls and infer schema properties.
+
+*Query parameters*
+
+- `macro query_params(name, description, multiple = false, schema = nil, **args)`
+- `macro query_params?(name, description, multiple = false, schema = nil, **args)`
+
+*Body*
+
+- `macro body_as(type, description = nil, content_type = "application/json", constructor = :from_json)`
+
+*Responses*
+
+- `macro respond_with(code = 200, description = nil, headers = nil, links = nil, &)`
+
+- `macro json(body, type = nil, schema = nil)`
+- `macro xml(body, type = nil, schema = nil)`
+- `macro txt(body, type = nil, schema = nil)`
+- `macro text(body, type = nil, schema = nil)`
+- `macro html(body, type = nil, schema = nil)`
+- `macro js(body, type = nil, schema = nil)`
+
+### Lucky
+
+```crystal
+require "openapi-generator/helpers/lucky"
+
+# …declare routes and operations… #
+
+# Before calling .generate you need to bootstrap the lucky inference:
+OpenAPI::Generator::Helpers::Lucky.bootstrap
+```
+
+**Important:** In your Actions, use `include OpenAPI::Generator::Helpers::Lucky` instead of `include OpenAPI::Generator::Controller`.
+
+#### Example
+
+```crystal
+require "openapi-generator/helpers/lucky"
+
+class Coordinates
+  include JSON::Serializable
+  extend OpenAPI::Generator::Serializable
+
+  def initialize(@x, @y); end
+
+  property x  : Int32
+  property y  : Int32
+end
+
+class Api::Coordinates::Create < Lucky::Action
+  # `OpenAPI::Generator::Controller` is included alongside `OpenAPI::Generator::Helpers::Lucky`.
+  include OpenAPI::Generator::Helpers::Lucky
+
+  disable_cookies
+  default_format :json
+
+  # Infer query parameter.
+  param add : Int32, description: "Add this number to the coordinates."
+
+  def action
+    # Infer body as a Coordinate json payload.
+    coordinates = body_as! ::Coordinates, description: "Some coordinates"
+    coordinates.x += add
+    coordinates.y += add
+
+    # Infer responses.
+    if json?
+      json coordinates, type: ::Coordinates
+    elsif  xml?
+      xml %(<coordinate x="#{coordinates.x}" y="#{coordinates.y}"></coordinate>), schema: OpenAPI::Schema.new(type: "string")
+    elsif plain_text?
+      plain_text "Coordinates (#{coordinates.x}, #{coordinates.y})"
+    else
+      head 406
+    end
+  end
+
+  route { action }
+end
+```
+
+#### API
+
+`openapi-generator` overload existing or adds similar methods and macros to intercept calls and infer schema properties.
+
+*Query parameters*
+
+- `macro param(declaration, description = nil, schema = nil, **args)`
+
+*Body*
+
+- `macro body_as(type, description = nil, content_type = "application/json", constructor = :from_json)`
+- `macro body_as!(type, description = nil, content_type = "application/json", constructor = :from_json)`
+
+*Responses*
+
+- `macro json(body, status = 200, description = nil, type = nil, schema = nil, headers = nil, links = nil)`
+- `macro head(status, description = nil, headers = nil, links = nil)`
+- `macro xml(body, status = 200, description = nil, type = String, schema = nil, headers = nil, links = nil)`
+- `macro plain_text(body, status = 200, description = nil, type = String, schema = nil, headers = nil, links = nil)`
+
+## Contributing
 
 1. Fork it (<https://github.com/your-github-user/openapi-generator/fork>)
 2. Create your feature branch (`git checkout -b my-new-feature`)
@@ -169,6 +425,6 @@ components:
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
 
-## 🤝 - Contributors
+## Contributors
 
 - [elbywan](https://github.com/your-github-user) - creator and maintainer
