@@ -247,6 +247,36 @@ class Hello::Index < Lucky::Action
 end
 ```
 
+#### Customize fields
+
+Use the `@[OpenAPI::Field]` annotation to add properties to the fields.
+
+```crystal
+class MyClass
+  extend OpenAPI::Generator::Serializable
+
+  # Ignore the field. It will not appear in the schema.
+  @[OpenAPI::Field(ignore: true)]
+  property ignored_field
+
+  # Enforce a type in the schema and disregard the crystal type.
+  @[OpenAPI::Field(type: String)]
+  property str_field : Int32
+
+  # Add an example that will appear in swagger for instance.
+  @[OpenAPI::Field(example: "an example value")]
+  property some_field : String
+
+  # Will not appear in POST / PUT/ PATCH requests body.
+  @[OpenAPI::Field(read_only: true)]
+  property read_only_field : String
+
+  # Will only appear in POST / PUT / PATCH requests body.
+  @[OpenAPI::Field(write_only: true)]
+  property write_only_field : String
+end
+```
+
 ## Inference (Optional)
 
 `openapi-generator` can infer some schema properties from the code, removing the need to declare it with yaml.
