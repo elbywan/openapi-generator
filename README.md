@@ -14,6 +14,7 @@ Then serve it from a [Swagger UI](https://swagger.io/tools/swagger-ui/) instance
 dependencies:
   openapi-generator:
     github: elbywan/openapi-generator
+    version: ~> 0.3.0
 ```
 
 2. Run `shards install`
