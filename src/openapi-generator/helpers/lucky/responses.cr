@@ -80,7 +80,7 @@ module OpenAPI::Generator::Helpers::Lucky
     {% unless controller_responses[key][code] %}
       {% controller_responses[key][code] = {response, {} of String => ::OpenAPI::Schema} %}
     {% end %}
-    {% if content_type %}
+    {% if content_type && schema %}
       {% controller_responses[key][code][1][content_type] = schema %}
     {% else %}
       {% controller_responses[key][code][1] = nil %}
