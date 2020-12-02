@@ -261,10 +261,10 @@ module OpenAPI::Generator
     end
 
     components = if components_tuple = base_document["components"]?
-      ::OpenAPI::Components.new(**components_tuple)
-    else
-      ::OpenAPI::Components.new
-    end
+                   ::OpenAPI::Components.new(**components_tuple)
+                 else
+                   ::OpenAPI::Components.new
+                 end
 
     # Generate schemas.
     components.schemas = Serializable.schemas
@@ -273,7 +273,7 @@ module OpenAPI::Generator
       openapi:    "3.0.1",
       info:       base_document["info"],
       paths:      path_items,
-      components: components
+      components: components,
     })
 
     doc = OpenAPI.build do |api|
