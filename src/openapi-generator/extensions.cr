@@ -127,4 +127,9 @@ module OpenAPI
   struct Response
     setter content
   end
+
+  # :nodoc:
+  struct Components
+    setter schemas
+  end
 end

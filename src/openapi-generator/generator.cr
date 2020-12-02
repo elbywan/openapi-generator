@@ -260,14 +260,20 @@ module OpenAPI::Generator
       end
     end
 
+    components = if components_tuple = base_document["components"]?
+      ::OpenAPI::Components.new(**components_tuple)
+    else
+      ::OpenAPI::Components.new
+    end
+
+    # Generate schemas.
+    components.schemas = Serializable.schemas
+
     base_document = base_document.merge({
       openapi:    "3.0.1",
       info:       base_document["info"],
       paths:      path_items,
-      components: (base_document["components"]? || NamedTuple.new).merge({
-        # Generate schemas.
-        schemas: Serializable.schemas,
-      }),
+      components: components
     })
 
     doc = OpenAPI.build do |api|
