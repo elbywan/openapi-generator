@@ -3,10 +3,15 @@ language: crystal
 script:
   - crystal tool format --check
   - crystal spec ./spec/core
+
   - rm shard.yml && rm shard.lock && cp shard.amber.yml ./shard.yml && shards install
   - crystal spec ./spec/helpers/amber_spec.cr
   - crystal spec ./spec/providers/amber_spec.cr
+
   - rm shard.yml && rm shard.lock && cp shard.lucky.yml ./shard.yml && shards install
   - crystal spec ./spec/helpers/lucky_spec.cr
   - crystal spec ./spec/providers/lucky_spec.cr
 
+  - rm shard.yml && rm shard.lock && cp shard.spider-gazelle.yml ./shard.yml && shards install
+  - crystal spec ./spec/helpers/spider-gazelle_spec.cr
+  - crystal spec ./spec/providers/spider-gazelle_spec.cr
