@@ -9,7 +9,7 @@ require "http"
 # infer some properties of the OpenAPI declaration.
 #
 # - `body_as` can infer request body types and schemas.
-# - `respond_as` can infer responses types and schemas.
+# - `respond_with` can infer responses types and schemas.
 # - `query_params` can infer query parameters.
 #
 # NOTE: Do not forget to call `bootstrap` once before calling `OpenAPI::Generator.generate`.
@@ -36,14 +36,14 @@ require "http"
 #     body_as Payload?, description: "The request payload."
 #
 #     # Infers responses.
-#     respond_as 200, description: "A hello payload." do
+#     respond_with 200, description: "A hello payload." do
 #       json Payload.new, type: Payload
 #       xml "<hello></hello>", type: String
 #     end
-#     respond_as 201, description: "A good morning message." do
+#     respond_with 201, description: "A good morning message." do
 #       text "Good morning.", type: String
 #     end
-#     respond_as 400 do
+#     respond_with 400 do
 #       text "Ouch.", type: String
 #     end
 #   end
@@ -294,15 +294,15 @@ module OpenAPI::Generator::Helpers::ActionController
 
   module ::ActionController::Responders
     {% for method_name, content_type in MIME_TYPES %}
-      macro {{method_name}}(body, type = nil, schema = nil)
+      macro {{method_name.id}}(body, type = nil, schema = nil)
         Responders.{{method_name}}(
           schema: \{% if schema %}\{{schema}}\{%elsif type%}\{{type}}.to_openapi_schema\{% else %}::OpenAPI::Schema.new\{%end%},
           content_type: {{content_type}}
         )
-        {{method_name}}(value: \{{body}}\{% if type %}.as(\{{type}})\{% end %}{% if method_name == "json" %}.to_json{% else %}.to_s{% end %})
+        render({{method_name}}: \{{body}}\{% if type %}.as(\{{type}})\{% end %})
       end
 
-      macro {{method_name}}(schema, content_type)
+      macro {{method_name.id}}(schema, content_type)
         \{% hash_ref = ::OpenAPI::Generator::Helpers::ActionController::HASH_ITEM_REF[0] %}
         \{% code = hash_ref[0] %}
         \{% response = hash_ref[1] %}
@@ -321,8 +321,8 @@ module OpenAPI::Generator::Helpers::ActionController
   end
 
   # Same as the [ActionController method](https://docs.amberframework.org/action-controller/guides/controllers/respond-with) with automatic response inference.
-  macro respond_as(code = 200, description = nil, headers = nil, links = nil, &)
-    respond_as(code: {{code}}, response: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_response(
+  macro respond_with(code = 200, description = nil, headers = nil, links = nil, &)
+    respond_with(code: {{code}}, response: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_response(
       description: {{description}},
       code: {{code}},
       headers: {{headers}},
@@ -333,12 +333,12 @@ module OpenAPI::Generator::Helpers::ActionController
   end
 
   # :nodoc:
-  macro respond_as(code, response, &)
+  macro respond_with(code, response, &)
     {% HASH_ITEM_REF.clear %}
     {% TYPE_REF.clear %}
     {% HASH_ITEM_REF << {code, response} %}
     {% TYPE_REF << @type.stringify %}
-    self.respond_as {{ code }} do
+    respond_with {{ code }} do
       {{ yield }}
     end
   end
