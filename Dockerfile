@@ -3,7 +3,7 @@ FROM crystallang/crystal:0.36.1-alpine
 WORKDIR /app
 
 # Copy shard files and install shards
-COPY shard.* .
+COPY shard.* ./
 COPY spec spec
 COPY src src
 
