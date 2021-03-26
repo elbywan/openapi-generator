@@ -23,3 +23,5 @@ RUN crystal spec ./spec/providers/amber_spec.cr
 RUN rm shard.yml && rm shard.lock && cp shard.lucky.yml ./shard.yml && shards install
 RUN crystal spec ./spec/helpers/lucky_spec.cr
 RUN crystal spec ./spec/providers/lucky_spec.cr
+
+ENTRYPOINT exit 0
