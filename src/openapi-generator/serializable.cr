@@ -132,11 +132,11 @@ module OpenAPI::Generator::Serializable
           read_only: {{ read_only }},
           write_only: {{ write_only }},
           all_of: [
-            OpenAPI::Reference.new ref: "#/components/schemas/#{URI.encode_www_form({{extra.stringify}})}"
+            OpenAPI::Reference.new ref: "#/components/schemas/#{URI.encode_www_form({{extra.stringify.split("::").join("_")}})}"
           ]
         )
         {% else %}
-        %generated_schema = OpenAPI::Reference.new ref: "#/components/schemas/#{URI.encode_www_form({{extra.stringify}})}"
+        %generated_schema = OpenAPI::Reference.new ref: "#/components/schemas/#{URI.encode_www_form({{extra.stringify.split("::").join("_")}})}"
         {% end %}
       {% elsif type == "self_schema" %}
         %type = nil
@@ -189,11 +189,11 @@ module OpenAPI::Generator::Serializable
             read_only: {{ read_only }},
             write_only: {{ write_only }},
             all_of: [
-              OpenAPI::Reference.new ref: "#/components/schemas/#{URI.encode_www_form({{extra.stringify}})}"
+              OpenAPI::Reference.new ref: "#/components/schemas/#{URI.encode_www_form({{extra.stringify.split("::").join("_")}})}"
             ]
           )
           {% else %}
-          %generated_schema = OpenAPI::Reference.new ref: "#/components/schemas/#{URI.encode_www_form({{extra.stringify}})}"
+          %generated_schema = OpenAPI::Reference.new ref: "#/components/schemas/#{URI.encode_www_form({{extra.stringify.split("::").join("_")}})}"
           {% end %}
         {% elsif type == "self_schema" %}
           %type = nil
@@ -277,7 +277,7 @@ module OpenAPI::Generator::Serializable
   def to_openapi_schema
     OpenAPI::Schema.new(
       all_of: [
-        OpenAPI::Reference.new ref: "#/components/schemas/#{URI.encode_www_form({{@type.stringify}})}",
+        OpenAPI::Reference.new ref: "#/components/schemas/#{URI.encode_www_form({{@type.stringify.split("::").join("_")}})}",
       ]
     )
   end
@@ -287,7 +287,8 @@ module OpenAPI::Generator::Serializable
     # For every registered class, we get its schema and store it in the schemas.
     schemas = Hash(String, OpenAPI::Schema | OpenAPI::Reference).new
     {% for serializable_class in SERIALIZABLE_CLASSES %}
-      schemas["{{serializable_class.id}}"] = {{serializable_class}}.generate_schema
+      # Forbid namespace seperator "::" in type name due to being YAML-illegal in plain style (YAML 1.2 - 7.3.3)
+      schemas[{{serializable_class.id.split("::").join("_")}}] = {{serializable_class}}.generate_schema
     {% end %}
     # And we return the list of schemas.
     schemas
