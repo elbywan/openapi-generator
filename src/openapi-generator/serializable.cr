@@ -287,7 +287,8 @@ module OpenAPI::Generator::Serializable
     # For every registered class, we get its schema and store it in the schemas.
     schemas = Hash(String, OpenAPI::Schema | OpenAPI::Reference).new
     {% for serializable_class in SERIALIZABLE_CLASSES %}
-      schemas["{{serializable_class.id}}"] = {{serializable_class}}.generate_schema
+      # Forbid namespace seperator "::" in type name due to being YAML-illegal in plain style (YAML 1.2 - 7.3.3)
+      schemas[{{serializable_class.id.split("::").join("_")}}] = {{serializable_class}}.generate_schema
     {% end %}
     # And we return the list of schemas.
     schemas
