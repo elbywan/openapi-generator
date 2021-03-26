@@ -155,11 +155,11 @@ describe OpenAPI::Generator::Helpers::Amber do
               type: string
               readOnly: true
             inner_schema:
-              $ref: '#/components/schemas/Model%3A%3AInnerModel'
+              $ref: '#/components/schemas/Model_InnerModel'
             cast:
               type: string
               example: "1"
-        Model::InnerModel:
+        Model_InnerModel:
           required:
           - array_of_int
           type: object
@@ -169,7 +169,7 @@ describe OpenAPI::Generator::Helpers::Amber do
               items:
                 type: integer
               writeOnly: true
-        Model::ComplexModel:
+        Model_ComplexModel:
           required:
           - union_types
           - free_form
@@ -180,7 +180,7 @@ describe OpenAPI::Generator::Helpers::Amber do
               oneOf:
               - type: object
                 additionalProperties:
-                  $ref: '#/components/schemas/Model%3A%3AInnerModel'
+                  $ref: '#/components/schemas/Model_InnerModel'
               - type: integer
               - type: string
             free_form:

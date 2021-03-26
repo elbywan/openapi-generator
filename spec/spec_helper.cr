@@ -36,7 +36,7 @@ struct Model
         "readOnly": true
       },
       "inner_schema": {
-        "$ref": "#/components/schemas/Model%3A%3AInnerModel"
+        "$ref": "#/components/schemas/Model_InnerModel"
       },
       "cast": {
         "type": "string",
@@ -94,7 +94,7 @@ struct Model
             {
               "type": "object",
               "additionalProperties": {
-                "$ref": "#/components/schemas/Model%3A%3AInnerModel"
+                "$ref": "#/components/schemas/Model_InnerModel"
               }
             },
             {
