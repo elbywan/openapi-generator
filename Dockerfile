@@ -1,6 +1,7 @@
-FROM crystallang/crystal:0.36.1-alpine
+FROM crystallang/crystal:1.0.0-alpine
 
 WORKDIR /app
+ENV SHARDS_OPTS=--ignore-crystal-version
 
 # Copy shard files and install shards
 COPY shard.* ./
