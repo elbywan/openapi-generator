@@ -14,10 +14,10 @@ dependencies:
     github: elbywan/open_api.cr
     commit: 7ad39e980ff64dfa88414ca0d2c8515159ab51ae
 
-# development_dependencies:
-#   action-controller:
-#     github: spider-gazelle/action-controller
-#     branch: feat/routes
+development_dependencies:
+  action-controller:
+    github: spider-gazelle/action-controller
+    branch: feat/routes
 #   amber:
 #     github: amberframework/amber
 #     version: ~> 0.36.0
