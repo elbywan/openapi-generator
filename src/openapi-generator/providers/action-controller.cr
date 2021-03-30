@@ -21,15 +21,15 @@ class OpenAPI::Generator::RoutesProvider::ActionController < OpenAPI::Generator:
       key = "#{route_controller}::#{route_method}"
       path_params = [] of String
 
-      full_path = path.split("/").map do |i|
-        if i.starts_with?(":")
-          i = i.delete_at(0)
+      full_path = path.chomp('/').split('/').join('/') do |i|
+        if i.starts_with?(':')
+          i = i.lstrip(':')
           path_params << i
           "{#{i}}"
         else
           i
         end
-      end.join("/").chomp("/")
+      end
 
       routes << {method.to_s, full_path, key, path_params}
     end
