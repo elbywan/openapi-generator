@@ -294,12 +294,12 @@ module OpenAPI::Generator::Helpers::ActionController
 
   module ::ActionController::Responders
     {% for method_name, content_type in MIME_TYPES %}
-      macro {{method_name.id}}(body, type = nil, schema = nil)
-        Responders.{{method_name}}(
+      macro {{method_name.id}}(body, type = nil, schema = nil, &block : IO -> Nil)
+        {{method_name}}(
           schema: \{% if schema %}\{{schema}}\{%elsif type%}\{{type}}.to_openapi_schema\{% else %}::OpenAPI::Schema.new\{%end%},
           content_type: {{content_type}}
         )
-        render({{method_name}}: \{{body}}\{% if type %}.as(\{{type}})\{% end %})
+        {{method_name}}(obj: \{{body}}\{% if type %}.as(\{{type}})\{% end %})
       end
 
       macro {{method_name.id}}(schema, content_type)
@@ -338,7 +338,7 @@ module OpenAPI::Generator::Helpers::ActionController
     {% TYPE_REF.clear %}
     {% HASH_ITEM_REF << {code, response} %}
     {% TYPE_REF << @type.stringify %}
-    respond_with {{ code }} do
+    respond_with(status: {{ code }}) do
       {{ yield }}
     end
   end
@@ -370,6 +370,7 @@ module OpenAPI::Generator::Helpers::ActionController
 
   # Run this method exactly once before generating the schema to register all the inferred properties.
   def self.bootstrap
+    ::ActionController::Server.new(3000, "127.0.0.1")
     ::OpenAPI::Generator::Helpers::ActionController::QP_LIST.each { |method, params|
       openapi_op = ::OpenAPI::Generator::Controller::CONTROLLER_OPS[method]?
       next unless openapi_op
