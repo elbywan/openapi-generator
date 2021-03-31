@@ -14,6 +14,9 @@ dependencies:
   open_api:
     github: elbywan/open_api.cr
     commit: 7ad39e980ff64dfa88414ca0d2c8515159ab51ae
+  http-params-serializable:
+    github: vladfaust/http-params-serializable
+    version: ~> 0.4.0
 
 development_dependencies:
   action-controller:
