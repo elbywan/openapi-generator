@@ -8,7 +8,7 @@ class Payload
   include JSON::Serializable
   extend OpenAPI::Generator::Serializable
 
-  def initialize(@hello : String = "world")
+  def initialize(@mandatory : String, @optional : Bool?, @with_default : String, @with_default_nillable : String?)
   end
 end
 
@@ -29,11 +29,12 @@ class HelloPayloadActionController < ActionController::Base
   def create
     mandatory = params mandatory : String, "A mandatory query parameter"
     optional = params optional : Bool?, "An optional query parameter"
+    with_default = params with_default : String = "default_value", "A mandatory query parameter with default"
+    with_default_nillable = params with_default_nillable : String? = "default_value_nillable", "An optional query parameter with default"
 
     body_as Payload?, description: "A Hello payload."
 
-    value = !optional.nil? ? optional.to_unsafe : mandatory
-    payload = Payload.new(hello: value.to_s)
+    payload = Payload.new(mandatory, optional, with_default, with_default_nillable)
     respond_with 200, description: "Hello" do
       json payload, type: Payload
       xml "<hello></hello>", type: String
@@ -53,7 +54,7 @@ OpenAPI::Generator::Helpers::ActionController.bootstrap
 
 describe OpenAPI::Generator::Helpers::ActionController do
   after_all {
-    FileUtils.rm "openapi_test.yaml"
+    FileUtils.rm "openapi_test.yaml" if File.exists?("openapi_test.yaml")
   }
 
   it "should infer the status codes and contents of the response body" do
@@ -95,6 +96,18 @@ describe OpenAPI::Generator::Helpers::ActionController do
             required: false
             schema:
               type: boolean
+          - name: with_default
+            in: query
+            description: A mandatory query parameter with default
+            required: true
+            schema:
+              type: string
+          - name: with_default_nillable
+            in: query
+            description: An optional query parameter with default
+            required: false
+            schema:
+              type: string
           requestBody:
             description: A Hello payload.
             content:
@@ -182,10 +195,17 @@ describe OpenAPI::Generator::Helpers::ActionController do
                   - type: string
         Payload:
           required:
-          - hello
+          - mandatory
+          - with_default
           type: object
           properties:
-            hello:
+            mandatory:
+              type: string
+            optional:
+              type: boolean
+            with_default:
+              type: string
+            with_default_nillable:
               type: string
       responses: {}
       parameters: {}
@@ -199,13 +219,38 @@ describe OpenAPI::Generator::Helpers::ActionController do
     YAML
   end
 
-  it "should implement the helper methods" do
-    res = HelloPayloadActionController.context(method: "GET", route: "/hello?mandatory", headers: {"Content-Type" => "application/json"}, &.create)
-    res.status_code.should eq(200)
-    res.output.to_s.should eq(Payload.new(hello: "").to_json)
+  it "should deserialise mandatory" do
+    res = HelloPayloadActionController.context(
+      method: "GET", route: "/hello",
+      route_params: {"mandatory" => "man"},
+      headers: {"Content-Type" => "application/json"}, &.create)
 
-    res = HelloPayloadActionController.context(method: "GET", route: "/hello", route_params: {"mandatory" => "true", "optional" => "false"}, headers: {"Content-Type" => "application/json"}, &.create)
+    expected_body = Payload.new("man", nil, "default_value", "default_value_nillable")
+
     res.status_code.should eq(200)
-    res.output.to_s.should eq(Payload.new(hello: "0").to_json)
+    res.output.to_s.should eq(expected_body.to_json)
+  end
+
+  it "should set defaults" do
+    res = HelloPayloadActionController.context(
+      method: "GET", route: "/hello",
+      route_params: {
+        "mandatory"             => "man",
+        "optional"              => "true",
+        "with_default"          => "not_default",
+        "with_default_nillable" => "value",
+      },
+      headers: {"Content-Type" => "application/json"}, &.create)
+
+    expected_body = Payload.new("man", true, "not_default", "value")
+
+    res.status_code.should eq(200)
+    res.output.to_s.should eq(expected_body.to_json)
+  end
+
+  it "should raise if there is no mandatory param" do
+    expect_raises(KeyError) do
+      HelloPayloadActionController.context(method: "GET", route: "/hello", headers: {"Content-Type" => "application/json"}, &.create)
+    end
   end
 end
