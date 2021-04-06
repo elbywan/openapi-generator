@@ -21,7 +21,7 @@ dependencies:
 development_dependencies:
   action-controller:
     github: spider-gazelle/action-controller
-    branch: feat/routes
+    branch: master
 #   amber:
 #     github: amberframework/amber
 #     version: ~> 0.36.0
