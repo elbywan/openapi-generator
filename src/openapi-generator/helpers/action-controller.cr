@@ -1,6 +1,8 @@
 require "action-controller"
 require "json"
 require "http"
+require "http-params-serializable"
+require "http-params-serializable/ext"
 
 # Helpers that can be used inside an [ActionController](https://amberframework.org/) Controller to enable inference
 # and ensure that the code matches the contract defined in the generated OpenAPI document.
@@ -162,74 +164,48 @@ module OpenAPI::Generator::Helpers::ActionController
   # query_params "name", "A user name."
   # ```
   macro query_params(name, description, multiple = false, schema = nil, **args)
-    _query_params(
-      name: {{name}},
-      param: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_parameter(
-        name: {{name}},
-        "in": "query",
-        required: true,
-        schema: {% if schema %}{{schema}}{% elsif multiple %}::OpenAPI::Schema.new(
-          type: "array",
-          items: ::OpenAPI::Schema.new(
-            type: "string"
-          )
-        ){% else %}::OpenAPI::Schema.new(
-          type: "string",
-        ){% end %},
-        description: {{description}},
-        {{**args}}
-      ),
-      required: true,
-      multiple: {{multiple}}
-    )
-  end
+    {% var = name.var.stringify %}
+    {% raw_type = name.type ? name.type.resolve : String %}
+    {% nillable = !raw_type.union_types.includes?(Nil) %}
+    {% type = raw_type.union_types.reject(&.== Nil).first %}
 
-  # Fetch an optional query parameter and register it in the OpenAPI operation related to the controller method.
-  #
-  # ```
-  # query_params? "name[]", "One or multiple user names. (optional)", multiple = true
-  # ```
-  macro query_params?(name, description, multiple = false, schema = nil, **args)
     _query_params(
-      name: {{name}},
+      name: {{var}},
+      type: {{raw_type}},
       param: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_parameter(
-        name: {{name}},
+        name: {{var}},
         "in": "query",
-        required: false,
+        required: {{nillable}},
         schema: {% if schema %}{{schema}}{% elsif multiple %}::OpenAPI::Schema.new(
           type: "array",
-          items: ::OpenAPI::Schema.new(
-            type: "string"
-          )
-        ){% else %}::OpenAPI::Schema.new(
-          type: "string",
-        ){% end %},
+          items: {{type}}.to_openapi_schema,
+        ){% else %}{{type}}.to_openapi_schema{% end %},
         description: {{description}},
         {{**args}}
       ),
-      required: false,
+      required: {{nillable}},
       multiple: {{multiple}}
     )
   end
 
   # :nodoc:
-  private macro _query_params(name, param, required = true, multiple = false)
+  private macro _query_params(name, type, param, required = true, multiple = false)
     {% qp_list = ::OpenAPI::Generator::Helpers::ActionController::QP_LIST %}
-      {% method_name = "#{@type}::#{@def.name}" %}
-      {% unless qp_list.keys.includes? method_name %}
-        {% qp_list[method_name] = [] of OpenAPI::Parameter %}
+    {% method_name = "#{@type}::#{@def.name}" %}
+    {% unless qp_list.keys.includes? method_name %}
+      {% qp_list[method_name] = [] of OpenAPI::Parameter %}
+    {% end %}
+    {% qp_list[method_name] << param %}
+    {% if multiple %}
+      %results = params.fetch_all({{name}})
+      {% if required %}
+        raise NilAssertionError.new if %results.size < 1
       {% end %}
-      {% qp_list[method_name] << param %}
-      {% if multiple %}
-        %results = params.fetch_all({{name}})
-        {% if required %}
-          raise NilAssertionError.new if %results.size < 1
-        {% end %}
-        %results
-      {% elsif required %}
-        params[{{name}}]
-      {% else %}
-        params[{{name}}]?
+      %results
+    {% elsif required %}
+      {{type}}.from_http_param(params[{{name}}])
+    {% else %}
+      params[{{name}}]?.try {|p| {{type}}.from_http_param(p)}
     {% end %}
   end
 
