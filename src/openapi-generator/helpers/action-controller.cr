@@ -166,11 +166,7 @@ module OpenAPI::Generator::Helpers::ActionController
   macro param(declaration, description, multiple = false, schema = nil, **args)
     {% name = declaration.var.stringify %}
 
-    {% if declaration.value || declaration.value == false %}
-      {% default_value = declaration.value %}
-    {% else %}
-      {% default_value = nil %}
-    {% end %}
+    {% default_value = (declaration.value || declaration.value == false) ? declaration.value : nil %}
 
     {% raw_type = declaration.type ? declaration.type.resolve : String %}
     {% nillable = !raw_type.union_types.includes?(Nil) %}
@@ -363,34 +359,34 @@ module OpenAPI::Generator::Helpers::ActionController
   # Run this method exactly once before generating the schema to register all the inferred properties.
   def self.bootstrap
     ::ActionController::Server.new(3000, "127.0.0.1")
-    ::OpenAPI::Generator::Helpers::ActionController::QP_LIST.each { |method, params|
+    ::OpenAPI::Generator::Helpers::ActionController::QP_LIST.each do |method, params|
       openapi_op = ::OpenAPI::Generator::Controller::CONTROLLER_OPS[method]?
       next unless openapi_op
       unless openapi_op["parameters"]?
         openapi_op.as_h[YAML::Any.new "parameters"] = YAML::Any.new([] of YAML::Any)
       end
-      params.each { |param|
+      params.each do |param|
         openapi_op["parameters"].as_a << YAML.parse(param.to_yaml)
-      }
-    }
+      end
+    end
 
-    ::OpenAPI::Generator::Helpers::ActionController::CONTROLLER_RESPONSES.each { |method, responses|
+    ::OpenAPI::Generator::Helpers::ActionController::CONTROLLER_RESPONSES.each do |method, responses|
       op = ::OpenAPI::Generator::Controller::CONTROLLER_OPS[method]?
       next unless op
-      responses.each { |(code, values)|
+      responses.each do |code, values|
         response, schemas = values
-        schemas.try &.each { |content_type, schema|
+        schemas.try &.each do |content_type, schema|
           unless response.content
             response.content = {} of String => OpenAPI::MediaType
           end
           response.content.try(&.[content_type] = ::OpenAPI::MediaType.new(schema: schema))
-        }
+        end
         unless op["responses"]?
           op.as_h[YAML::Any.new "responses"] = YAML::Any.new(Hash(YAML::Any, YAML::Any).new)
         end
-        original_yaml_response = op["responses"].as_h.find { |(key, value)|
+        original_yaml_response = op["responses"].as_h.find do |(key, value)|
           key.raw.to_s == code.to_s
-        }
+        end
         if !original_yaml_response
           op["responses"].as_h[YAML::Any.new code.to_s] = YAML.parse response.to_yaml
         else
@@ -405,19 +401,19 @@ module OpenAPI::Generator::Helpers::ActionController
             content: original_response.content || response.content
           ).to_yaml)
         end
-      }
-    }
+      end
+    end
 
-    ::OpenAPI::Generator::Helpers::ActionController::BODY_LIST.each { |method, value|
+    ::OpenAPI::Generator::Helpers::ActionController::BODY_LIST.each do |method, value|
       op = ::OpenAPI::Generator::Controller::CONTROLLER_OPS[method]?
       next unless op
       request_body, schemas = value
-      schemas.each { |content_type, schema|
+      schemas.each do |content_type, schema|
         request_body.content.try(&.[content_type] = ::OpenAPI::MediaType.new(schema: schema))
-      }
+      end
       unless op["requestBody"]?
         op.as_h[YAML::Any.new "requestBody"] = YAML.parse(request_body.to_yaml)
       end
-    }
+    end
   end
 end
