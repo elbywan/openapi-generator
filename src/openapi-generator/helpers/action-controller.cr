@@ -163,17 +163,17 @@ module OpenAPI::Generator::Helpers::ActionController
   # ```
   # query_params "name", "A user name."
   # ```
-  macro query_params(name, description, multiple = false, schema = nil, **args)
-    {% var = name.var.stringify %}
-    {% raw_type = name.type ? name.type.resolve : String %}
+  macro query_params(declaration, description, multiple = false, schema = nil, **args)
+    {% name = declaration.var.stringify %}
+    {% raw_type = declaration.type ? declaration.type.resolve : String %}
     {% nillable = !raw_type.union_types.includes?(Nil) %}
     {% type = raw_type.union_types.reject(&.== Nil).first %}
 
     _query_params(
-      name: {{var}},
+      name: {{name}},
       type: {{raw_type}},
       param: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_parameter(
-        name: {{var}},
+        name: {{name}},
         "in": "query",
         required: {{nillable}},
         schema: {% if schema %}{{schema}}{% elsif multiple %}::OpenAPI::Schema.new(
