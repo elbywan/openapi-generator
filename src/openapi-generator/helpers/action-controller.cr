@@ -12,7 +12,7 @@ require "http-params-serializable/ext"
 #
 # - `body_as` can infer request body types and schemas.
 # - `respond_with` can infer responses types and schemas.
-# - `query_params` can infer query parameters.
+# - `params` can infer query parameters.
 #
 # NOTE: Do not forget to call `bootstrap` once before calling `OpenAPI::Generator.generate`.
 #
@@ -31,8 +31,8 @@ require "http-params-serializable/ext"
 #   )]
 #   def index
 #     # Infers query parameters.
-#     query_params "mandatory", description: "A mandatory query parameter"
-#     query_params? "optional", description: "An optional query parameter"
+#     params "mandatory", description: "A mandatory query parameter"
+#     params? "optional", description: "An optional query parameter"
 #
 #     # Infers request body.
 #     body_as Payload?, description: "The request payload."
@@ -161,15 +161,15 @@ module OpenAPI::Generator::Helpers::ActionController
   # Fetch a query parameter and register it in the OpenAPI operation related to the controller method.
   #
   # ```
-  # query_params "name", "A user name."
+  # params "name", "A user name."
   # ```
-  macro query_params(declaration, description, multiple = false, schema = nil, **args)
+  macro params(declaration, description, multiple = false, schema = nil, **args)
     {% name = declaration.var.stringify %}
     {% raw_type = declaration.type ? declaration.type.resolve : String %}
     {% nillable = !raw_type.union_types.includes?(Nil) %}
     {% type = raw_type.union_types.reject(&.== Nil).first %}
 
-    _query_params(
+    _params(
       name: {{name}},
       type: {{raw_type}},
       param: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_parameter(
@@ -189,7 +189,7 @@ module OpenAPI::Generator::Helpers::ActionController
   end
 
   # :nodoc:
-  private macro _query_params(name, type, param, required = true, multiple = false)
+  private macro _params(name, type, param, required = true, multiple = false)
     {% qp_list = ::OpenAPI::Generator::Helpers::ActionController::QP_LIST %}
     {% method_name = "#{@type}::#{@def.name}" %}
     {% unless qp_list.keys.includes? method_name %}

@@ -27,12 +27,13 @@ class HelloPayloadActionController < ActionController::Base
     YAML
   )]
   def create
-    mandatory = query_params mandatory : String, "A mandatory query parameter"
-    optional = query_params optional : String?, "An optional query parameter"
+    mandatory = params mandatory : String, "A mandatory query parameter"
+    optional = params optional : Bool?, "An optional query parameter"
 
     body_as Payload?, description: "A Hello payload."
 
-    payload = Payload.new(hello: (!!mandatory).to_s)
+    value = !optional.nil? ? optional.to_unsafe : mandatory
+    payload = Payload.new(hello: value.to_s)
     respond_with 200, description: "Hello" do
       json payload, type: Payload
       xml "<hello></hello>", type: String
@@ -93,7 +94,7 @@ describe OpenAPI::Generator::Helpers::ActionController do
             description: An optional query parameter
             required: false
             schema:
-              type: string
+              type: boolean
           requestBody:
             description: A Hello payload.
             content:
@@ -201,6 +202,10 @@ describe OpenAPI::Generator::Helpers::ActionController do
   it "should implement the helper methods" do
     res = HelloPayloadActionController.context(method: "GET", route: "/hello?mandatory", headers: {"Content-Type" => "application/json"}, &.create)
     res.status_code.should eq(200)
-    res.output.to_s.should eq(Payload.new(hello: "true").to_json)
+    res.output.to_s.should eq(Payload.new(hello: "").to_json)
+
+    res = HelloPayloadActionController.context(method: "GET", route: "/hello", route_params: {"mandatory" => "true", "optional" => "false"}, headers: {"Content-Type" => "application/json"}, &.create)
+    res.status_code.should eq(200)
+    res.output.to_s.should eq(Payload.new(hello: "0").to_json)
   end
 end
