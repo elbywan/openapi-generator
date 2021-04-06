@@ -12,7 +12,7 @@ require "http-params-serializable/ext"
 #
 # - `body_as` can infer request body types and schemas.
 # - `respond_with` can infer responses types and schemas.
-# - `params` can infer query parameters.
+# - `param` can infer query parameters.
 #
 # NOTE: Do not forget to call `bootstrap` once before calling `OpenAPI::Generator.generate`.
 #
@@ -31,8 +31,8 @@ require "http-params-serializable/ext"
 #   )]
 #   def index
 #     # Infers query parameters.
-#     params "mandatory", description: "A mandatory query parameter"
-#     params? "optional", description: "An optional query parameter"
+#     param "mandatory", description: "A mandatory query parameter"
+#     param? "optional", description: "An optional query parameter"
 #
 #     # Infers request body.
 #     body_as Payload?, description: "The request payload."
@@ -161,9 +161,9 @@ module OpenAPI::Generator::Helpers::ActionController
   # Fetch a query parameter and register it in the OpenAPI operation related to the controller method.
   #
   # ```
-  # params "name", "A user name."
+  # param "name", "A user name."
   # ```
-  macro params(declaration, description, multiple = false, schema = nil, **args)
+  macro param(declaration, description, multiple = false, schema = nil, **args)
     {% name = declaration.var.stringify %}
 
     {% if declaration.value || declaration.value == false %}

@@ -27,10 +27,10 @@ class HelloPayloadActionController < ActionController::Base
     YAML
   )]
   def create
-    mandatory = params mandatory : String, "A mandatory query parameter"
-    optional = params optional : Bool?, "An optional query parameter"
-    with_default = params with_default : String = "default_value", "A mandatory query parameter with default"
-    with_default_nillable = params with_default_nillable : String? = "default_value_nillable", "An optional query parameter with default"
+    mandatory = param mandatory : String, "A mandatory query parameter"
+    optional = param optional : Bool?, "An optional query parameter"
+    with_default = param with_default : String = "default_value", "A mandatory query parameter with default"
+    with_default_nillable = param with_default_nillable : String? = "default_value_nillable", "An optional query parameter with default"
 
     body_as Payload?, description: "A Hello payload."
 
