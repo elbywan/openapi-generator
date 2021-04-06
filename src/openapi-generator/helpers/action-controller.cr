@@ -31,8 +31,8 @@ require "http-params-serializable/ext"
 #   )]
 #   def index
 #     # Infers query parameters.
-#     param "mandatory", description: "A mandatory query parameter"
-#     param? "optional", description: "An optional query parameter"
+#     param mandatory : String, description: "A mandatory query parameter"
+#     param optional : String?, description: "An optional query parameter"
 #
 #     # Infers request body.
 #     body_as Payload?, description: "The request payload."
@@ -161,7 +161,7 @@ module OpenAPI::Generator::Helpers::ActionController
   # Fetch a query parameter and register it in the OpenAPI operation related to the controller method.
   #
   # ```
-  # param "name", "A user name."
+  # param name : String = "default", "A user name."
   # ```
   macro param(declaration, description, multiple = false, schema = nil, **args)
     {% name = declaration.var.stringify %}
