@@ -8,25 +8,11 @@ authors:
   - elbywan <elbywan@hotmail.com>
   - Duke Nguyen <duke.raphael.ng@gmail.com>
 
-crystal: ">=0.35.1"
+crystal: ">= 0.35.1, <2.0.0"
 
 dependencies:
   open_api:
     github: elbywan/open_api.cr
-    commit: 7ad39e980ff64dfa88414ca0d2c8515159ab51ae
-  http-params-serializable:
-    github: caspiano/http-params-serializable
-    branch: chore/0.36.0
-
-development_dependencies:
-  action-controller:
-    github: spider-gazelle/action-controller
-    branch: master
-#   amber:
-#     github: amberframework/amber
-#     version: ~> 0.36.0
-#   lucky:
-#     github: luckyframework/lucky
-#     version: ~> 0.24.0
+    version: ~> 1.3.0
 
 license: MIT
