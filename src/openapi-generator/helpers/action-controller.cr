@@ -225,7 +225,12 @@ module OpenAPI::Generator::Helpers::ActionController
           {{type}}.from_http_param(params[{{name}}])
         {% end %}
       {% else %}
-        params[{{name}}]?.try {|p| {{type}}.from_http_param(p)} || {{default_value}}
+        param_result = params[{{name}}]?.try {|p| {{type}}.from_http_param(p)}
+        if param_result.nil?
+          {{default_value}}
+        else
+          param_result
+        end
       {% end %}
     rescue KeyError
       raise HTTP::Params::Serializable::ParamMissingError.new({{name.stringify}})
