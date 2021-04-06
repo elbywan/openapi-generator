@@ -249,7 +249,7 @@ describe OpenAPI::Generator::Helpers::ActionController do
   end
 
   it "should raise if there is no mandatory param" do
-    expect_raises(KeyError) do
+    expect_raises(HTTP::Params::Serializable::ParamMissingError, "Parameter \"mandatory\" is missing") do
       HelloPayloadActionController.context(method: "GET", route: "/hello", headers: {"Content-Type" => "application/json"}, &.create)
     end
   end

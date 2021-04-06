@@ -4,6 +4,13 @@ require "http"
 require "http-params-serializable"
 require "http-params-serializable/ext"
 
+class HTTP::Params::Serializable::ParamMissingError
+  # Raised when a param is not nilable and missing from the query.
+  def initialize(param : String)
+    super("Parameter #{param} is missing")
+  end
+end
+
 # Helpers that can be used inside an [ActionController](https://amberframework.org/) Controller to enable inference
 # and ensure that the code matches the contract defined in the generated OpenAPI document.
 #
@@ -200,25 +207,29 @@ module OpenAPI::Generator::Helpers::ActionController
       {% qp_list[method_name] = [] of OpenAPI::Parameter %}
     {% end %}
     {% qp_list[method_name] << param %}
-    {% if multiple %}
-      %results = params.fetch_all({{name}})
-      {% if required %}
-        raise NilAssertionError.new if %results.size < 1
-      {% end %}
-      %results
-    {% elsif required %}
-      {% if default_value %}
-        if params[{{name}}]?
+    begin
+      {% if multiple %}
+        %results = params.fetch_all({{name}})
+        {% if required %}
+          raise NilAssertionError.new if %results.size < 1
+        {% end %}
+        %results
+      {% elsif required %}
+        {% if default_value %}
+          if params[{{name}}]?
+            {{type}}.from_http_param(params[{{name}}])
+          else
+            {{default_value}}
+          end
+        {% else %}
           {{type}}.from_http_param(params[{{name}}])
-        else
-          {{default_value}}
-        end
+        {% end %}
       {% else %}
-        {{type}}.from_http_param(params[{{name}}])
+        params[{{name}}]?.try {|p| {{type}}.from_http_param(p)} || {{default_value}}
       {% end %}
-    {% else %}
-      params[{{name}}]?.try {|p| {{type}}.from_http_param(p)} || {{default_value}}
-    {% end %}
+    rescue KeyError
+      raise HTTP::Params::Serializable::ParamMissingError.new({{name.stringify}})
+    end
   end
 
   # Extracts and serialize the body from the request and registers it in the OpenAPI operation.
