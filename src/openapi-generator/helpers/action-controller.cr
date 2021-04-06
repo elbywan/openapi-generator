@@ -165,12 +165,20 @@ module OpenAPI::Generator::Helpers::ActionController
   # ```
   macro params(declaration, description, multiple = false, schema = nil, **args)
     {% name = declaration.var.stringify %}
+
+    {% if declaration.value || declaration.value == false %}
+      {% default_value = declaration.value %}
+    {% else %}
+      {% default_value = nil %}
+    {% end %}
+
     {% raw_type = declaration.type ? declaration.type.resolve : String %}
     {% nillable = !raw_type.union_types.includes?(Nil) %}
     {% type = raw_type.union_types.reject(&.== Nil).first %}
 
     _params(
       name: {{name}},
+      default_value: {{default_value}},
       type: {{raw_type}},
       param: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_parameter(
         name: {{name}},
@@ -189,7 +197,7 @@ module OpenAPI::Generator::Helpers::ActionController
   end
 
   # :nodoc:
-  private macro _params(name, type, param, required = true, multiple = false)
+  private macro _params(name, default_value, type, param, required = true, multiple = false)
     {% qp_list = ::OpenAPI::Generator::Helpers::ActionController::QP_LIST %}
     {% method_name = "#{@type}::#{@def.name}" %}
     {% unless qp_list.keys.includes? method_name %}
@@ -203,9 +211,17 @@ module OpenAPI::Generator::Helpers::ActionController
       {% end %}
       %results
     {% elsif required %}
-      {{type}}.from_http_param(params[{{name}}])
+      {% if default_value %}
+        if params[{{name}}]?
+          {{type}}.from_http_param(params[{{name}}])
+        else
+          {{default_value}}
+        end
+      {% else %}
+        {{type}}.from_http_param(params[{{name}}])
+      {% end %}
     {% else %}
-      params[{{name}}]?.try {|p| {{type}}.from_http_param(p)}
+      params[{{name}}]?.try {|p| {{type}}.from_http_param(p)} || {{default_value}}
     {% end %}
   end
 
