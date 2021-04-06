@@ -27,12 +27,12 @@ class HelloPayloadActionController < ActionController::Base
     YAML
   )]
   def create
-    query_params "mandatory", "A mandatory query parameter"
-    query_params? "optional", "An optional query parameter"
+    mandatory = query_params mandatory : String, "A mandatory query parameter"
+    optional = query_params optional : String?, "An optional query parameter"
 
     body_as Payload?, description: "A Hello payload."
 
-    payload = Payload.new
+    payload = Payload.new(hello: (!!mandatory).to_s)
     respond_with 200, description: "Hello" do
       json payload, type: Payload
       xml "<hello></hello>", type: String
@@ -201,6 +201,6 @@ describe OpenAPI::Generator::Helpers::ActionController do
   it "should implement the helper methods" do
     res = HelloPayloadActionController.context(method: "GET", route: "/hello?mandatory", headers: {"Content-Type" => "application/json"}, &.create)
     res.status_code.should eq(200)
-    res.output.to_s.should eq(Payload.new.to_json)
+    res.output.to_s.should eq(Payload.new(hello: "true").to_json)
   end
 end
