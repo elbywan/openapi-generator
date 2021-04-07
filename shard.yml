@@ -1,11 +1,12 @@
 name: openapi-generator
-version: 0.3.3
+version: 0.4.0
 targets:
   openapi-generator:
     main: src/openapi-generator.cr
 
 authors:
   - elbywan <elbywan@hotmail.com>
+  - Duke Nguyen <duke.raphael.ng@gmail.com>
 
 crystal: ">= 0.35.1, <2.0.0"
 
