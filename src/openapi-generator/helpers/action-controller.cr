@@ -321,10 +321,76 @@ module OpenAPI::Generator::Helpers::ActionController
         \{% end %}
         \{% controller_responses[method_name][code][1][content_type] = schema %}
       end
+
+      # :nodoc:
+      macro render(status_code, head, json, yaml, xml, html, text, binary, template, partial, layout, response, type, schema)
+        \{% ::OpenAPI::Generator::Helpers::ActionController::HASH_ITEM_REF.clear %}
+        \{% ::OpenAPI::Generator::Helpers::ActionController::TYPE_REF.clear %}
+        \{% ::OpenAPI::Generator::Helpers::ActionController::HASH_ITEM_REF << {status_code, response} %}
+        \{% ::OpenAPI::Generator::Helpers::ActionController::TYPE_REF << @type.stringify %}
+
+        \{% if !json.is_a? Path %}
+          json(
+            schema: \{% if schema %}\{{schema}}\{%elsif type%}\{{type}}.to_openapi_schema\{% else %}::OpenAPI::Schema.new\{%end%},
+            content_type: {{content_type}}
+          )
+        \{% end %}
+
+        \{% if !yaml.is_a? Path %}
+          yaml(
+            schema: \{% if schema %}\{{schema}}\{%elsif type%}\{{type}}.to_openapi_schema\{% else %}::OpenAPI::Schema.new\{%end%},
+            content_type: {{content_type}}
+          )
+        \{% end %}
+
+        \{% if !xml.is_a? Path %}
+          xml(
+            schema: \{% if schema %}\{{schema}}\{%elsif type%}\{{type}}.to_openapi_schema\{% else %}::OpenAPI::Schema.new\{%end%},
+            content_type: {{content_type}}
+          )
+        \{% end %}
+
+        \{% if !html.is_a? Path %}
+          html(
+            schema: \{% if schema %}\{{schema}}\{%elsif type%}\{{type}}.to_openapi_schema\{% else %}::OpenAPI::Schema.new\{%end%},
+            content_type: {{content_type}}
+          )
+        \{% end %}
+
+        \{% if !text.is_a? Path %}
+          text(
+            schema: \{% if schema %}\{{schema}}\{%elsif type%}\{{type}}.to_openapi_schema\{% else %}::OpenAPI::Schema.new\{%end%},
+            content_type: {{content_type}}
+          )
+        \{% end %}
+
+        \{% if !binary.is_a? Path %}
+          binary(
+            schema: \{% if schema %}\{{schema}}\{%elsif type%}\{{type}}.to_openapi_schema\{% else %}::OpenAPI::Schema.new\{%end%},
+            content_type: {{content_type}}
+          )
+        \{% end %}
+
+        \{% if !template.is_a? Path %}
+          template(
+            schema: \{% if schema %}\{{schema}}\{%elsif type%}\{{type}}.to_openapi_schema\{% else %}::OpenAPI::Schema.new\{%end%},
+            content_type: {{content_type}}
+          )
+        \{% end %}
+
+        \{% if !partial.is_a? Path %}
+          partial(
+            schema: \{% if schema %}\{{schema}}\{%elsif type%}\{{type}}.to_openapi_schema\{% else %}::OpenAPI::Schema.new\{%end%},
+            content_type: {{content_type}}
+          )
+        \{% end %}
+
+        render(status: \{{status_code}}, head: \{{head}}, json: \{{json}}, yaml: \{{yaml}}, xml: \{{xml}}, html: \{{html}}, text: \{{text}}, binary: \{{binary}}, template: \{{template}}, partial: \{{partial}}, layout: \{{layout}})
+      end
     {% end %}
   end
 
-  # Same as the [ActionController method](https://docs.amberframework.org/action-controller/guides/controllers/respond-with) with automatic response inference.
+  # Same as the ActionController method with automatic response inference.
   macro respond_with(code = 200, description = nil, headers = nil, links = nil, &)
     respond_with(code: {{code}}, response: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_response(
       description: {{description}},
@@ -347,7 +413,21 @@ module OpenAPI::Generator::Helpers::ActionController
     end
   end
 
-  # Same as the [ActionController method](https://docs.amberframework.org/action-controller/guides/controllers/respond-with) but without specifying any content and with automatic response inference.
+  # Same as the ActionController method with automatic response inference.
+  macro render(status_code = :ok, head = Nop, json = Nop, yaml = Nop, xml = Nop, html = Nop, text = Nop, binary = Nop, template = Nop, partial = Nop, layout = nil, description = nil, headers = nil, links = nil, type = nil, schema = nil)
+    {% status = status_code.is_a?(SymbolLiteral) ? STATUS_CODES[status_code] : status_code %}
+
+    render(
+      status_code: {{status}}, head: {{head}}, json: {{json}}, yaml: {{yaml}}, xml: {{xml}}, html: {{html}}, text: {{text}}, binary: {{binary}}, template: {{template}}, partial: {{partial}}, layout: {{layout}}, 
+      response: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_response(
+        description: {{description}},
+        code: {{status}},
+        headers: {{headers}},
+        links: {{links}}
+      ), type: {{type}}, schema: {{schema}})
+  end
+
+  # Same as the ActionController method but without specifying any content and with automatic response inference.
   macro respond_without_body(code = 200, description = nil, headers = nil, links = nil)
     respond_without_body(code: {{code}}, response: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_response(
       description: {{description}},
