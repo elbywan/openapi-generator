@@ -37,7 +37,7 @@ require "openapi-generator"
 
 > In OpenAPI terms, paths are endpoints (resources), such as /users or /reports/summary/, that your API exposes, and operations are the HTTP methods used to manipulate these paths, such as GET, POST or DELETE.
 
-#### Method based (`Amber`)
+#### Method based (`Amber`, `Spider-gazelle`)
 
 Use the `@[OpenAPI]` annotationa with a `yaml` encoded string argument.
 
@@ -114,7 +114,7 @@ YAML
 
 **Note**: An [`OpenAPI::Generator::RoutesProvider::Base`](https://elbywan.github.io/openapi-generator/OpenAPI/Generator/RoutesProvider.html) implementation must be provided. A `RoutesProvider` is responsible from extracting the [server routes and mapping these routes with the declared operations](https://elbywan.github.io/openapi-generator/OpenAPI/Generator/RouteMapping.html) in order to produce the final openapi file.
 
-Currently, the [Amber](https://amberframework.org/) and [Lucky](https://luckyframework.org) providers are included out of the box.
+Currently, the [Amber](https://amberframework.org/), [Lucky](https://luckyframework.org), [Spider-gazelle](https://spider-gazelle.net/) providers are included out of the box.
 
 ```crystal
 # Amber provider
@@ -122,6 +122,15 @@ require "openapi-generator/providers/amber"
 
 OpenAPI::Generator.generate(
   provider: OpenAPI::Generator::RoutesProvider::Amber.new
+)
+```
+
+```crystal
+# Spider-gazelle provider
+require "openapi-generator/providers/action-controller"
+
+OpenAPI::Generator.generate(
+  provider: OpenAPI::Generator::RoutesProvider::ActionController.new
 )
 ```
 
@@ -290,6 +299,7 @@ end
 **Supported Frameworks:**
 - Lucky
 - Amber
+- Spider-gazelle
 
 ### Amber
 
@@ -367,6 +377,83 @@ end
 - `macro text(body, type = nil, schema = nil)`
 - `macro html(body, type = nil, schema = nil)`
 - `macro js(body, type = nil, schema = nil)`
+
+### Spider-gazelle
+
+```crystal
+require "openapi-generator/helpers/action-controller"
+
+# …declare routes and operations… #
+
+# Before calling .generate you need to bootstrap the spider-gazelle inference:
+OpenAPI::Generator::Helpers::ActionController.bootstrap
+```
+
+#### Example
+
+```crystal
+require "openapi-generator/helpers/action-controller"
+
+class Coordinates
+  include JSON::Serializable
+  extend OpenAPI::Generator::Serializable
+
+  def initialize(@x, @y); end
+
+  property x  : Int32
+  property y  : Int32
+end
+
+class CoordinatesController < ActionController::Controller::Base
+  include ::OpenAPI::Generator::Controller
+  include ::OpenAPI::Generator::Helpers::ActionController
+
+  @[OpenAPI(
+    <<-YAML
+      summary: Adds up a Coordinate object and a number.
+    YAML
+  )]
+  def add
+    # Infer query parameter.
+    add = param add : Int32, description: "Add this number to the coordinates."
+    # Infer body as a Coordinate json payload.
+    coordinates = body_as(::Coordinates, description: "Some coordinates").not_nil!
+    coordinates.x += add
+    coordinates.y += add
+
+    # Infer responses.
+    respond_with 200, description: "Returns a Coordinate object with the number added up." do
+      json coordinates, type: ::Coordinates
+      xml %(<coordinate x="#{coordinates.x}" y="#{coordinates.y}"></coordinate>), type: String
+      text "Coordinates (#{coordinates.x}, #{coordinates.y})", type: String
+    end
+  end
+end
+```
+
+#### API
+
+`openapi-generator` overload existing or adds similar methods and macros to intercept calls and infer schema properties.
+
+*Query parameters*
+
+- `macro param(declaration, description, multiple = false, schema = nil, **args)`
+
+*Body*
+
+- `macro body_as(type, description = nil, content_type = "application/json", constructor = :from_json)`
+
+*Responses*
+
+- `macro respond_with(code = 200, description = nil, headers = nil, links = nil, &)`
+  - `macro json(body, type = nil, schema = nil)`
+  - `macro xml(body, type = nil, schema = nil)`
+  - `macro txt(body, type = nil, schema = nil)`
+  - `macro text(body, type = nil, schema = nil)`
+  - `macro html(body, type = nil, schema = nil)`
+  - `macro js(body, type = nil, schema = nil)`
+
+-  `macro render(status_code = :ok, head = Nop, json = Nop, yaml = Nop, xml = Nop, html = Nop, text = Nop, binary = Nop, template = Nop, partial = Nop, layout = nil, description = nil, headers = nil, links = nil, type = nil, schema = nil)`
 
 ### Lucky
 
@@ -467,4 +554,5 @@ The method to serve a Swagger UI instance depends on which framework you are usi
 
 ## Contributors
 
-- [elbywan](https://github.com/your-github-user) - creator and maintainer
+- [elbywan](https://github.com/elbywan) - creator and maintainer
+- [dukeraphaelng](https://github.com/dukeraphaelng)
