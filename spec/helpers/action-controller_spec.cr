@@ -24,7 +24,7 @@ class HelloPayloadActionController < ActionController::Base
     YAML
   )]
   def index
-    render json: [Payload.new("mandatory", true, "default", "nillable")], description: "all payloads"
+    render json: [Payload.new("mandatory", true, "default", "nillable")], description: "all payloads", type: Array(Payload)
   end
 
   @[OpenAPI(
@@ -97,7 +97,10 @@ describe OpenAPI::Generator::Helpers::ActionController do
               description: all payloads
               content:
                 text/yaml:
-                  schema: {}
+                  schema:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Payload'
         post:
           summary: Sends a hello payload
           parameters:
