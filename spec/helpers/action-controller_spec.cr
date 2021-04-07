@@ -20,6 +20,15 @@ class HelloPayloadActionController < ActionController::Base
 
   @[OpenAPI(
     <<-YAML
+      summary: get all payloads
+    YAML
+  )]
+  def index
+    render json: [Payload.new("mandatory", true, "default", "nillable")], description: "all payloads"
+  end
+
+  @[OpenAPI(
+    <<-YAML
       summary: Sends a hello payload
       responses:
         200:
@@ -81,6 +90,14 @@ describe OpenAPI::Generator::Helpers::ActionController do
       version: 0.0.1
     paths:
       /hello:
+        get:
+          summary: get all payloads
+          responses:
+            "200":
+              description: all payloads
+              content:
+                text/yaml:
+                  schema: {}
         post:
           summary: Sends a hello payload
           parameters:
@@ -221,7 +238,7 @@ describe OpenAPI::Generator::Helpers::ActionController do
 
   it "should deserialise mandatory" do
     res = HelloPayloadActionController.context(
-      method: "GET", route: "/hello",
+      method: "POST", route: "/hello",
       route_params: {"mandatory" => "man"},
       headers: {"Content-Type" => "application/json"}, &.create)
 
@@ -233,7 +250,7 @@ describe OpenAPI::Generator::Helpers::ActionController do
 
   it "should set defaults" do
     res = HelloPayloadActionController.context(
-      method: "GET", route: "/hello",
+      method: "POST", route: "/hello",
       route_params: {
         "mandatory"             => "man",
         "optional"              => "true",
@@ -250,7 +267,16 @@ describe OpenAPI::Generator::Helpers::ActionController do
 
   it "should raise if there is no mandatory param" do
     expect_raises(HTTP::Params::Serializable::ParamMissingError, "Parameter \"mandatory\" is missing") do
-      HelloPayloadActionController.context(method: "GET", route: "/hello", headers: {"Content-Type" => "application/json"}, &.create)
+      HelloPayloadActionController.context(method: "POST", route: "/hello", headers: {"Content-Type" => "application/json"}, &.create)
     end
+  end
+
+  it "should execute macro render" do
+    res = HelloPayloadActionController.context(method: "GET", route: "/hello", headers: {"Content-Type" => "application/json"}, &.index)
+
+    expected_body = Payload.new("mandatory", true, "default", "nillable")
+
+    res.status_code.should eq(200)
+    res.output.to_s.should eq([expected_body].to_json)
   end
 end
