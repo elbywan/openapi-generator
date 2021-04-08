@@ -5,7 +5,8 @@ env:
 
 script:
   - crystal tool format --check
-  - crystal spec ./spec/core && \
-    crystal spec ./spec/amber && \
-    crystal spec ./spec/lucky && \
+  - |
+    crystal spec ./spec/core &&
+    crystal spec ./spec/amber &&
+    crystal spec ./spec/lucky &&
     crystal spec ./spec/spider-gazelle
