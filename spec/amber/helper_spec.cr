@@ -139,7 +139,7 @@ describe OpenAPI::Generator::Helpers::Amber do
               type: string
             example: id
           responses:
-            \"200\":
+            "200":
               description: OK
         options:
           summary: Says hello
@@ -151,7 +151,7 @@ describe OpenAPI::Generator::Helpers::Amber do
               type: string
             example: id
           responses:
-            \"200\":
+            "200":
               description: OK
         head:
           summary: Says hello
@@ -163,7 +163,7 @@ describe OpenAPI::Generator::Helpers::Amber do
               type: string
             example: id
           responses:
-            \"200\":
+            "200":
               description: OK
     components:
       schemas:
