@@ -1,7 +1,7 @@
 require "../spec_helper"
 require "lucky"
 
-class Hello::Index < Lucky::Action
+class LuckyProviderSpec::Index < Lucky::Action
   default_format :text
 
   get "/:id" do
@@ -16,7 +16,10 @@ describe OpenAPI::Generator::RoutesProvider::Lucky do
     provider = OpenAPI::Generator::RoutesProvider::Lucky.new
     route_mappings = provider.route_mappings
     route_mappings.should eq [
-      {"get", "/{id}", "Hello::Index", ["id"]},
+      # from the helper spec file
+      {"post", "/hello", "LuckyHelperSpec::Index", [] of String},
+      # from this spec file
+      {"get", "/{id}", "LuckyProviderSpec::Index", ["id"]},
     ]
   end
 end

@@ -1,6 +1,11 @@
-services:
-  - docker
+language: crystal
+
+env:
+  - SHARDS_OPTS=--ignore-crystal-version
 
 script:
-  - docker build . -t openapi_gen
-
+  - crystal tool format --check
+  - crystal spec ./spec/core && \
+    crystal spec ./spec/amber && \
+    crystal spec ./spec/lucky && \
+    crystal spec ./spec/spider-gazelle

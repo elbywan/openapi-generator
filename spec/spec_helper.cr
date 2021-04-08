@@ -1,7 +1,6 @@
 require "spec"
 require "json"
 require "../src/openapi-generator"
-
 struct Model
   extend OpenAPI::Generator::Serializable
   include JSON::Serializable
