@@ -3,28 +3,28 @@
 <head>
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.34.0">
-<meta name="crystal_docs.project_version" content="lucky-support-dev">
+<meta name="generator" content="Crystal Docs 0.36.1">
+<meta name="crystal_docs.project_version" content="master-dev">
 <meta name="crystal_docs.project_name" content="openapi-generator">
+
 
 
 <link href="../../../css/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../../../js/doc.js"></script>
 
-<svg class="hidden">
-  <symbol id="octicon-link" viewBox="0 0 16 16">
-    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
-  </symbol>
-</svg>
-
-  <meta id="repository-name" content="openapi-generator">
-  <title>OpenAPI::Generator::Controller::Schema - openapi-generator lucky-support-dev</title>
+  <meta name="repository-name" content="openapi-generator">
+  <title>OpenAPI::Generator::Controller::Schema - openapi-generator master-dev</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../../";
   </script>
 </head>
 <body>
 
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
 <div class="sidebar">
   <div class="sidebar-header">
     <div class="search-box">
@@ -39,12 +39,12 @@
       </h1>
 
       <span class="project-version">
-        lucky-support-dev
+        master-dev
       </span>
     </div>
   </div>
 
-  <div class="search-results" class="hidden">
+  <div class="search-results hidden">
     <ul class="search-list"></ul>
   </div>
 
@@ -91,6 +91,11 @@
       
         <ul>
   
+  <li class=" " data-id="openapi-generator/OpenAPI/Generator/Helpers/ActionController" data-name="openapi::generator::helpers::actioncontroller">
+      <a href="../../../OpenAPI/Generator/Helpers/ActionController.html">ActionController</a>
+      
+    </li>
+  
   <li class=" " data-id="openapi-generator/OpenAPI/Generator/Helpers/Amber" data-name="openapi::generator::helpers::amber">
       <a href="../../../OpenAPI/Generator/Helpers/Amber.html">Amber</a>
       
@@ -115,6 +120,11 @@
       <a href="../../../OpenAPI/Generator/RoutesProvider.html">RoutesProvider</a>
       
         <ul>
+  
+  <li class=" " data-id="openapi-generator/OpenAPI/Generator/RoutesProvider/ActionController" data-name="openapi::generator::routesprovider::actioncontroller">
+      <a href="../../../OpenAPI/Generator/RoutesProvider/ActionController.html">ActionController</a>
+      
+    </li>
   
   <li class=" " data-id="openapi-generator/OpenAPI/Generator/RoutesProvider/Amber" data-name="openapi::generator::routesprovider::amber">
       <a href="../../../OpenAPI/Generator/RoutesProvider/Amber.html">Amber</a>
@@ -220,6 +230,11 @@
     Defined in:
   </h2>
   
+    
+      openapi-generator/controller.cr
+    
+    <br/>
+  
 
 
 
@@ -242,49 +257,49 @@
       <li class="entry-summary">
         <a href="#error(code,message=nil)-instance-method" class="signature"><strong>#error</strong>(code, message = <span class="n">nil</span>)</a>
         
-          <div class="summary"><p>Generate an error response as a <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#responses-object-example" target="_blank">response object</a>.</p></div>
+          <div class="summary"><p>Generate an error response as a <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#responses-object-example">response object</a>.</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#header(name,description,type=&quot;string&quot;)-instance-method" class="signature"><strong>#header</strong>(name, description, type = <span class="s">&quot;string&quot;</span>)</a>
         
-          <div class="summary"><p>Generate a <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#header-object" target="_blank">header object</a>.</p></div>
+          <div class="summary"><p>Generate a <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#header-object">header object</a>.</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#header_param(name,description,*,required=false,type=&quot;string&quot;)-instance-method" class="signature"><strong>#header_param</strong>(name, description, *, required = <span class="n">false</span>, type = <span class="s">&quot;string&quot;</span>)</a>
         
-          <div class="summary"><p>Generate a header <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#parameterObject" target="_blank">parameter object</a>.</p></div>
+          <div class="summary"><p>Generate a header <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#parameterObject">parameter object</a>.</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#qp(name,description,*,required=false,type=&quot;string&quot;)-instance-method" class="signature"><strong>#qp</strong>(name, description, *, required = <span class="n">false</span>, type = <span class="s">&quot;string&quot;</span>)</a>
         
-          <div class="summary"><p>Generate a query parameter as a <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#parameterObject" target="_blank">parameter object</a>.</p></div>
+          <div class="summary"><p>Generate a query parameter as a <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#parameterObject">parameter object</a>.</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#ref(schema,*,content_type=&quot;application/json&quot;)-instance-method" class="signature"><strong>#ref</strong>(schema, *, content_type = <span class="s">&quot;application/json&quot;</span>)</a>
         
-          <div class="summary"><p>Generates a schema reference as a <a href="https://swagger.io/docs/specification/media-types/" target="_blank">media type object</a>.</p></div>
+          <div class="summary"><p>Generates a schema reference as a <a href="https://swagger.io/docs/specification/media-types/">media type object</a>.</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#ref_array(schema,*,content_type=&quot;application/json&quot;)-instance-method" class="signature"><strong>#ref_array</strong>(schema, *, content_type = <span class="s">&quot;application/json&quot;</span>)</a>
         
-          <div class="summary"><p>Generates an array of schema references as a <a href="https://swagger.io/docs/specification/media-types/" target="_blank">media type object</a>.</p></div>
+          <div class="summary"><p>Generates an array of schema references as a <a href="https://swagger.io/docs/specification/media-types/">media type object</a>.</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#string_array(*,content_type=&quot;application/json&quot;)-instance-method" class="signature"><strong>#string_array</strong>(*, content_type = <span class="s">&quot;application/json&quot;</span>)</a>
         
-          <div class="summary"><p>Generates an array of string as a <a href="https://swagger.io/docs/specification/media-types/" target="_blank">media type object</a>.</p></div>
+          <div class="summary"><p>Generates an array of string as a <a href="https://swagger.io/docs/specification/media-types/">media type object</a>.</p></div>
         
       </li>
     
@@ -322,9 +337,9 @@
       
         <div class="doc">
           
-          <p>Generate an error response as a <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#responses-object-example" target="_blank">response object</a>.</p>
+          <p>Generate an error response as a <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#responses-object-example">response object</a>.</p>
 
-<pre><code><span class="c"># message is optional and defaults to a [standard error description](https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml) based on the code.</span>
+<pre><code class="language-crystal"><span class="c"># message is optional and defaults to a [standard error description](https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml) based on the code.</span>
 <span class="t">Schema</span>.error <span class="n">400</span>, message: <span class="s">&quot;Bad Request&quot;</span>
 
 <span class="c"># Produces:</span>
@@ -351,9 +366,9 @@ YAML</span></code></pre>
       
         <div class="doc">
           
-          <p>Generate a <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#header-object" target="_blank">header object</a>.</p>
+          <p>Generate a <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#header-object">header object</a>.</p>
 
-<pre><code><span class="t">Schema</span>.header <span class="s">&quot;X-Header&quot;</span>, <span class="s">&quot;A custom header&quot;</span>, <span class="k">type</span>: <span class="s">&quot;string&quot;</span>
+<pre><code class="language-crystal"><span class="t">Schema</span>.header <span class="s">&quot;X-Header&quot;</span>, <span class="s">&quot;A custom header&quot;</span>, <span class="k">type</span>: <span class="s">&quot;string&quot;</span>
 
 <span class="c"># Produces:</span>
 
@@ -381,9 +396,9 @@ YAML</span></code></pre>
       
         <div class="doc">
           
-          <p>Generate a header <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#parameterObject" target="_blank">parameter object</a>.</p>
+          <p>Generate a header <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#parameterObject">parameter object</a>.</p>
 
-<pre><code><span class="t">Schema</span>.header_param <span class="s">&quot;X-Header&quot;</span>, <span class="s">&quot;A custom header&quot;</span>, required: <span class="n">true</span>, <span class="k">type</span>: <span class="s">&quot;integer&quot;</span>
+<pre><code class="language-crystal"><span class="t">Schema</span>.header_param <span class="s">&quot;X-Header&quot;</span>, <span class="s">&quot;A custom header&quot;</span>, required: <span class="n">true</span>, <span class="k">type</span>: <span class="s">&quot;integer&quot;</span>
 
 <span class="c"># Produces</span>
 
@@ -413,9 +428,9 @@ YAML</span></code></pre>
       
         <div class="doc">
           
-          <p>Generate a query parameter as a <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#parameterObject" target="_blank">parameter object</a>.</p>
+          <p>Generate a query parameter as a <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#parameterObject">parameter object</a>.</p>
 
-<pre><code><span class="t">Schema</span>.qp <span class="s">&quot;id&quot;</span>, <span class="s">&quot;Filter by id&quot;</span>, required: <span class="n">true</span>, <span class="k">type</span>: <span class="s">&quot;integer&quot;</span>
+<pre><code class="language-crystal"><span class="t">Schema</span>.qp <span class="s">&quot;id&quot;</span>, <span class="s">&quot;Filter by id&quot;</span>, required: <span class="n">true</span>, <span class="k">type</span>: <span class="s">&quot;integer&quot;</span>
 
 <span class="c"># Produces:</span>
 
@@ -445,11 +460,11 @@ YAML</span></code></pre>
       
         <div class="doc">
           
-          <p>Generates a schema reference as a <a href="https://swagger.io/docs/specification/media-types/" target="_blank">media type object</a>.</p>
+          <p>Generates a schema reference as a <a href="https://swagger.io/docs/specification/media-types/">media type object</a>.</p>
 
 <p>Useful when dealing with objects including the <code><a href="../../../OpenAPI/Generator/Serializable.html">Serializable</a></code> module.</p>
 
-<pre><code><span class="t">Schema</span>.ref <span class="t">SerializableClass</span>, content_type: <span class="s">&quot;application/x-www-form-urlencoded&quot;</span>
+<pre><code class="language-crystal"><span class="t">Schema</span>.ref <span class="t">SerializableClass</span>, content_type: <span class="s">&quot;application/x-www-form-urlencoded&quot;</span>
 
 <span class="c"># Produces:</span>
 
@@ -476,11 +491,11 @@ YAML</span></code></pre>
       
         <div class="doc">
           
-          <p>Generates an array of schema references as a <a href="https://swagger.io/docs/specification/media-types/" target="_blank">media type object</a>.</p>
+          <p>Generates an array of schema references as a <a href="https://swagger.io/docs/specification/media-types/">media type object</a>.</p>
 
 <p>Useful when dealing with objects including the <code><a href="../../../OpenAPI/Generator/Serializable.html">Serializable</a></code> module.</p>
 
-<pre><code><span class="t">Schema</span>.ref_array <span class="t">SerializableClass</span>, content_type: <span class="s">&quot;application/x-www-form-urlencoded&quot;</span>
+<pre><code class="language-crystal"><span class="t">Schema</span>.ref_array <span class="t">SerializableClass</span>, content_type: <span class="s">&quot;application/x-www-form-urlencoded&quot;</span>
 
 <span class="c"># Produces:</span>
 
@@ -509,9 +524,9 @@ YAML</span></code></pre>
       
         <div class="doc">
           
-          <p>Generates an array of string as a <a href="https://swagger.io/docs/specification/media-types/" target="_blank">media type object</a>.</p>
+          <p>Generates an array of string as a <a href="https://swagger.io/docs/specification/media-types/">media type object</a>.</p>
 
-<pre><code><span class="t">Schema</span>.string_array content_type: <span class="s">&quot;application/x-www-form-urlencoded&quot;</span>
+<pre><code class="language-crystal"><span class="t">Schema</span>.string_array content_type: <span class="s">&quot;application/x-www-form-urlencoded&quot;</span>
 
 <span class="c"># Produces:</span>
 

@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../../../js/doc.js"></script>
 
   <meta name="repository-name" content="openapi-generator">
-  <title>OpenAPI::Generator::Helpers::Amber - openapi-generator master-dev</title>
+  <title>OpenAPI::Generator::Helpers::ActionController - openapi-generator master-dev</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../../";
   </script>
@@ -91,12 +91,12 @@
       
         <ul>
   
-  <li class=" " data-id="openapi-generator/OpenAPI/Generator/Helpers/ActionController" data-name="openapi::generator::helpers::actioncontroller">
+  <li class=" current" data-id="openapi-generator/OpenAPI/Generator/Helpers/ActionController" data-name="openapi::generator::helpers::actioncontroller">
       <a href="../../../OpenAPI/Generator/Helpers/ActionController.html">ActionController</a>
       
     </li>
   
-  <li class=" current" data-id="openapi-generator/OpenAPI/Generator/Helpers/Amber" data-name="openapi::generator::helpers::amber">
+  <li class=" " data-id="openapi-generator/OpenAPI/Generator/Helpers/Amber" data-name="openapi::generator::helpers::amber">
       <a href="../../../OpenAPI/Generator/Helpers/Amber.html">Amber</a>
       
     </li>
@@ -175,7 +175,7 @@
 <div class="main-content">
 <h1 class="type-name">
 
-  <span class="kind">module</span> OpenAPI::Generator::Helpers::Amber
+  <span class="kind">module</span> OpenAPI::Generator::Helpers::ActionController
 
 </h1>
 
@@ -192,22 +192,22 @@
     Overview
   </h2>
 
-  <p>Helpers that can be used inside an <a href="https://amberframework.org/">Amber</a> Controller to enable inference
+  <p>Helpers that can be used inside an <a href="https://amberframework.org/">ActionController</a> Controller to enable inference
 and ensure that the code matches the contract defined in the generated OpenAPI document.</p>
 
 <p>Include this module inside a Controller class to add various macros that you can use to make the generator
 infer some properties of the OpenAPI declaration.</p>
 
-<ul><li><code><a href="../../../OpenAPI/Generator/Helpers/Amber.html#body_as(type,description=nil,content_type=&quot;application/json&quot;,constructor=:from_json)-macro">body_as</a></code> can infer request body types and schemas.</li><li><code><a href="../../../OpenAPI/Generator/Helpers/Amber.html#respond_with(code=200,description=nil,headers=nil,links=nil,&)-macro">respond_with</a></code> can infer responses types and schemas.</li><li><code><a href="../../../OpenAPI/Generator/Helpers/Amber.html#query_params(name,description,multiple=false,schema=nil,**args)-macro">query_params</a></code> can infer query parameters.</li></ul>
+<ul><li><code><a href="../../../OpenAPI/Generator/Helpers/ActionController.html#body_as(type,description=nil,content_type=&quot;application/json&quot;,constructor=:from_json)-macro">body_as</a></code> can infer request body types and schemas.</li><li><code><a href="../../../OpenAPI/Generator/Helpers/ActionController.html#respond_with(code=200,description=nil,headers=nil,links=nil,&)-macro">respond_with</a></code> can infer responses types and schemas.</li><li><code><a href="../../../OpenAPI/Generator/Helpers/ActionController.html#param(declaration,description,multiple=false,schema=nil,**args)-macro">param</a></code> can infer query parameters.</li></ul>
 
-<p><span class="flag purple">NOTE</span>  Do not forget to call <code><a href="../../../OpenAPI/Generator/Helpers/Amber.html#bootstrap-class-method">.bootstrap</a></code> once before calling <code><a href="../../../OpenAPI/Generator.html#generate(provider:OpenAPI::Generator::RoutesProvider::Base,*,options=NamedTuple.new,base_document=%7Binfo:%7Btitle:&quot;Server&quot;,version:&quot;1&quot;%7D%7D)-instance-method">OpenAPI::Generator.generate</a></code>.</p>
+<p><span class="flag purple">NOTE</span>  Do not forget to call <code><a href="../../../OpenAPI/Generator/Helpers/ActionController.html#bootstrap-class-method">.bootstrap</a></code> once before calling <code><a href="../../../OpenAPI/Generator.html#generate(provider:OpenAPI::Generator::RoutesProvider::Base,*,options=NamedTuple.new,base_document=%7Binfo:%7Btitle:&quot;Server&quot;,version:&quot;1&quot;%7D%7D)-instance-method">OpenAPI::Generator.generate</a></code>.</p>
 
 <pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;json&quot;</span>
-<span class="k">require</span> <span class="s">&quot;openapi-generator/helpers/amber&quot;</span>
+<span class="k">require</span> <span class="s">&quot;openapi-generator/helpers/action-controller&quot;</span>
 
-<span class="k">class</span> <span class="t">HelloPayloadController</span> <span class="o">&lt;</span> <span class="t">Amber</span><span class="t">::</span><span class="t">Controller</span><span class="t">::</span><span class="t">Base</span>
+<span class="k">class</span> <span class="t">HelloPayloadController</span> <span class="o">&lt;</span> <span class="t">ActionController</span><span class="t">::</span><span class="t">Base</span>
   <span class="k">include</span> <span class="t">::</span><span class="t">OpenAPI</span><span class="t">::</span><span class="t">Generator</span><span class="t">::</span><span class="t">Controller</span>
-  <span class="k">include</span> <span class="t">::</span><span class="t">OpenAPI</span><span class="t">::</span><span class="t">Generator</span><span class="t">::</span><span class="t">Helpers</span><span class="t">::</span><span class="t">Amber</span>
+  <span class="k">include</span> <span class="t">::</span><span class="t">OpenAPI</span><span class="t">::</span><span class="t">Generator</span><span class="t">::</span><span class="t">Helpers</span><span class="t">::</span><span class="t">ActionController</span>
 
   @[<span class="t">OpenAPI</span>(
     <span class="s">&lt;&lt;-YAML</span>
@@ -216,8 +216,8 @@ infer some properties of the OpenAPI declaration.</p>
   )]
   <span class="k">def</span> <span class="m">index</span>
     <span class="c"># Infers query parameters.</span>
-    query_params <span class="s">&quot;mandatory&quot;</span>, description: <span class="s">&quot;A mandatory query parameter&quot;</span>
-    query_params? <span class="s">&quot;optional&quot;</span>, description: <span class="s">&quot;An optional query parameter&quot;</span>
+    param mandatory : <span class="t">String</span>, description: <span class="s">&quot;A mandatory query parameter&quot;</span>
+    param optional : <span class="t">String</span>?, description: <span class="s">&quot;An optional query parameter&quot;</span>
 
     <span class="c"># Infers request body.</span>
     body_as <span class="t">Payload</span>?, description: <span class="s">&quot;The request payload.&quot;</span>
@@ -244,14 +244,14 @@ infer some properties of the OpenAPI declaration.</p>
   <span class="k">end</span>
 <span class="k">end</span>
 
-<span class="t">Amber</span><span class="t">::</span><span class="t">Server</span>.configure <span class="k">do</span>
+<span class="t">ActionController</span><span class="t">::</span><span class="t">Server</span>.configure <span class="k">do</span>
   routes <span class="n">:api</span> <span class="k">do</span>
     route <span class="s">&quot;get&quot;</span>, <span class="s">&quot;/hello&quot;</span>, <span class="t">HelloPayloadController</span>, <span class="n">:index</span>
   <span class="k">end</span>
 <span class="k">end</span>
 
-<span class="t">OpenAPI</span><span class="t">::</span><span class="t">Generator</span><span class="t">::</span><span class="t">Helpers</span><span class="t">::</span><span class="t">Amber</span>.bootstrap
-<span class="t">OpenAPI</span><span class="t">::</span><span class="t">Generator</span>.generate(<span class="t">OpenAPI</span><span class="t">::</span><span class="t">Generator</span><span class="t">::</span><span class="t">RoutesProvider</span><span class="t">::</span><span class="t">Amber</span>.<span class="k">new</span>)</code></pre>
+<span class="t">OpenAPI</span><span class="t">::</span><span class="t">Generator</span><span class="t">::</span><span class="t">Helpers</span><span class="t">::</span><span class="t">ActionController</span>.bootstrap
+<span class="t">OpenAPI</span><span class="t">::</span><span class="t">Generator</span>.generate(<span class="t">OpenAPI</span><span class="t">::</span><span class="t">Generator</span><span class="t">::</span><span class="t">RoutesProvider</span><span class="t">::</span><span class="t">ActionController</span>.<span class="k">new</span>)</code></pre>
 
 <p>Will produce:</p>
 
@@ -349,7 +349,7 @@ components:
   </h2>
   
     
-      openapi-generator/helpers/amber.cr
+      openapi-generator/helpers/action-controller.cr
     
     <br/>
   
@@ -401,30 +401,30 @@ components:
       </li>
     
       <li class="entry-summary">
-        <a href="#query_params(name,description,multiple=false,schema=nil,**args)-macro" class="signature"><strong>query_params</strong>(name, description, multiple = <span class="n">false</span>, schema = <span class="n">nil</span>, **args)</a>
+        <a href="#param(declaration,description,multiple=false,schema=nil,**args)-macro" class="signature"><strong>param</strong>(declaration, description, multiple = <span class="n">false</span>, schema = <span class="n">nil</span>, **args)</a>
         
           <div class="summary"><p>Fetch a query parameter and register it in the OpenAPI operation related to the controller method.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#query_params?(name,description,multiple=false,schema=nil,**args)-macro" class="signature"><strong>query_params?</strong>(name, description, multiple = <span class="n">false</span>, schema = <span class="n">nil</span>, **args)</a>
+        <a href="#render(status_code=:ok,head=Nop,json=Nop,yaml=Nop,xml=Nop,html=Nop,text=Nop,binary=Nop,template=Nop,partial=Nop,layout=nil,description=nil,headers=nil,links=nil,type=nil,schema=nil)-macro" class="signature"><strong>render</strong>(status_code = <span class="n">:ok</span>, head = <span class="t">Nop</span>, json = <span class="t">Nop</span>, yaml = <span class="t">Nop</span>, xml = <span class="t">Nop</span>, html = <span class="t">Nop</span>, text = <span class="t">Nop</span>, binary = <span class="t">Nop</span>, template = <span class="t">Nop</span>, partial = <span class="t">Nop</span>, layout = <span class="n">nil</span>, description = <span class="n">nil</span>, headers = <span class="n">nil</span>, links = <span class="n">nil</span>, type = <span class="n">nil</span>, schema = <span class="n">nil</span>)</a>
         
-          <div class="summary"><p>Fetch an optional query parameter and register it in the OpenAPI operation related to the controller method.</p></div>
+          <div class="summary"><p>Same as the ActionController method with automatic response inference.</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#respond_with(code=200,description=nil,headers=nil,links=nil,&)-macro" class="signature"><strong>respond_with</strong>(code = <span class="n">200</span>, description = <span class="n">nil</span>, headers = <span class="n">nil</span>, links = <span class="n">nil</span>, &)</a>
         
-          <div class="summary"><p>Same as the <a href="https://docs.amberframework.org/amber/guides/controllers/respond-with">Amber method</a> with automatic response inference.</p></div>
+          <div class="summary"><p>Same as the ActionController method with automatic response inference.</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#respond_without_body(code=200,description=nil,headers=nil,links=nil)-macro" class="signature"><strong>respond_without_body</strong>(code = <span class="n">200</span>, description = <span class="n">nil</span>, headers = <span class="n">nil</span>, links = <span class="n">nil</span>)</a>
         
-          <div class="summary"><p>Same as the <a href="https://docs.amberframework.org/amber/guides/controllers/respond-with">Amber method</a> but without specifying any content and with automatic response inference.</p></div>
+          <div class="summary"><p>Same as the ActionController method but without specifying any content and with automatic response inference.</p></div>
         
       </li>
     
@@ -505,19 +505,19 @@ body_as <span class="t">SomeClass</span></code></pre>
       </div>
     </div>
   
-    <div class="entry-detail" id="query_params(name,description,multiple=false,schema=nil,**args)-macro">
+    <div class="entry-detail" id="param(declaration,description,multiple=false,schema=nil,**args)-macro">
       <div class="signature">
         
-        macro <strong>query_params</strong>(name, description, multiple = <span class="n">false</span>, schema = <span class="n">nil</span>, **args)
+        macro <strong>param</strong>(declaration, description, multiple = <span class="n">false</span>, schema = <span class="n">nil</span>, **args)
 
-        <a class="method-permalink" href="#query_params(name,description,multiple=false,schema=nil,**args)-macro">#</a>
+        <a class="method-permalink" href="#param(declaration,description,multiple=false,schema=nil,**args)-macro">#</a>
       </div>
       
         <div class="doc">
           
           <p>Fetch a query parameter and register it in the OpenAPI operation related to the controller method.</p>
 
-<pre><code class="language-crystal">query_params <span class="s">&quot;name&quot;</span>, <span class="s">&quot;A user name.&quot;</span></code></pre>
+<pre><code class="language-crystal">param name : <span class="t">String</span> <span class="o">=</span> <span class="s">&quot;default&quot;</span>, <span class="s">&quot;A user name.&quot;</span></code></pre>
         </div>
       
       <br/>
@@ -526,19 +526,17 @@ body_as <span class="t">SomeClass</span></code></pre>
       </div>
     </div>
   
-    <div class="entry-detail" id="query_params?(name,description,multiple=false,schema=nil,**args)-macro">
+    <div class="entry-detail" id="render(status_code=:ok,head=Nop,json=Nop,yaml=Nop,xml=Nop,html=Nop,text=Nop,binary=Nop,template=Nop,partial=Nop,layout=nil,description=nil,headers=nil,links=nil,type=nil,schema=nil)-macro">
       <div class="signature">
         
-        macro <strong>query_params?</strong>(name, description, multiple = <span class="n">false</span>, schema = <span class="n">nil</span>, **args)
+        macro <strong>render</strong>(status_code = <span class="n">:ok</span>, head = <span class="t">Nop</span>, json = <span class="t">Nop</span>, yaml = <span class="t">Nop</span>, xml = <span class="t">Nop</span>, html = <span class="t">Nop</span>, text = <span class="t">Nop</span>, binary = <span class="t">Nop</span>, template = <span class="t">Nop</span>, partial = <span class="t">Nop</span>, layout = <span class="n">nil</span>, description = <span class="n">nil</span>, headers = <span class="n">nil</span>, links = <span class="n">nil</span>, type = <span class="n">nil</span>, schema = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#query_params?(name,description,multiple=false,schema=nil,**args)-macro">#</a>
+        <a class="method-permalink" href="#render(status_code=:ok,head=Nop,json=Nop,yaml=Nop,xml=Nop,html=Nop,text=Nop,binary=Nop,template=Nop,partial=Nop,layout=nil,description=nil,headers=nil,links=nil,type=nil,schema=nil)-macro">#</a>
       </div>
       
         <div class="doc">
           
-          <p>Fetch an optional query parameter and register it in the OpenAPI operation related to the controller method.</p>
-
-<pre><code class="language-crystal">query_params? <span class="s">&quot;name[]&quot;</span>, <span class="s">&quot;One or multiple user names. (optional)&quot;</span>, multiple <span class="o">=</span> <span class="n">true</span></code></pre>
+          <p>Same as the ActionController method with automatic response inference.</p>
         </div>
       
       <br/>
@@ -557,7 +555,7 @@ body_as <span class="t">SomeClass</span></code></pre>
       
         <div class="doc">
           
-          <p>Same as the <a href="https://docs.amberframework.org/amber/guides/controllers/respond-with">Amber method</a> with automatic response inference.</p>
+          <p>Same as the ActionController method with automatic response inference.</p>
         </div>
       
       <br/>
@@ -576,7 +574,7 @@ body_as <span class="t">SomeClass</span></code></pre>
       
         <div class="doc">
           
-          <p>Same as the <a href="https://docs.amberframework.org/amber/guides/controllers/respond-with">Amber method</a> but without specifying any content and with automatic response inference.</p>
+          <p>Same as the ActionController method but without specifying any content and with automatic response inference.</p>
         </div>
       
       <br/>
