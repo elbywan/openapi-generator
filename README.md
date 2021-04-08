@@ -552,6 +552,19 @@ The method to serve a Swagger UI instance depends on which framework you are usi
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
 
+### Specs
+
+Do **not** run `crystal specs` without arguments. It will not compile due to global cookies and session class overrides issues between Amber & Lucky.
+
+To test the project, have a look at the `.travis.yml` file which contains the right command to use:
+
+```sh
+crystal spec ./spec/core && \
+crystal spec ./spec/amber && \
+crystal spec ./spec/lucky && \
+crystal spec ./spec/spider-gazelle
+```
+
 ## Contributors
 
 - [elbywan](https://github.com/elbywan) - creator and maintainer
