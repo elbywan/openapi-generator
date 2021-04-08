@@ -39,7 +39,7 @@ require "openapi-generator"
 
 #### Method based (`Amber`, `Spider-gazelle`)
 
-Use the `@[OpenAPI]` annotationa with a `yaml` encoded string argument.
+Use the `@[OpenAPI]` annotation with a `yaml` encoded string argument.
 
 ```crystal
 class Controller
