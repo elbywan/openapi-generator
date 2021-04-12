@@ -79,13 +79,15 @@ struct Model
     property union_types : Int32 | String | Hash(String, InnerModel)
     property free_form : JSON::Any
     property array_of_hash : Array(Hash(String, Int32 | String))
+    property tuple : Tuple(Int32, String, Tuple(Bool | Array(Float64)))
 
     SCHEMA = <<-JSON
     {
       "required": [
         "union_types",
         "free_form",
-        "array_of_hash"
+        "array_of_hash",
+        "tuple"
       ],
       "type": "object",
       "properties": {
@@ -123,6 +125,39 @@ struct Model
                 }
               ]
             }
+          }
+        },
+        "tuple": {
+          "maxItems": 3,
+          "minItems": 3,
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "maxItems": 1,
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                }
+              }
+            ]
           }
         }
       }
