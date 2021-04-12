@@ -40,7 +40,7 @@ struct Tuple
 
       ::OpenAPI::Generator::Serializable.generate_schema(
         schema_items,
-        types: {{ types}},
+        types: {{ types }},
       )
     {% end %}
 
