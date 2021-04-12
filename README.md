@@ -27,7 +27,7 @@ require "openapi-generator"
 
 ## API Documentation
 
-[**Please check this link for the API documentation.**](https://elbywan.github.io/openapi-generator/OpenAPI/Generator.html)
+[**🔗 Full API documentation.**](https://elbywan.github.io/openapi-generator/OpenAPI/Generator.html)
 
 ## Concepts
 
@@ -114,7 +114,16 @@ YAML
 
 **Note**: An [`OpenAPI::Generator::RoutesProvider::Base`](https://elbywan.github.io/openapi-generator/OpenAPI/Generator/RoutesProvider.html) implementation must be provided. A `RoutesProvider` is responsible from extracting the [server routes and mapping these routes with the declared operations](https://elbywan.github.io/openapi-generator/OpenAPI/Generator/RouteMapping.html) in order to produce the final openapi file.
 
+```crystal
+OpenAPI::Generator.generate(
+  provider: provider
+)
+```
+
 Currently, the [Amber](https://amberframework.org/), [Lucky](https://luckyframework.org), [Spider-gazelle](https://spider-gazelle.net/) providers are included out of the box.
+
+<details><summary><strong>Amber</strong></summary>
+<p>
 
 ```crystal
 # Amber provider
@@ -125,14 +134,10 @@ OpenAPI::Generator.generate(
 )
 ```
 
-```crystal
-# Spider-gazelle provider
-require "openapi-generator/providers/action-controller"
+</p></details>
 
-OpenAPI::Generator.generate(
-  provider: OpenAPI::Generator::RoutesProvider::ActionController.new
-)
-```
+<details><summary><strong>Lucky</strong></summary>
+<p>
 
 ```crystal
 # Lucky provider
@@ -142,6 +147,24 @@ OpenAPI::Generator.generate(
   provider: OpenAPI::Generator::RoutesProvider::Lucky.new
 )
 ```
+
+</p></details>
+
+<details><summary><strong>Spider-gazelle</strong></summary>
+<p>
+
+```crystal
+# Spider-gazelle provider
+require "openapi-generator/providers/action-controller"
+
+OpenAPI::Generator.generate(
+  provider: OpenAPI::Generator::RoutesProvider::ActionController.new
+)
+```
+
+</p></details>
+
+<details><summary><strong>Custom</strong></summary>
 
 ```crystal
 # Or define your own…
@@ -159,6 +182,9 @@ OpenAPI::Generator.generate(
   provider: MockProvider.new
 )
 ```
+
+</p>
+</details>
 
 The `.generate` method accepts additional options:
 
@@ -297,11 +323,8 @@ end
 - Query parameters
 
 **Supported Frameworks:**
-- Lucky
-- Amber
-- Spider-gazelle
 
-### Amber
+<details><summary><strong>Amber</strong></summary>
 
 ```crystal
 require "openapi-generator/helpers/amber"
@@ -378,7 +401,9 @@ end
 - `macro html(body, type = nil, schema = nil)`
 - `macro js(body, type = nil, schema = nil)`
 
-### Spider-gazelle
+</p></details>
+
+<details><summary><strong>Spider-gazelle</strong></summary>
 
 ```crystal
 require "openapi-generator/helpers/action-controller"
@@ -455,7 +480,11 @@ end
 
 -  `macro render(status_code = :ok, head = Nop, json = Nop, yaml = Nop, xml = Nop, html = Nop, text = Nop, binary = Nop, template = Nop, partial = Nop, layout = nil, description = nil, headers = nil, links = nil, type = nil, schema = nil)`
 
-### Lucky
+</p>
+</details>
+
+<details><summary><strong>Lucky</strong></summary>
+<p>
 
 ```crystal
 require "openapi-generator/helpers/lucky"
@@ -534,6 +563,9 @@ end
 - `macro head(status, description = nil, headers = nil, links = nil)`
 - `macro xml(body, status = 200, description = nil, type = String, schema = nil, headers = nil, links = nil)`
 - `macro plain_text(body, status = 200, description = nil, type = String, schema = nil, headers = nil, links = nil)`
+
+</p>
+</details>
 
 ## Swagger UI
 
