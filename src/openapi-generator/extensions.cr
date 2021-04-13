@@ -22,6 +22,38 @@ class Array(T)
 end
 
 # :nodoc:
+# Define a `self.to_openapi_schema` method for the Tuple class.
+#
+# OpenAPI 3.0 does not support tuples (3.1 does), so we serialize it into a fixed bounds array.
+# see: https://github.com/OAI/OpenAPI-Specification/issues/1026
+struct Tuple
+  def self.to_openapi_schema
+    schema_items = uninitialized OpenAPI::Schema | OpenAPI::Reference
+
+    {% begin %}
+      {% types = [] of Types %}
+      {% for i in 0...T.size %}
+        {% for t in T[i].union_types %}
+          {% types << t %}
+        {% end %}
+      {% end %}
+
+      ::OpenAPI::Generator::Serializable.generate_schema(
+        schema_items,
+        types: {{ types }},
+      )
+    {% end %}
+
+    OpenAPI::Schema.new(
+      type: "array",
+      items: schema_items,
+      min_items: {{ T.size }},
+      max_items: {{ T.size }}
+    )
+  end
+end
+
+# :nodoc:
 # Define a `self.to_openapi_schema` method for the Hash class.
 class Hash(K, V)
   # Returns the OpenAPI schema associated with the Hash.

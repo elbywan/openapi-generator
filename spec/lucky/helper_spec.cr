@@ -150,6 +150,7 @@ describe OpenAPI::Generator::Helpers::Lucky do
           - union_types
           - free_form
           - array_of_hash
+          - tuple
           type: object
           properties:
             union_types:
@@ -170,6 +171,23 @@ describe OpenAPI::Generator::Helpers::Lucky do
                   oneOf:
                   - type: integer
                   - type: string
+            tuple:
+              maxItems: 3
+              minItems: 3
+              type: array
+              items:
+                oneOf:
+                - type: integer
+                - type: string
+                - maxItems: 1
+                  minItems: 1
+                  type: array
+                  items:
+                    oneOf:
+                    - type: array
+                      items:
+                        type: number
+                    - type: boolean
         LuckySpec_Payload:
           required:
           - hello
