@@ -248,7 +248,7 @@ module OpenAPI::Generator::Serializable
       {% json_ann = ivar.annotation(JSON::Field) %}
       {% openapi_ann = ivar.annotation(OpenAPI::Field) %}
       {% types = ivar.type.union_types %}
-      {% schema_key = json_ann && json_ann[:key] || ivar.id %}
+      {% schema_key = json_ann && json_ann[:key] && json_ann[:key].id || ivar.id %}
       {% as_type = openapi_ann && openapi_ann[:type] && openapi_ann[:type].types.map(&.resolve) %}
       {% read_only = openapi_ann && openapi_ann[:read_only] %}
       {% write_only = openapi_ann && openapi_ann[:write_only] %}

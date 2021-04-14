@@ -1,11 +1,10 @@
 require "json"
 require "file_utils"
-require "http"
-require "lucky"
+require "amber"
 require "../spec_helper"
-require "../../src/openapi-generator/helpers/lucky"
+require "../../src/openapi-generator/helpers/amber"
 
-class Payload
+class AmberSpec::Payload
   include JSON::Serializable
   extend OpenAPI::Generator::Serializable
 
@@ -13,36 +12,49 @@ class Payload
   end
 end
 
-class Hello::Index < Lucky::Action
-  include OpenAPI::Generator::Helpers::Lucky
+class AmberHelperSpecController < Amber::Controller::Base
+  include ::OpenAPI::Generator::Controller
+  include ::OpenAPI::Generator::Helpers::Amber
 
-  default_format :text
+  @[OpenAPI(
+    <<-YAML
+      summary: Sends a hello payload
+      responses:
+        200:
+          description: Overriden
+    YAML
+  )]
+  def index
+    query_params "mandatory", description: "A mandatory query parameter"
+    query_params? "optional", description: "An optional query parameter"
 
-  param mandatory : String, description: "A mandatory query parameter"
-  param optional : String?, description: "An optional query parameter"
+    body_as AmberSpec::Payload?, description: "A Hello payload."
 
-  open_api <<-YAML
-    summary: Sends a hello payload
-    responses:
-      200:
-        description: Overriden
-  YAML
-
-  post "/hello" do
-    body_as Payload?, description: "A Hello payload."
-
-    json Payload.new, type: Payload, description: "Hello"
-    xml "<hello></hello>", description: "Hello"
-    plain_text "Good morning.", status: 201, description: "Not Overriden"
-    plain_text "Ouch.", status: 400
+    payload = AmberSpec::Payload.new
+    respond_with 200, description: "Hello" do
+      json payload, type: AmberSpec::Payload
+      xml "<hello></hello>", type: String
+    end
+    respond_with 201, description: "Not Overriden" do
+      text "Good morning.", type: String
+    end
+    respond_with 400 do
+      text "Ouch.", schema: String.to_openapi_schema
+    end
   end
 end
 
-require "../../src/openapi-generator/providers/lucky.cr"
+Amber::Server.configure do
+  routes :api do
+    route "post", "/hello", AmberHelperSpecController, :index
+  end
+end
 
-OpenAPI::Generator::Helpers::Lucky.bootstrap
+require "../../src/openapi-generator/providers/amber.cr"
 
-describe OpenAPI::Generator::Helpers::Lucky do
+OpenAPI::Generator::Helpers::Amber.bootstrap
+
+describe OpenAPI::Generator::Helpers::Amber do
   after_all {
     FileUtils.rm "openapi_test.yaml"
   }
@@ -56,7 +68,7 @@ describe OpenAPI::Generator::Helpers::Lucky do
       components: NamedTuple.new,
     }
     OpenAPI::Generator.generate(
-      OpenAPI::Generator::RoutesProvider::Lucky.new,
+      OpenAPI::Generator::RoutesProvider::Amber.new,
       options: options,
       base_document: base_document
     )
@@ -91,7 +103,7 @@ describe OpenAPI::Generator::Helpers::Lucky do
               application/json:
                 schema:
                   allOf:
-                  - $ref: '#/components/schemas/Payload'
+                  - $ref: '#/components/schemas/AmberSpec_Payload'
             required: false
           responses:
             "200":
@@ -100,8 +112,8 @@ describe OpenAPI::Generator::Helpers::Lucky do
                 application/json:
                   schema:
                     allOf:
-                    - $ref: '#/components/schemas/Payload'
-                text/xml:
+                    - $ref: '#/components/schemas/AmberSpec_Payload'
+                application/xml:
                   schema:
                     type: string
             "201":
@@ -116,6 +128,43 @@ describe OpenAPI::Generator::Helpers::Lucky do
                 text/plain:
                   schema:
                     type: string
+      /{id}:
+        get:
+          summary: Says hello
+          parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: string
+            example: id
+          responses:
+            "200":
+              description: OK
+        options:
+          summary: Says hello
+          parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: string
+            example: id
+          responses:
+            "200":
+              description: OK
+        head:
+          summary: Says hello
+          parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: string
+            example: id
+          responses:
+            "200":
+              description: OK
     components:
       schemas:
         Model:
@@ -150,6 +199,7 @@ describe OpenAPI::Generator::Helpers::Lucky do
           - union_types
           - free_form
           - array_of_hash
+          - tuple
           type: object
           properties:
             union_types:
@@ -170,7 +220,24 @@ describe OpenAPI::Generator::Helpers::Lucky do
                   oneOf:
                   - type: integer
                   - type: string
-        Payload:
+            tuple:
+              maxItems: 3
+              minItems: 3
+              type: array
+              items:
+                oneOf:
+                - type: integer
+                - type: string
+                - maxItems: 1
+                  minItems: 1
+                  type: array
+                  items:
+                    oneOf:
+                    - type: array
+                      items:
+                        type: number
+                    - type: boolean
+        AmberSpec_Payload:
           required:
           - hello
           type: object

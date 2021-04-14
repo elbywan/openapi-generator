@@ -4,7 +4,7 @@ require "action-controller"
 require "../spec_helper"
 require "../../src/openapi-generator/helpers/action-controller"
 
-class Payload
+class ActionControllerSpec::Payload
   include JSON::Serializable
   extend OpenAPI::Generator::Serializable
 
@@ -12,7 +12,7 @@ class Payload
   end
 end
 
-class HelloPayloadActionController < ActionController::Base
+class HelperSpecActionController < ActionController::Base
   include ::OpenAPI::Generator::Controller
   include ::OpenAPI::Generator::Helpers::ActionController
 
@@ -24,7 +24,7 @@ class HelloPayloadActionController < ActionController::Base
     YAML
   )]
   def index
-    render json: [Payload.new("mandatory", true, "default", "nillable")], description: "all payloads", type: Array(Payload)
+    render json: [ActionControllerSpec::Payload.new("mandatory", true, "default", "nillable")], description: "all payloads", type: Array(ActionControllerSpec::Payload)
   end
 
   @[OpenAPI(
@@ -41,11 +41,11 @@ class HelloPayloadActionController < ActionController::Base
     with_default = param with_default : String = "default_value", "A mandatory query parameter with default"
     with_default_nillable = param with_default_nillable : String? = "default_value_nillable", "An optional query parameter with default"
 
-    body_as Payload?, description: "A Hello payload."
+    body_as ActionControllerSpec::Payload?, description: "A Hello payload."
 
-    payload = Payload.new(mandatory, optional, with_default, with_default_nillable)
+    payload = ActionControllerSpec::Payload.new(mandatory, optional, with_default, with_default_nillable)
     respond_with 200, description: "Hello" do
-      json payload, type: Payload
+      json payload, type: ActionControllerSpec::Payload
       xml "<hello></hello>", type: String
     end
     respond_with 201, description: "Not Overriden" do
@@ -100,7 +100,7 @@ describe OpenAPI::Generator::Helpers::ActionController do
                   schema:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Payload'
+                      $ref: '#/components/schemas/ActionControllerSpec_Payload'
         post:
           summary: Sends a hello payload
           parameters:
@@ -134,7 +134,7 @@ describe OpenAPI::Generator::Helpers::ActionController do
               application/json:
                 schema:
                   allOf:
-                  - $ref: '#/components/schemas/Payload'
+                  - $ref: '#/components/schemas/ActionControllerSpec_Payload'
             required: false
           responses:
             "200":
@@ -143,7 +143,7 @@ describe OpenAPI::Generator::Helpers::ActionController do
                 application/json:
                   schema:
                     allOf:
-                    - $ref: '#/components/schemas/Payload'
+                    - $ref: '#/components/schemas/ActionControllerSpec_Payload'
                 application/xml:
                   schema:
                     type: string
@@ -159,6 +159,19 @@ describe OpenAPI::Generator::Helpers::ActionController do
                 text/plain:
                   schema:
                     type: string
+      /{id}:
+        get:
+          summary: Says hello
+          parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: string
+            example: id
+          responses:
+            "200":
+              description: OK
     components:
       schemas:
         Model:
@@ -193,6 +206,7 @@ describe OpenAPI::Generator::Helpers::ActionController do
           - union_types
           - free_form
           - array_of_hash
+          - tuple
           type: object
           properties:
             union_types:
@@ -213,7 +227,24 @@ describe OpenAPI::Generator::Helpers::ActionController do
                   oneOf:
                   - type: integer
                   - type: string
-        Payload:
+            tuple:
+              maxItems: 3
+              minItems: 3
+              type: array
+              items:
+                oneOf:
+                - type: integer
+                - type: string
+                - maxItems: 1
+                  minItems: 1
+                  type: array
+                  items:
+                    oneOf:
+                    - type: array
+                      items:
+                        type: number
+                    - type: boolean
+        ActionControllerSpec_Payload:
           required:
           - mandatory
           - with_default
@@ -240,19 +271,19 @@ describe OpenAPI::Generator::Helpers::ActionController do
   end
 
   it "should deserialise mandatory" do
-    res = HelloPayloadActionController.context(
+    res = HelperSpecActionController.context(
       method: "POST", route: "/hello",
       route_params: {"mandatory" => "man"},
       headers: {"Content-Type" => "application/json"}, &.create)
 
-    expected_body = Payload.new("man", nil, "default_value", "default_value_nillable")
+    expected_body = ActionControllerSpec::Payload.new("man", nil, "default_value", "default_value_nillable")
 
     res.status_code.should eq(200)
     res.output.to_s.should eq(expected_body.to_json)
   end
 
   it "should set defaults" do
-    res = HelloPayloadActionController.context(
+    res = HelperSpecActionController.context(
       method: "POST", route: "/hello",
       route_params: {
         "mandatory"             => "man",
@@ -262,7 +293,7 @@ describe OpenAPI::Generator::Helpers::ActionController do
       },
       headers: {"Content-Type" => "application/json"}, &.create)
 
-    expected_body = Payload.new("man", true, "not_default", "value")
+    expected_body = ActionControllerSpec::Payload.new("man", true, "not_default", "value")
 
     res.status_code.should eq(200)
     res.output.to_s.should eq(expected_body.to_json)
@@ -270,14 +301,14 @@ describe OpenAPI::Generator::Helpers::ActionController do
 
   it "should raise if there is no mandatory param" do
     expect_raises(HTTP::Params::Serializable::ParamMissingError, "Parameter \"mandatory\" is missing") do
-      HelloPayloadActionController.context(method: "POST", route: "/hello", headers: {"Content-Type" => "application/json"}, &.create)
+      HelperSpecActionController.context(method: "POST", route: "/hello", headers: {"Content-Type" => "application/json"}, &.create)
     end
   end
 
   it "should execute macro render" do
-    res = HelloPayloadActionController.context(method: "GET", route: "/hello", headers: {"Content-Type" => "application/json"}, &.index)
+    res = HelperSpecActionController.context(method: "GET", route: "/hello", headers: {"Content-Type" => "application/json"}, &.index)
 
-    expected_body = Payload.new("mandatory", true, "default", "nillable")
+    expected_body = ActionControllerSpec::Payload.new("mandatory", true, "default", "nillable")
 
     res.status_code.should eq(200)
     res.output.to_s.should eq([expected_body].to_json)

@@ -1,10 +1,11 @@
 require "json"
 require "file_utils"
-require "amber"
+require "http"
+require "lucky"
 require "../spec_helper"
-require "../../src/openapi-generator/helpers/amber"
+require "../../src/openapi-generator/helpers/lucky"
 
-class Payload
+class LuckySpec::Payload
   include JSON::Serializable
   extend OpenAPI::Generator::Serializable
 
@@ -12,61 +13,36 @@ class Payload
   end
 end
 
-class HelloPayloadController < Amber::Controller::Base
-  include ::OpenAPI::Generator::Controller
-  include ::OpenAPI::Generator::Helpers::Amber
+class LuckyHelperSpec::Index < Lucky::Action
+  include OpenAPI::Generator::Helpers::Lucky
 
-  @[OpenAPI(
-    <<-YAML
-      summary: Sends a hello payload
-      responses:
-        200:
-          description: Overriden
-    YAML
-  )]
-  def index
-    query_params "mandatory", description: "A mandatory query parameter"
-    query_params? "optional", description: "An optional query parameter"
+  default_format :text
 
-    body_as Payload?, description: "A Hello payload."
+  param mandatory : String, description: "A mandatory query parameter"
+  param optional : String?, description: "An optional query parameter"
 
-    payload = Payload.new
-    respond_with 200, description: "Hello" do
-      json payload, type: Payload
-      xml "<hello></hello>", type: String
-    end
-    respond_with 201, description: "Not Overriden" do
-      text "Good morning.", type: String
-    end
-    respond_with 400 do
-      text "Ouch.", schema: String.to_openapi_schema
-    end
+  open_api <<-YAML
+    summary: Sends a hello payload
+    responses:
+      200:
+        description: Overriden
+  YAML
+
+  post "/hello" do
+    body_as LuckySpec::Payload?, description: "A Hello payload."
+
+    json LuckySpec::Payload.new, type: LuckySpec::Payload, description: "Hello"
+    xml "<hello></hello>", description: "Hello"
+    plain_text "Good morning.", status: 201, description: "Not Overriden"
+    plain_text "Ouch.", status: 400
   end
 end
 
-class Amber::Environment::Logging
-  def initialize(initial_logging : OptionsType)
-    logging = DEFAULTS.merge(initial_logging)
-    @colorize = logging["colorize"].as(Bool)
-    @color = logging["color"].as(String)
-    # Replace severity assignment otherwise it prevents compilation…
-    @severity = "debug"
-    @filter = logging["filter"].as(Array(String))
-    @skip = logging["skip"].as(Array(String))
-  end
-end
+require "../../src/openapi-generator/providers/lucky.cr"
 
-Amber::Server.configure do
-  routes :api do
-    route "post", "/hello", HelloPayloadController, :index
-  end
-end
+OpenAPI::Generator::Helpers::Lucky.bootstrap
 
-require "../../src/openapi-generator/providers/amber.cr"
-
-OpenAPI::Generator::Helpers::Amber.bootstrap
-
-describe OpenAPI::Generator::Helpers::Amber do
+describe OpenAPI::Generator::Helpers::Lucky do
   after_all {
     FileUtils.rm "openapi_test.yaml"
   }
@@ -80,7 +56,7 @@ describe OpenAPI::Generator::Helpers::Amber do
       components: NamedTuple.new,
     }
     OpenAPI::Generator.generate(
-      OpenAPI::Generator::RoutesProvider::Amber.new,
+      OpenAPI::Generator::RoutesProvider::Lucky.new,
       options: options,
       base_document: base_document
     )
@@ -115,7 +91,7 @@ describe OpenAPI::Generator::Helpers::Amber do
               application/json:
                 schema:
                   allOf:
-                  - $ref: '#/components/schemas/Payload'
+                  - $ref: '#/components/schemas/LuckySpec_Payload'
             required: false
           responses:
             "200":
@@ -124,8 +100,8 @@ describe OpenAPI::Generator::Helpers::Amber do
                 application/json:
                   schema:
                     allOf:
-                    - $ref: '#/components/schemas/Payload'
-                application/xml:
+                    - $ref: '#/components/schemas/LuckySpec_Payload'
+                text/xml:
                   schema:
                     type: string
             "201":
@@ -174,6 +150,7 @@ describe OpenAPI::Generator::Helpers::Amber do
           - union_types
           - free_form
           - array_of_hash
+          - tuple
           type: object
           properties:
             union_types:
@@ -194,7 +171,24 @@ describe OpenAPI::Generator::Helpers::Amber do
                   oneOf:
                   - type: integer
                   - type: string
-        Payload:
+            tuple:
+              maxItems: 3
+              minItems: 3
+              type: array
+              items:
+                oneOf:
+                - type: integer
+                - type: string
+                - maxItems: 1
+                  minItems: 1
+                  type: array
+                  items:
+                    oneOf:
+                    - type: array
+                      items:
+                        type: number
+                    - type: boolean
+        LuckySpec_Payload:
           required:
           - hello
           type: object

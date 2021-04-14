@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../../../js/doc.js"></script>
 
   <meta name="repository-name" content="openapi-generator">
-  <title>OpenAPI::Generator::RoutesProvider::Base - openapi-generator master-dev</title>
+  <title>OpenAPI::Generator::RoutesProvider::ActionController - openapi-generator master-dev</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../../";
   </script>
@@ -121,7 +121,7 @@
       
         <ul>
   
-  <li class=" " data-id="openapi-generator/OpenAPI/Generator/RoutesProvider/ActionController" data-name="openapi::generator::routesprovider::actioncontroller">
+  <li class=" current" data-id="openapi-generator/OpenAPI/Generator/RoutesProvider/ActionController" data-name="openapi::generator::routesprovider::actioncontroller">
       <a href="../../../OpenAPI/Generator/RoutesProvider/ActionController.html">ActionController</a>
       
     </li>
@@ -131,7 +131,7 @@
       
     </li>
   
-  <li class=" current" data-id="openapi-generator/OpenAPI/Generator/RoutesProvider/Base" data-name="openapi::generator::routesprovider::base">
+  <li class=" " data-id="openapi-generator/OpenAPI/Generator/RoutesProvider/Base" data-name="openapi::generator::routesprovider::base">
       <a href="../../../OpenAPI/Generator/RoutesProvider/Base.html">Base</a>
       
     </li>
@@ -175,12 +175,12 @@
 <div class="main-content">
 <h1 class="type-name">
 
-  <span class="kind">abstract class</span> OpenAPI::Generator::RoutesProvider::Base
+  <span class="kind">class</span> OpenAPI::Generator::RoutesProvider::ActionController
 
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../../OpenAPI/Generator/RoutesProvider/Base.html">OpenAPI::Generator::RoutesProvider::Base</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../../OpenAPI/Generator/RoutesProvider/ActionController.html">OpenAPI::Generator::RoutesProvider::ActionController</a></li><li class="superclass"><a href="../../../OpenAPI/Generator/RoutesProvider/Base.html">OpenAPI::Generator::RoutesProvider::Base</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
 
 
 
@@ -194,7 +194,7 @@
     Overview
   </h2>
 
-  <p>Base class for route providers.</p>
+  <p>Provides the list of declared routes.</p>
 
 
 
@@ -203,24 +203,6 @@
 
 
 
-
-  <h2>
-    <a id="direct-known-subclasses" class="anchor" href="#direct-known-subclasses">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Direct Known Subclasses
-  </h2>
-  <ul class="other-types-list">
-    
-      <li class="other-type"><a href="../../../OpenAPI/Generator/RoutesProvider/ActionController.html">OpenAPI::Generator::RoutesProvider::ActionController</a></li>
-    
-      <li class="other-type"><a href="../../../OpenAPI/Generator/RoutesProvider/Amber.html">OpenAPI::Generator::RoutesProvider::Amber</a></li>
-    
-      <li class="other-type"><a href="../../../OpenAPI/Generator/RoutesProvider/Lucky.html">OpenAPI::Generator::RoutesProvider::Lucky</a></li>
-    
-  </ul>
 
 
 
@@ -237,7 +219,7 @@
   </h2>
   
     
-      openapi-generator/providers/base.cr
+      openapi-generator/providers/action-controller.cr
     
     <br/>
   
@@ -277,6 +259,25 @@
   
     
 
+  <h3>Instance methods inherited from class <code><a href="../../../OpenAPI/Generator/RoutesProvider/Base.html">OpenAPI::Generator::RoutesProvider::Base</a></code></h3>
+  
+  
+    <a href="../../../OpenAPI/Generator/RoutesProvider/Base.html#route_mappings:Array(RouteMapping)-instance-method" class="tooltip">
+      <span>route_mappings : Array(RouteMapping)</span>
+    route_mappings</a>
+    
+  
+
+
+    
+
+
+    
+
+
+  
+    
+
 
     
 
@@ -313,13 +314,17 @@
   
     <div class="entry-detail" id="route_mappings:Array(RouteMapping)-instance-method">
       <div class="signature">
-        abstract 
+        
         def <strong>route_mappings</strong> : Array(<a href="../../../OpenAPI/Generator/RouteMapping.html">RouteMapping</a>)
 
         <a class="method-permalink" href="#route_mappings:Array(RouteMapping)-instance-method">#</a>
       </div>
       
         <div class="doc">
+          
+            <div class="doc-inherited">
+              Description copied from class <a href="../../../OpenAPI/Generator/RoutesProvider/Base.html">OpenAPI::Generator::RoutesProvider::Base</a>
+            </div>
           
           <p>Returns a list of <code><a href="../../../OpenAPI/Generator/RouteMapping.html">OpenAPI::Generator::RouteMapping</a></code></p>
         </div>
