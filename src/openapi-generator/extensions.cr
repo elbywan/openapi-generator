@@ -156,6 +156,17 @@ struct Time
   end
 end
 
+# Define a `self.to_openapi_schema` method for the enum.
+struct Enum
+  def self.to_openapi_schema
+    OpenAPI::Schema.new(
+      title: {{@type.name.id.stringify.split("::").join("_")}},
+      type: "integer",
+      enum: self.values.map(&.to_i)
+    )
+  end
+end
+
 module OpenAPI
   # :nodoc:
   # Used to declare path parameters.
