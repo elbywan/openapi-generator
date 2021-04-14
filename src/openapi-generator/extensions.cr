@@ -22,7 +22,7 @@ class Array(T)
 end
 
 # :nodoc:
-# Define a `self.to_openapi_schema` method for the Tuple class.
+# Define a `self.to_openapi_schema` method for the Tuple struct.
 #
 # OpenAPI 3.0 does not support tuples (3.1 does), so we serialize it into a fixed bounds array.
 # see: https://github.com/OAI/OpenAPI-Specification/issues/1026
@@ -77,7 +77,7 @@ class Hash(K, V)
 end
 
 # :nodoc:
-# Define a `self.to_openapi_schema` method for the NamedTuple class.
+# Define a `self.to_openapi_schema` method for the NamedTuple struct.
 struct NamedTuple
   # Returns the OpenAPI schema associated with the NamedTuple.
   def self.to_openapi_schema
@@ -138,6 +138,20 @@ struct Bool
   def self.to_openapi_schema
     OpenAPI::Schema.new(
       type: "boolean"
+    )
+  end
+end
+
+# :nodoc:
+# Define a `self.to_openapi_schema` method for the Time struct.
+struct Time
+  # Converts a Time data to an OpenAPI date-time format.
+  # https://swagger.io/docs/specification/data-models/data-types/
+  # :nodoc:
+  def self.to_openapi_schema
+    OpenAPI::Schema.new(
+      type: "string",
+      format: "date-time"
     )
   end
 end
