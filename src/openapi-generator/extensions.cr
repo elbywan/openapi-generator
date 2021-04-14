@@ -149,7 +149,7 @@ struct Enum
     OpenAPI::Schema.new(
       title: {{@type.name.id.stringify.split("::").join("_")}},
       type: "integer",
-      enum: self.values.map(&.to_i)
+      enum: self.values.map(&.to_i64)
     )
   end
 end
