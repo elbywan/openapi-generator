@@ -82,7 +82,7 @@ module OpenAPI::Generator::Serializable
 
   macro generate_schema(schema, types, as_type = nil, read_only = false, write_only = false, schema_key = nil, example = nil)
     {% serialized_types = [] of {String, (TypeNode | ArrayLiteral(TypeNode))?} %}
-    {% nilable = types.any? { |t| t.resolve.nilable? } %}
+    {% nilable = types.any? &.resolve.nilable? %}
 
     # For every type of the instance variable (can be a union, like String | Int32)…
     {% for type in (as_type || types) %}
