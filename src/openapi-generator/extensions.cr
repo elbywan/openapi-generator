@@ -143,6 +143,17 @@ struct Bool
 end
 
 # :nodoc:
+# Define a `self.to_openapi_schema` method for the enum.
+struct Enum
+  def self.to_openapi_schema
+    OpenAPI::Schema.new(
+      title: {{@type.name.id.stringify.split("::").join("_")}},
+      type: "integer",
+      enum: self.values.map(&.to_i64)
+    )
+  end
+end
+
 # Define a `self.to_openapi_schema` method for the Time struct.
 struct Time
   # Converts a Time data to an OpenAPI date-time format.
@@ -152,17 +163,6 @@ struct Time
     OpenAPI::Schema.new(
       type: "string",
       format: "date-time"
-    )
-  end
-end
-
-# Define a `self.to_openapi_schema` method for the enum.
-struct Enum
-  def self.to_openapi_schema
-    OpenAPI::Schema.new(
-      title: {{@type.name.id.stringify.split("::").join("_")}},
-      type: "integer",
-      enum: self.values.map(&.to_i)
     )
   end
 end

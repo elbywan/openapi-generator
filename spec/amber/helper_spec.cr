@@ -200,6 +200,7 @@ describe OpenAPI::Generator::Helpers::Amber do
           - free_form
           - array_of_hash
           - tuple
+          - numbers_enum
           type: object
           properties:
             union_types:
@@ -237,6 +238,13 @@ describe OpenAPI::Generator::Helpers::Amber do
                       items:
                         type: number
                     - type: boolean
+            numbers_enum:
+              title: Model_ComplexModel_Numbers
+              enum:
+              - 1
+              - 2
+              - 3
+              type: integer
         AmberSpec_Payload:
           required:
           - hello
