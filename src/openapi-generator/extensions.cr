@@ -178,6 +178,7 @@ module OpenAPI
   class Schema
     setter read_only
     setter write_only
+    setter required
   end
 
   # :nodoc:

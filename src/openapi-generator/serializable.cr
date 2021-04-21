@@ -268,6 +268,10 @@ module OpenAPI::Generator::Serializable
 
     {% end %}
 
+    if schema.required.try &.empty?
+      schema.required = nil
+    end
+
     schema
   end
 
