@@ -1,3 +1,6 @@
 dependencies:
   teeplate:
     github: luckyframework/teeplate
+  shell-table:
+    github: jwaldrip/shell-table.cr
+    branch: master
