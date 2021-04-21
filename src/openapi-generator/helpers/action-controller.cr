@@ -439,6 +439,10 @@ module OpenAPI::Generator::Helpers::ActionController
       ), type: {{type}}, schema: {{schema}})
   end
 
+  macro head(status_code = :ok, description = nil, headers = nil, links = nil, type = nil, schema = nil)
+    render(status_code: {{status_code}}, head: true, description: {{description}}, headers: {{headers}}, links: {{links}}, type: {{type}}, schema: {{schema}})
+  end
+
   # Same as the ActionController method but without specifying any content and with automatic response inference.
   macro respond_without_body(code = 200, description = nil, headers = nil, links = nil)
     respond_without_body(code: {{code}}, response: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_response(
