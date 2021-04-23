@@ -256,7 +256,14 @@ module OpenAPI::Generator::Helpers::ActionController
       content_type: {{content_type}}
     )
 
-    ::{{non_nil_type}}.{{constructor.id}}(request.body.as(IO))
+    {% if type.resolve.union_types.includes?(Nil) %}
+      %content = request.body.try &.gets_to_end
+      if %content
+        ::{{non_nil_type}}.{{constructor.id}}(%content)
+      end
+    {% else %}
+      ::{{non_nil_type}}.{{constructor.id}}(request.body.as(IO))
+    {% end %}
   end
 
   macro body_raw(type, description = nil, content_type = "application/json")

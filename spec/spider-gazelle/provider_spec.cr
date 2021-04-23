@@ -33,9 +33,6 @@ describe OpenAPI::Generator::RoutesProvider::ActionController do
     provider = OpenAPI::Generator::RoutesProvider::ActionController.new
     route_mappings = provider.route_mappings
     route_mappings.should eq [
-      # from the helper_spec file
-      {"get", "/hello", "HelperSpecActionController::index", [] of String},
-      {"post", "/hello", "HelperSpecActionController::create", [] of String},
       # from this spec file
       {"get", "/{id}", "ProviderSpecActionController::show", ["id"]},
     ]
