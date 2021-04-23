@@ -4,7 +4,7 @@ require "amber"
 require "../spec_helper"
 require "../../src/openapi-generator/helpers/amber"
 
-class Payload
+class AmberSpec::Payload
   include JSON::Serializable
   extend OpenAPI::Generator::Serializable
 
@@ -12,7 +12,7 @@ class Payload
   end
 end
 
-class HelloPayloadController < Amber::Controller::Base
+class AmberHelperSpecController < Amber::Controller::Base
   include ::OpenAPI::Generator::Controller
   include ::OpenAPI::Generator::Helpers::Amber
 
@@ -28,11 +28,11 @@ class HelloPayloadController < Amber::Controller::Base
     query_params "mandatory", description: "A mandatory query parameter"
     query_params? "optional", description: "An optional query parameter"
 
-    body_as Payload?, description: "A Hello payload."
+    body_as AmberSpec::Payload?, description: "A Hello payload."
 
-    payload = Payload.new
+    payload = AmberSpec::Payload.new
     respond_with 200, description: "Hello" do
-      json payload, type: Payload
+      json payload, type: AmberSpec::Payload
       xml "<hello></hello>", type: String
     end
     respond_with 201, description: "Not Overriden" do
@@ -44,21 +44,9 @@ class HelloPayloadController < Amber::Controller::Base
   end
 end
 
-class Amber::Environment::Logging
-  def initialize(initial_logging : OptionsType)
-    logging = DEFAULTS.merge(initial_logging)
-    @colorize = logging["colorize"].as(Bool)
-    @color = logging["color"].as(String)
-    # Replace severity assignment otherwise it prevents compilation…
-    @severity = "debug"
-    @filter = logging["filter"].as(Array(String))
-    @skip = logging["skip"].as(Array(String))
-  end
-end
-
 Amber::Server.configure do
   routes :api do
-    route "post", "/hello", HelloPayloadController, :index
+    route "post", "/hello", AmberHelperSpecController, :index
   end
 end
 
@@ -115,7 +103,7 @@ describe OpenAPI::Generator::Helpers::Amber do
               application/json:
                 schema:
                   allOf:
-                  - $ref: '#/components/schemas/Payload'
+                  - $ref: '#/components/schemas/AmberSpec_Payload'
             required: false
           responses:
             "200":
@@ -124,7 +112,7 @@ describe OpenAPI::Generator::Helpers::Amber do
                 application/json:
                   schema:
                     allOf:
-                    - $ref: '#/components/schemas/Payload'
+                    - $ref: '#/components/schemas/AmberSpec_Payload'
                 application/xml:
                   schema:
                     type: string
@@ -140,6 +128,43 @@ describe OpenAPI::Generator::Helpers::Amber do
                 text/plain:
                   schema:
                     type: string
+      /{id}:
+        get:
+          summary: Says hello
+          parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: string
+            example: id
+          responses:
+            "200":
+              description: OK
+        options:
+          summary: Says hello
+          parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: string
+            example: id
+          responses:
+            "200":
+              description: OK
+        head:
+          summary: Says hello
+          parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: string
+            example: id
+          responses:
+            "200":
+              description: OK
     components:
       schemas:
         Model:
@@ -174,6 +199,8 @@ describe OpenAPI::Generator::Helpers::Amber do
           - union_types
           - free_form
           - array_of_hash
+          - tuple
+          - numbers_enum
           type: object
           properties:
             union_types:
@@ -194,7 +221,31 @@ describe OpenAPI::Generator::Helpers::Amber do
                   oneOf:
                   - type: integer
                   - type: string
-        Payload:
+            tuple:
+              maxItems: 3
+              minItems: 3
+              type: array
+              items:
+                oneOf:
+                - type: integer
+                - type: string
+                - maxItems: 1
+                  minItems: 1
+                  type: array
+                  items:
+                    oneOf:
+                    - type: array
+                      items:
+                        type: number
+                    - type: boolean
+            numbers_enum:
+              title: Model_ComplexModel_Numbers
+              enum:
+              - 1
+              - 2
+              - 3
+              type: integer
+        AmberSpec_Payload:
           required:
           - hello
           type: object

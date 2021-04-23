@@ -246,7 +246,7 @@ module OpenAPI::Generator::Helpers::ActionController
   # body_as SomeClass
   # ```
   macro body_as(type, description = nil, content_type = "application/json", constructor = :from_json)
-    {% non_nil_type = type.resolve.union_types.reject { |t| t == Nil }[0] %}
+    {% non_nil_type = type.resolve.union_types.reject(&.== Nil).first %}
     body_as(
       request_body: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_request_body(
         description: {{description}},
@@ -255,10 +255,22 @@ module OpenAPI::Generator::Helpers::ActionController
       schema: {{non_nil_type}}.to_openapi_schema,
       content_type: {{content_type}}
     )
-    %content = request.body.try &.gets_to_end
-    if %content
-      ::{{non_nil_type}}.{{constructor.id}}(%content)
-    end
+
+    ::{{non_nil_type}}.{{constructor.id}}(request.body.as(IO))
+  end
+
+  macro body_raw(type, description = nil, content_type = "application/json")
+    {% non_nil_type = type.resolve.union_types.reject(&.== Nil).first %}
+    body_as(
+      request_body: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_request_body(
+        description: {{description}},
+        required: {{!type.resolve.nilable?}}
+      ),
+      schema: {{non_nil_type}}.to_openapi_schema,
+      content_type: {{content_type}}
+    )
+
+    request.body.as(IO)
   end
 
   # :nodoc:
@@ -425,6 +437,10 @@ module OpenAPI::Generator::Helpers::ActionController
         headers: {{headers}},
         links: {{links}}
       ), type: {{type}}, schema: {{schema}})
+  end
+
+  macro head(status_code = :ok, description = nil, headers = nil, links = nil, type = nil, schema = nil)
+    render(status_code: {{status_code}}, head: true, description: {{description}}, headers: {{headers}}, links: {{links}}, type: {{type}}, schema: {{schema}})
   end
 
   # Same as the ActionController method but without specifying any content and with automatic response inference.

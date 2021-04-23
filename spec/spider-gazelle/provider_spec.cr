@@ -1,7 +1,7 @@
 require "action-controller"
 require "../spec_helper"
 
-class HelloActionController < ActionController::Base
+class ProviderSpecActionController < ActionController::Base
   include OpenAPI::Generator::Controller
 
   base "/"
@@ -33,7 +33,11 @@ describe OpenAPI::Generator::RoutesProvider::ActionController do
     provider = OpenAPI::Generator::RoutesProvider::ActionController.new
     route_mappings = provider.route_mappings
     route_mappings.should eq [
-      {"get", "/{id}", "HelloActionController::show", ["id"]},
+      # from the helper_spec file
+      {"get", "/hello", "HelperSpecActionController::index", [] of String},
+      {"post", "/hello", "HelperSpecActionController::create", [] of String},
+      # from this spec file
+      {"get", "/{id}", "ProviderSpecActionController::show", ["id"]},
     ]
   end
 end

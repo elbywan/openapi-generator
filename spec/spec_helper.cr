@@ -76,16 +76,26 @@ struct Model
     extend OpenAPI::Generator::Serializable
     include JSON::Serializable
 
+    enum Numbers
+      One   = 1
+      Two
+      Three
+    end
+
     property union_types : Int32 | String | Hash(String, InnerModel)
     property free_form : JSON::Any
     property array_of_hash : Array(Hash(String, Int32 | String))
+    property tuple : Tuple(Int32, String, Tuple(Bool | Array(Float64)))
+    property numbers_enum : Numbers
 
     SCHEMA = <<-JSON
     {
       "required": [
         "union_types",
         "free_form",
-        "array_of_hash"
+        "array_of_hash",
+        "tuple",
+        "numbers_enum"
       ],
       "type": "object",
       "properties": {
@@ -124,6 +134,48 @@ struct Model
               ]
             }
           }
+        },
+        "tuple": {
+          "maxItems": 3,
+          "minItems": 3,
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "maxItems": 1,
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "numbers_enum": {
+          "title": "Model_ComplexModel_Numbers",
+          "enum": [
+            1,
+            2,
+            3
+          ],
+          "type": "integer"
         }
       }
     }

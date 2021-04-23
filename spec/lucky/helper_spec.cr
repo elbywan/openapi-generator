@@ -5,7 +5,7 @@ require "lucky"
 require "../spec_helper"
 require "../../src/openapi-generator/helpers/lucky"
 
-class Payload
+class LuckySpec::Payload
   include JSON::Serializable
   extend OpenAPI::Generator::Serializable
 
@@ -13,7 +13,7 @@ class Payload
   end
 end
 
-class Hello::Index < Lucky::Action
+class LuckyHelperSpec::Index < Lucky::Action
   include OpenAPI::Generator::Helpers::Lucky
 
   default_format :text
@@ -29,9 +29,9 @@ class Hello::Index < Lucky::Action
   YAML
 
   post "/hello" do
-    body_as Payload?, description: "A Hello payload."
+    body_as LuckySpec::Payload?, description: "A Hello payload."
 
-    json Payload.new, type: Payload, description: "Hello"
+    json LuckySpec::Payload.new, type: LuckySpec::Payload, description: "Hello"
     xml "<hello></hello>", description: "Hello"
     plain_text "Good morning.", status: 201, description: "Not Overriden"
     plain_text "Ouch.", status: 400
@@ -91,7 +91,7 @@ describe OpenAPI::Generator::Helpers::Lucky do
               application/json:
                 schema:
                   allOf:
-                  - $ref: '#/components/schemas/Payload'
+                  - $ref: '#/components/schemas/LuckySpec_Payload'
             required: false
           responses:
             "200":
@@ -100,7 +100,7 @@ describe OpenAPI::Generator::Helpers::Lucky do
                 application/json:
                   schema:
                     allOf:
-                    - $ref: '#/components/schemas/Payload'
+                    - $ref: '#/components/schemas/LuckySpec_Payload'
                 text/xml:
                   schema:
                     type: string
@@ -150,6 +150,8 @@ describe OpenAPI::Generator::Helpers::Lucky do
           - union_types
           - free_form
           - array_of_hash
+          - tuple
+          - numbers_enum
           type: object
           properties:
             union_types:
@@ -170,7 +172,31 @@ describe OpenAPI::Generator::Helpers::Lucky do
                   oneOf:
                   - type: integer
                   - type: string
-        Payload:
+            tuple:
+              maxItems: 3
+              minItems: 3
+              type: array
+              items:
+                oneOf:
+                - type: integer
+                - type: string
+                - maxItems: 1
+                  minItems: 1
+                  type: array
+                  items:
+                    oneOf:
+                    - type: array
+                      items:
+                        type: number
+                    - type: boolean
+            numbers_enum:
+              title: Model_ComplexModel_Numbers
+              enum:
+              - 1
+              - 2
+              - 3
+              type: integer
+        LuckySpec_Payload:
           required:
           - hello
           type: object
