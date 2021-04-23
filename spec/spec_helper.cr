@@ -2,6 +2,20 @@ require "spec"
 require "json"
 require "../src/openapi-generator"
 
+module Serializer::Dummy
+  include OpenAPI::Generator::Serializable
+
+  def generate_schema
+    OpenAPI::Schema.new(
+      type: "object",
+      properties: {
+        "one" => OpenAPI::Schema.new(type:"string")
+      },
+      required: ["one"]
+    )
+  end
+end
+
 struct Model
   extend OpenAPI::Generator::Serializable
   include JSON::Serializable
@@ -181,6 +195,24 @@ struct Model
     }
     JSON
   end
+
+  module CustomModel
+    extend Serializer::Dummy
+
+    SCHEMA = <<-JSON
+    {
+      "required": [
+        "one"
+      ],
+      "type": "object",
+      "properties": {
+        "one": {
+          "type": "string"
+        }
+      }
+    }
+    JSON
+  end
 end
 
 class Controller
@@ -205,3 +237,10 @@ class Controller
   @[OpenAPI(::Controller::OP_STR)]
   def method; end
 end
+
+COMPONENT_SCHEMAS = %(
+  "Model": #{::Model::SCHEMA},
+  "Model_InnerModel": #{::Model::InnerModel::SCHEMA},
+  "Model_ComplexModel": #{::Model::ComplexModel::SCHEMA},
+  "Model_CustomModel": #{::Model::CustomModel::SCHEMA},
+)

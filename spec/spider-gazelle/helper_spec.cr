@@ -82,7 +82,7 @@ describe OpenAPI::Generator::Helpers::ActionController do
     )
 
     openapi_file_contents = File.read "openapi_test.yaml"
-    openapi_file_contents.should eq <<-YAML
+    openapi_file_contents.should eq YAML.parse(<<-YAML
     ---
     openapi: 3.0.1
     info:
@@ -173,99 +173,27 @@ describe OpenAPI::Generator::Helpers::ActionController do
             "200":
               description: OK
     components:
-      schemas:
-        Model:
-          required:
-          - string
-          - inner_schema
-          - cast
-          type: object
-          properties:
-            string:
-              type: string
-            opt_string:
-              type: string
-              readOnly: true
-            inner_schema:
-              $ref: '#/components/schemas/Model_InnerModel'
-            cast:
-              type: string
-              example: "1"
-        Model_InnerModel:
-          required:
-          - array_of_int
-          type: object
-          properties:
-            array_of_int:
-              type: array
-              items:
-                type: integer
-              writeOnly: true
-        Model_ComplexModel:
-          required:
-          - union_types
-          - free_form
-          - array_of_hash
-          - tuple
-          - numbers_enum
-          type: object
-          properties:
-            union_types:
-              oneOf:
-              - type: object
-                additionalProperties:
-                  $ref: '#/components/schemas/Model_InnerModel'
-              - type: integer
-              - type: string
-            free_form:
-              type: object
-              additionalProperties: true
-            array_of_hash:
-              type: array
-              items:
-                type: object
-                additionalProperties:
-                  oneOf:
-                  - type: integer
-                  - type: string
-            tuple:
-              maxItems: 3
-              minItems: 3
-              type: array
-              items:
-                oneOf:
-                - type: integer
-                - type: string
-                - maxItems: 1
-                  minItems: 1
-                  type: array
-                  items:
-                    oneOf:
-                    - type: array
-                      items:
-                        type: number
-                    - type: boolean
-            numbers_enum:
-              title: Model_ComplexModel_Numbers
-              enum:
-              - 1
-              - 2
-              - 3
-              type: integer
-        ActionControllerSpec_Payload:
-          required:
-          - mandatory
-          - with_default
-          type: object
-          properties:
-            mandatory:
-              type: string
-            optional:
-              type: boolean
-            with_default:
-              type: string
-            with_default_nillable:
-              type: string
+      schemas: {
+        #{COMPONENT_SCHEMAS}
+        "ActionControllerSpec_Payload": {
+          "required": [ "mandatory", "with_default" ],
+          "type": "object",
+          "properties": {
+            "mandatory": {
+              "type": "string"
+            },
+            "optional": {
+              "type": "boolean"
+            },
+            "with_default": {
+              "type": "string"
+            },
+            "with_default_nillable": {
+              "type": "string"
+            }
+          }
+        }
+      }
       responses: {}
       parameters: {}
       examples: {}
@@ -276,6 +204,7 @@ describe OpenAPI::Generator::Helpers::ActionController do
       callbacks: {}
 
     YAML
+    ).to_yaml
   end
 
   it "should deserialise mandatory" do
