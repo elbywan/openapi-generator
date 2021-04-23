@@ -9,7 +9,7 @@ module Serializer::Dummy
     OpenAPI::Schema.new(
       type: "object",
       properties: {
-        "one" => OpenAPI::Schema.new(type:"string")
+        "one" => OpenAPI::Schema.new(type: "string"),
       },
       required: ["one"]
     )
