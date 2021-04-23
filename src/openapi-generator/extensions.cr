@@ -3,7 +3,7 @@
 class Array(T)
   # Converts an Array to an OpenAPI schema.
   def self.to_openapi_schema
-    schema_items = uninitialized OpenAPI::Schema | OpenAPI::Reference
+    schema_items = nil
 
     {% begin %}
       {% array_types = T.union_types %}
@@ -28,7 +28,7 @@ end
 # see: https://github.com/OAI/OpenAPI-Specification/issues/1026
 struct Tuple
   def self.to_openapi_schema
-    schema_items = uninitialized OpenAPI::Schema | OpenAPI::Reference
+    schema_items = nil
 
     {% begin %}
       {% types = [] of Types %}
@@ -58,7 +58,7 @@ end
 class Hash(K, V)
   # Returns the OpenAPI schema associated with the Hash.
   def self.to_openapi_schema
-    additional_properties = uninitialized (OpenAPI::Schema | OpenAPI::Reference | Bool)?
+    additional_properties = nil
 
     {% begin %}
       {% value_types = V.union_types %}
@@ -178,6 +178,7 @@ module OpenAPI
   class Schema
     setter read_only
     setter write_only
+    setter required
   end
 
   # :nodoc:

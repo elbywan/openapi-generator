@@ -1,5 +1,5 @@
 name: openapi-generator
-version: 1.0.2
+version: 1.0.4
 targets:
   openapi-generator:
     main: src/openapi-generator.cr
@@ -18,10 +18,10 @@ dependencies:
 development_dependencies:
   amber:
     github: amberframework/amber
-    version: ~> 0.36.0
+    branch: master
   lucky:
     github: luckyframework/lucky
-    version: ~> 0.26.0
+    branch: master
   action-controller:
     github: spider-gazelle/action-controller
     branch: master
