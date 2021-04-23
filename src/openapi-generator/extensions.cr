@@ -98,6 +98,10 @@ struct NamedTuple
       {% end %}
     {% end %}
 
+    if schema.required.try &.empty?
+      schema.required = nil
+    end
+
     schema
   end
 end
