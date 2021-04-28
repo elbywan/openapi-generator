@@ -13,4 +13,9 @@ describe OpenAPI::Generator::Serializable do
     json_schema = ::Model::ComplexModel.generate_schema.to_pretty_json
     json_schema.should eq ::Model::ComplexModel::SCHEMA
   end
+
+  it "should allow includes to make custom adapters" do
+    json_schema = ::Model::CustomModel.generate_schema.to_pretty_json
+    json_schema.should eq ::Model::CustomModel::SCHEMA
+  end
 end
