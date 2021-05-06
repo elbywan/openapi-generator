@@ -38,14 +38,14 @@ require "clear"
 #   when instantiating or updating a new model from json through `.from_json` methods from
 #   the `Clear::Model::JSONDeserialize` module.
 #
-# * `write_only : Bool (default = true)`: same as `ignore_serialize`: turn on/ off serialization
+# * `ignore_serialize : Bool (default = true)`: same as `ignore_serialize`: turn on/ off serialization
 #   of a field when doing `.to_json` on the model
 #
 # * `example : String (default = nil)`: Use this option only if you have extended
 #   OpenAPI::Generator::Serializable to declare an example for this field
 #
 module Clear::Model::HasColumns
-  macro column(name, primary = false, converter = nil, column_name = nil, presence = true, mass_assign = true, write_only = false, example = nil)
+  macro column(name, primary = false, converter = nil, column_name = nil, presence = true, mass_assign = true, ignore_serialize = false, example = nil)
     {% _type = name.type %}
     {%
       unless converter
@@ -80,7 +80,7 @@ module Clear::Model::HasColumns
         crystal_variable_name: name.var,
         presence:              presence,
         mass_assign:           mass_assign,
-        write_only:            write_only,
+        ignore_serialize:      ignore_serialize,
         example:               example, # OpenAPI
       }
     %}
@@ -153,7 +153,7 @@ module OpenAPI::Generator::Serializable::Adapters::Clear
         types: {{types}},
         schema_key: {{schema_key}},
         read_only: {{!settings["mass_assign"]}},
-        write_only: {{settings["write_only"]}},
+        write_only: {{settings["ignore_serialize"]}},
         example: {{example}}
       )
     {% end %}
