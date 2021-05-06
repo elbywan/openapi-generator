@@ -8,7 +8,7 @@ class Array(T)
     {% begin %}
       {% array_types = T.union_types %}
 
-      ::OpenAPI::Generator::Serializable.generate_schema(
+      ::OpenAPI::Generator::Serializable::Utils.generate_schema(
         schema_items,
         types: {{array_types}},
       )
@@ -38,7 +38,7 @@ struct Tuple
         {% end %}
       {% end %}
 
-      ::OpenAPI::Generator::Serializable.generate_schema(
+      ::OpenAPI::Generator::Serializable::Utils.generate_schema(
         schema_items,
         types: {{ types }},
       )
@@ -63,7 +63,7 @@ class Hash(K, V)
     {% begin %}
       {% value_types = V.union_types %}
 
-      ::OpenAPI::Generator::Serializable.generate_schema(
+      ::OpenAPI::Generator::Serializable::Utils.generate_schema(
         additional_properties,
         types: {{value_types}},
       )
@@ -90,7 +90,7 @@ struct NamedTuple
     {% begin %}
       {% for key, value in T %}
         {% types = value.union_types %}
-        ::OpenAPI::Generator::Serializable.generate_schema(
+        ::OpenAPI::Generator::Serializable::Utils.generate_schema(
           schema,
           types: {{types}},
           schema_key: {{key}}
