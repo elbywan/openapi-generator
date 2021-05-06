@@ -15,11 +15,11 @@ describe OpenAPI::Generator::RoutesProvider::Lucky do
   it "should correctly detect routes and map them with the controller method" do
     provider = OpenAPI::Generator::RoutesProvider::Lucky.new
     route_mappings = provider.route_mappings
-    route_mappings.should eq [
+    route_mappings.sort.should eq [
       # from the helper spec file
       {"post", "/hello", "LuckyHelperSpec::Index", [] of String},
       # from this spec file
       {"get", "/{id}", "LuckyProviderSpec::Index", ["id"]},
-    ]
+    ].sort
   end
 end
