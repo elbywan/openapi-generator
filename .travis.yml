@@ -1,7 +1,11 @@
-language: crystal
+dist: bionic
+language: minimal
 
 env:
   - SHARDS_OPTS=--ignore-crystal-version
+
+install:
+  - curl -fsSL https://crystal-lang.org/install.sh | sudo bash
 
 script:
   - crystal tool format --check
