@@ -247,7 +247,7 @@ module OpenAPI::Generator::Helpers::ActionController
   # ```
   macro body_as(type, description = nil, content_type = "application/json", constructor = :from_json)
     {% non_nil_type = type.resolve.union_types.reject(&.== Nil).first %}
-    body_as(
+    _body_as(
       request_body: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_request_body(
         description: {{description}},
         required: {{!type.resolve.nilable?}}
@@ -268,7 +268,7 @@ module OpenAPI::Generator::Helpers::ActionController
 
   macro body_raw(type, description = nil, content_type = "application/json")
     {% non_nil_type = type.resolve.union_types.reject(&.== Nil).first %}
-    body_as(
+    _body_as(
       request_body: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_request_body(
         description: {{description}},
         required: {{!type.resolve.nilable?}}
@@ -281,7 +281,7 @@ module OpenAPI::Generator::Helpers::ActionController
   end
 
   # :nodoc:
-  private macro body_as(request_body, schema, content_type)
+  private macro _body_as(request_body, schema, content_type)
     {% body_list = ::OpenAPI::Generator::Helpers::ActionController::BODY_LIST %}
     {% method_name = "#{@type}::#{@def.name}" %}
     {% unless body_list.keys.includes? method_name %}
