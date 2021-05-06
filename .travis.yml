@@ -7,6 +7,9 @@ env:
 install:
   - curl -fsSL https://crystal-lang.org/install.sh | sudo bash
 
+before_script:
+  - shards install
+
 script:
   - crystal tool format --check
   - |
