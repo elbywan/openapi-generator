@@ -159,6 +159,19 @@ describe OpenAPI::Generator::Helpers::ActionController do
                 text/plain:
                   schema:
                     type: string
+      /{id}:
+        get:
+          summary: Says hello
+          parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: string
+            example: id
+          responses:
+            "200":
+              description: OK
     components:
       schemas: {
         #{COMPONENT_SCHEMAS}
