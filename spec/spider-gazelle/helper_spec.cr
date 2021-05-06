@@ -59,7 +59,7 @@ class HelperSpecActionController < ActionController::Base
       param(mandatory : String, "A mandatory query parameter"),
       param(optional : Bool?, "An optional query parameter"),
       param(with_default : String = "default_value", "A mandatory query parameter with default"),
-      param(with_default_nillable : String? = "default_value_nillable", "An optional query parameter with default")
+      param(with_default_nillable : String? = "default_value_nillable", "An optional query parameter with default"),
     }
   end
 end

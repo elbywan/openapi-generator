@@ -45,7 +45,7 @@ class AmberHelperSpecController < Amber::Controller::Base
   private def index_helper
     {
       query_params("mandatory", description: "A mandatory query parameter"),
-      query_params?("optional", description: "An optional query parameter")
+      query_params?("optional", description: "An optional query parameter"),
     }
   end
 end
