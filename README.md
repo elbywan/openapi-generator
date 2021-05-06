@@ -376,6 +376,30 @@ class CoordinatesController < Amber::Controller::Base
 end
 ```
 
+#### Limitation
+
+Schema inference relies on the method name and will not follow nested calls.
+If needed you can flag a method having a dependency using an annotation as done below.
+
+```crystal
+  @[OpenAPI(
+    <<-YAML
+      summary: The entry point.
+    YAML
+  )]
+  def entry
+    # ...
+    helper()
+    # ...
+  end
+
+  @[OpenAPI(dependency: entry)]
+  private def helper
+    # Inference macros called here will be bound to "entry".
+    # ...
+  end
+```
+
 #### API
 
 `openapi-generator` overload existing or adds similar methods and macros to intercept calls and infer schema properties.
@@ -401,86 +425,6 @@ end
 - `macro js(body, type = nil, schema = nil)`
 
 </p></details>
-
-<details><summary><strong>Spider-gazelle</strong></summary>
-
-```crystal
-require "openapi-generator/helpers/action-controller"
-
-# …declare routes and operations… #
-
-# Before calling .generate you need to bootstrap the spider-gazelle inference:
-OpenAPI::Generator::Helpers::ActionController.bootstrap
-```
-
-#### Example
-
-```crystal
-require "openapi-generator/helpers/action-controller"
-
-class Coordinates
-  include JSON::Serializable
-  extend OpenAPI::Generator::Serializable
-
-  def initialize(@x, @y); end
-
-  property x  : Int32
-  property y  : Int32
-end
-
-class CoordinatesController < ActionController::Controller::Base
-  include ::OpenAPI::Generator::Controller
-  include ::OpenAPI::Generator::Helpers::ActionController
-
-  @[OpenAPI(
-    <<-YAML
-      summary: Adds up a Coordinate object and a number.
-    YAML
-  )]
-  def add
-    # Infer query parameter.
-    add = param add : Int32, description: "Add this number to the coordinates."
-    # Infer body as a Coordinate json payload.
-    coordinates = body_as(::Coordinates, description: "Some coordinates").not_nil!
-    coordinates.x += add
-    coordinates.y += add
-
-    # Infer responses.
-    respond_with 200, description: "Returns a Coordinate object with the number added up." do
-      json coordinates, type: ::Coordinates
-      xml %(<coordinate x="#{coordinates.x}" y="#{coordinates.y}"></coordinate>), type: String
-      text "Coordinates (#{coordinates.x}, #{coordinates.y})", type: String
-    end
-  end
-end
-```
-
-#### API
-
-`openapi-generator` overload existing or adds similar methods and macros to intercept calls and infer schema properties.
-
-*Query parameters*
-
-- `macro param(declaration, description, multiple = false, schema = nil, **args)`
-
-*Body*
-
-- `macro body_as(type, description = nil, content_type = "application/json", constructor = :from_json)`
-
-*Responses*
-
-- `macro respond_with(code = 200, description = nil, headers = nil, links = nil, &)`
-  - `macro json(body, type = nil, schema = nil)`
-  - `macro xml(body, type = nil, schema = nil)`
-  - `macro txt(body, type = nil, schema = nil)`
-  - `macro text(body, type = nil, schema = nil)`
-  - `macro html(body, type = nil, schema = nil)`
-  - `macro js(body, type = nil, schema = nil)`
-
--  `macro render(status_code = :ok, head = Nop, json = Nop, yaml = Nop, xml = Nop, html = Nop, text = Nop, binary = Nop, template = Nop, partial = Nop, layout = nil, description = nil, headers = nil, links = nil, type = nil, schema = nil)`
-
-</p>
-</details>
 
 <details><summary><strong>Lucky</strong></summary>
 <p>
@@ -562,6 +506,110 @@ end
 - `macro head(status, description = nil, headers = nil, links = nil)`
 - `macro xml(body, status = 200, description = nil, type = String, schema = nil, headers = nil, links = nil)`
 - `macro plain_text(body, status = 200, description = nil, type = String, schema = nil, headers = nil, links = nil)`
+
+</p>
+</details>
+
+<details><summary><strong>Spider-gazelle</strong></summary>
+
+```crystal
+require "openapi-generator/helpers/action-controller"
+
+# …declare routes and operations… #
+
+# Before calling .generate you need to bootstrap the spider-gazelle inference:
+OpenAPI::Generator::Helpers::ActionController.bootstrap
+```
+
+#### Example
+
+```crystal
+require "openapi-generator/helpers/action-controller"
+
+class Coordinates
+  include JSON::Serializable
+  extend OpenAPI::Generator::Serializable
+
+  def initialize(@x, @y); end
+
+  property x  : Int32
+  property y  : Int32
+end
+
+class CoordinatesController < ActionController::Controller::Base
+  include ::OpenAPI::Generator::Controller
+  include ::OpenAPI::Generator::Helpers::ActionController
+
+  @[OpenAPI(
+    <<-YAML
+      summary: Adds up a Coordinate object and a number.
+    YAML
+  )]
+  def add
+    # Infer query parameter.
+    add = param add : Int32, description: "Add this number to the coordinates."
+    # Infer body as a Coordinate json payload.
+    coordinates = body_as(::Coordinates, description: "Some coordinates").not_nil!
+    coordinates.x += add
+    coordinates.y += add
+
+    # Infer responses.
+    respond_with 200, description: "Returns a Coordinate object with the number added up." do
+      json coordinates, type: ::Coordinates
+      xml %(<coordinate x="#{coordinates.x}" y="#{coordinates.y}"></coordinate>), type: String
+      text "Coordinates (#{coordinates.x}, #{coordinates.y})", type: String
+    end
+  end
+end
+```
+
+#### Limitation
+
+Schema inference relies on the method name and will not follow nested calls.
+If needed you can flag a method having a dependency using an annotation as done below.
+
+```crystal
+  @[OpenAPI(
+    <<-YAML
+      summary: The entry point.
+    YAML
+  )]
+  def entry
+    # ...
+    helper()
+    # ...
+  end
+
+  @[OpenAPI(dependency: entry)]
+  private def helper
+    # Inference macros called here will be bound to "entry".
+    # ...
+  end
+```
+
+#### API
+
+`openapi-generator` overload existing or adds similar methods and macros to intercept calls and infer schema properties.
+
+*Query parameters*
+
+- `macro param(declaration, description, multiple = false, schema = nil, **args)`
+
+*Body*
+
+- `macro body_as(type, description = nil, content_type = "application/json", constructor = :from_json)`
+
+*Responses*
+
+- `macro respond_with(code = 200, description = nil, headers = nil, links = nil, &)`
+  - `macro json(body, type = nil, schema = nil)`
+  - `macro xml(body, type = nil, schema = nil)`
+  - `macro txt(body, type = nil, schema = nil)`
+  - `macro text(body, type = nil, schema = nil)`
+  - `macro html(body, type = nil, schema = nil)`
+  - `macro js(body, type = nil, schema = nil)`
+
+-  `macro render(status_code = :ok, head = Nop, json = Nop, yaml = Nop, xml = Nop, html = Nop, text = Nop, binary = Nop, template = Nop, partial = Nop, layout = nil, description = nil, headers = nil, links = nil, type = nil, schema = nil)`
 
 </p>
 </details>

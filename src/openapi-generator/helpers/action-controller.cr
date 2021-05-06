@@ -202,7 +202,9 @@ module OpenAPI::Generator::Helpers::ActionController
   # :nodoc:
   private macro _params(name, default_value, type, param, required = true, multiple = false)
     {% qp_list = ::OpenAPI::Generator::Helpers::ActionController::QP_LIST %}
-    {% method_name = "#{@type}::#{@def.name}" %}
+    {% ann = @def.annotation(OpenAPI) %}
+    {% def_name = ann && ann[:dependency] && ann[:dependency].id || @def.name %}
+    {% method_name = "#{@type}::#{def_name}" %}
     {% unless qp_list.keys.includes? method_name %}
       {% qp_list[method_name] = [] of OpenAPI::Parameter %}
     {% end %}
@@ -264,7 +266,9 @@ module OpenAPI::Generator::Helpers::ActionController
   # :nodoc:
   private macro body_as(request_body, schema, content_type)
     {% body_list = ::OpenAPI::Generator::Helpers::ActionController::BODY_LIST %}
-    {% method_name = "#{@type}::#{@def.name}" %}
+    {% ann = @def.annotation(OpenAPI) %}
+    {% def_name = ann && ann[:dependency] && ann[:dependency].id || @def.name %}
+    {% method_name = "#{@type}::#{def_name}" %}
     {% unless body_list.keys.includes? method_name %}
       {% body_list[method_name] = {request_body, {} of String => OpenAPI::Schema} %}
     {% end %}
@@ -418,7 +422,7 @@ module OpenAPI::Generator::Helpers::ActionController
     {% status = status_code.is_a?(SymbolLiteral) ? STATUS_CODES[status_code] : status_code %}
 
     render(
-      status_code: {{status}}, head: {{head}}, json: {{json}}, yaml: {{yaml}}, xml: {{xml}}, html: {{html}}, text: {{text}}, binary: {{binary}}, template: {{template}}, partial: {{partial}}, layout: {{layout}}, 
+      status_code: {{status}}, head: {{head}}, json: {{json}}, yaml: {{yaml}}, xml: {{xml}}, html: {{html}}, text: {{text}}, binary: {{binary}}, template: {{template}}, partial: {{partial}}, layout: {{layout}},
       response: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_response(
         description: {{description}},
         code: {{status}},
@@ -441,7 +445,9 @@ module OpenAPI::Generator::Helpers::ActionController
   macro respond_without_body(code, response)
     {% type_name = @type.stringify %}
     {% controller_responses = ::OpenAPI::Generator::Helpers::ActionController::CONTROLLER_RESPONSES %}
-    {% method_name = type_name + "::#{@def.name}" %}
+    {% ann = @def.annotation(OpenAPI) %}
+    {% def_name = ann && ann[:dependency] && ann[:dependency].id || @def.name %}
+    {% method_name = type_name + "::" + def_name %}
     {% unless controller_responses[method_name] %}
       {% controller_responses[method_name] = {} of Int32 => Hash(String, {OpenAPI::Response, Hash(String, OpenAPI::Schema)}) %}
     {% end %}
