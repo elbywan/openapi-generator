@@ -379,7 +379,7 @@ end
 #### Limitation
 
 Schema inference relies on the method name and will not follow nested calls.
-If needed you can flag a method having a dependency using an annotation as done below.
+If needed you can flag a method having one or more dependencies using an annotation as done below.
 
 ```crystal
   @[OpenAPI(
@@ -393,7 +393,7 @@ If needed you can flag a method having a dependency using an annotation as done 
     # ...
   end
 
-  @[OpenAPI(dependency: entry)]
+  @[OpenAPI(dependency: entry)] # or `@[OpenAPI(dependencies: { entry })]`
   private def helper
     # Inference macros called here will be bound to "entry".
     # ...
@@ -566,7 +566,7 @@ end
 #### Limitation
 
 Schema inference relies on the method name and will not follow nested calls.
-If needed you can flag a method having a dependency using an annotation as done below.
+If needed you can flag a method having one or more dependencies using an annotation as done below.
 
 ```crystal
   @[OpenAPI(
@@ -580,7 +580,7 @@ If needed you can flag a method having a dependency using an annotation as done 
     # ...
   end
 
-  @[OpenAPI(dependency: entry)]
+  @[OpenAPI(dependency: entry)] # or `@[OpenAPI(dependencies: { entry })]`
   private def helper
     # Inference macros called here will be bound to "entry".
     # ...

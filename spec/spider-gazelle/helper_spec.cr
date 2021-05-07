@@ -53,7 +53,7 @@ class HelperSpecActionController < ActionController::Base
     end
   end
 
-  @[OpenAPI(dependency: create)]
+  @[OpenAPI(dependencies: { create })]
   private def create_helper
     {
       param(mandatory : String, "A mandatory query parameter"),
