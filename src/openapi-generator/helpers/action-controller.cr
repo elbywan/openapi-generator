@@ -450,6 +450,29 @@ module OpenAPI::Generator::Helpers::ActionController
     render(status_code: {{status_code}}, head: true, description: {{description}}, headers: {{headers}}, links: {{links}}, type: {{type}}, schema: {{schema}})
   end
 
+  macro redirect_to(path_to, status = :found, description = nil, headers = nil, links = nil)
+    location_header = ::OpenAPI::Header.new(
+      description: "Redirection",
+      required: true,
+      allow_empty_value: false,
+      example: "/example"
+    )
+    {% if headers == nil %}
+      headers = "Location" => location_header
+    {% else %}
+      headers["Location"] = location_header
+    {% end %}
+
+    ::OpenAPI::Generator::Helpers::ActionController.init_openapi_response(
+      description: {{description}},
+      code: {{status}},
+      headers: {{headers}},
+      links: {{links}}
+    )
+    
+    redirect_to(path: {{path_to}}, status: {{status}})
+  end
+
   # Same as the ActionController method but without specifying any content and with automatic response inference.
   macro respond_without_body(code = 200, description = nil, headers = nil, links = nil)
     respond_without_body(code: {{code}}, response: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_response(
