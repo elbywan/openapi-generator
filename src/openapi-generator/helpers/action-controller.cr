@@ -472,7 +472,7 @@ module OpenAPI::Generator::Helpers::ActionController
   end
 
   macro redirect_to(path_to, status = :found, description = nil, headers = nil, links = nil)
-    {% code = status.is_a?(SymbolLiteral) ? REDIRECTION_CODES[status] : status %}
+    {% code = status.is_a?(NumberLiteral) ? status : REDIRECTION_CODES[status] %}
 
     location_header = ::OpenAPI::Header.new(
       description: "Redirection",

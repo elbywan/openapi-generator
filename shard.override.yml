@@ -6,3 +6,6 @@ dependencies:
     branch: master
   inflector:
     github: anykeyh/inflector.cr
+  action-controller:
+    github: spider-gazelle/action-controller
+    branch: fix/redirect
