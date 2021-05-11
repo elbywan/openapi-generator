@@ -55,6 +55,15 @@ class HelperSpecActionController < ActionController::Base
       text "Ouch.", schema: String.to_openapi_schema
     end
   end
+
+  @[OpenAPI(
+    <<-YAML
+      summary: Destroy route
+    YAML
+  )]
+  def destroy
+    head :no_content, description: "No content available"
+  end
 end
 
 require "../../src/openapi-generator/providers/action-controller.cr"
@@ -159,6 +168,19 @@ describe OpenAPI::Generator::Helpers::ActionController do
                 text/plain:
                   schema:
                     type: string
+      /hello/{id}:
+        delete:
+          summary: Destroy route
+          parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: string
+            example: id
+          responses:
+            "204":
+              description: No content available
       /{id}:
         get:
           summary: Says hello
@@ -234,6 +256,16 @@ describe OpenAPI::Generator::Helpers::ActionController do
 
     res.status_code.should eq(200)
     res.output.to_s.should eq(expected_body.to_json)
+  end
+
+  it "#head" do
+    res = HelperSpecActionController.context(
+      method: "DELETE", route: "/hello",
+      route_params: {"id" => "example"},
+      headers: {"Content-Type" => "application/json"}, &.destroy)
+
+    res.status_code.should eq(204)
+    res.output.to_s.should eq("")
   end
 
   it "should raise if there is no mandatory param" do

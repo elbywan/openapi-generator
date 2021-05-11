@@ -446,11 +446,34 @@ module OpenAPI::Generator::Helpers::ActionController
       ), type: {{type}}, schema: {{schema}})
   end
 
-  macro head(status_code = :ok, description = nil, headers = nil, links = nil, type = nil, schema = nil)
-    render(status_code: {{status_code}}, head: true, description: {{description}}, headers: {{headers}}, links: {{links}}, type: {{type}}, schema: {{schema}})
+  macro head(code = 200, description = nil, headers = nil, links = nil)
+    {% status = code.is_a?(SymbolLiteral) ? STATUS_CODES[code] : code %}
+
+    head(code: {{status}}, response: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_response(
+      description: {{description}},
+      code: {{status}},
+      headers: {{headers}},
+      links: {{links}}
+    ))
+  end
+
+  macro head(code, response)
+    {% type_name = @type.stringify %}
+    {% controller_responses = ::OpenAPI::Generator::Helpers::ActionController::CONTROLLER_RESPONSES %}
+    {% method_name = type_name + "::#{@def.name}" %}
+    {% unless controller_responses[method_name] %}
+      {% controller_responses[method_name] = {} of Int32 => Hash(String, {OpenAPI::Response, Hash(String, OpenAPI::Schema)}) %}
+    {% end %}
+    {% unless controller_responses[method_name][code] %}
+      {% controller_responses[method_name][code] = {response, nil} %}
+    {% end %}
+
+    head(status: {{code}})
   end
 
   macro redirect_to(path_to, status = :found, description = nil, headers = nil, links = nil)
+    {% code = status.is_a?(SymbolLiteral) ? REDIRECTION_CODES[status] : status %}
+
     location_header = ::OpenAPI::Header.new(
       description: "Redirection",
       required: true,
@@ -458,19 +481,31 @@ module OpenAPI::Generator::Helpers::ActionController
       example: "/example"
     )
     {% if headers == nil %}
-      headers = "Location" => location_header
+      headers = {"Location" => location_header}
     {% else %}
       headers["Location"] = location_header
     {% end %}
 
-    ::OpenAPI::Generator::Helpers::ActionController.init_openapi_response(
+    redirect_to(path: {{path_to}}, code: {{code}}, response: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_response(
       description: {{description}},
-      code: {{status}},
       headers: {{headers}},
-      links: {{links}}
-    )
-    
-    redirect_to(path: {{path_to}}, status: {{status}})
+      links: {{links}},
+      code: {{code}}
+    ))
+  end
+
+  macro redirect_to(path, code, response)
+    {% type_name = @type.stringify %}
+    {% controller_responses = ::OpenAPI::Generator::Helpers::ActionController::CONTROLLER_RESPONSES %}
+    {% method_name = type_name + "::#{@def.name}" %}
+    {% unless controller_responses[method_name] %}
+      {% controller_responses[method_name] = {} of Int32 => Hash(String, {OpenAPI::Response, Hash(String, OpenAPI::Schema)}) %}
+    {% end %}
+    {% unless controller_responses[method_name][code] %}
+      {% controller_responses[method_name][code] = {response, nil} %}
+    {% end %}
+
+    redirect_to(path: {{path}}, status: {{code}})
   end
 
   # Same as the ActionController method but without specifying any content and with automatic response inference.
