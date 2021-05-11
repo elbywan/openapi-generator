@@ -3,10 +3,11 @@ require "spec"
 
 class ClearModelExample
   include Clear::Model
+  extend OpenAPI::Generator::Serializable
   extend OpenAPI::Generator::Serializable::Adapters::Clear
 
   column id : Int64, primary: true, mass_assign: false, example: "123"
-  column email : String, write_only: true, example: "default@gmail.com"
+  column email : String, ignore_serialize: true, example: "default@gmail.com"
 end
 
 struct ClearModelExampleCopy
