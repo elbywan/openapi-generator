@@ -74,14 +74,31 @@ class HelperSpecActionController < ActionController::Base
     head :no_content, description: "No content available"
   end
 
-  # @[OpenAPI(
-  #   <<-YAML
-  #     summary: custom route
-  #   YAML
-  # )]
-  # get "/custom_route" do
-  #   redirect_to("/hello/:id", description: "custom route redirect to show")
-  # end
+  get "/custom_route", :custom_route do
+    redirect_to("/hello/:id", description: "custom route redirect to show")
+  end
+
+  @[OpenAPI(
+    <<-YAML
+      summary: custom route
+    YAML
+  )]
+  def custom_route
+    previous_def
+  end
+
+  get "/alt_route" do
+    redirect_to("/hello/:id", description: "alternative route redirect to show")
+  end
+
+  @[OpenAPI(
+    <<-YAML
+      summary: alternative route
+    YAML
+  )]
+  def get_alt_route
+    previous_def
+  end
 end
 
 require "../../src/openapi-generator/providers/action-controller.cr"
@@ -186,6 +203,18 @@ describe OpenAPI::Generator::Helpers::ActionController do
                 text/plain:
                   schema:
                     type: string
+      /hello/alt_route:
+        get:
+          summary: alternative route
+          responses:
+            "302":
+              description: alternative route redirect to show
+      /hello/custom_route:
+        get:
+          summary: custom route
+          responses:
+            "302":
+              description: custom route redirect to show
       /hello/{id}:
         get:
           summary: redirect to index
@@ -309,10 +338,20 @@ describe OpenAPI::Generator::Helpers::ActionController do
     res.output.to_s.should be_empty
   end
 
-  pending "#custom_route" do
+  it "#custom_route" do
     res = HelperSpecActionController.context(
       method: "GET", route: "/hello/custom_route",
-      headers: {"Content-Type" => "application/json"}, &.get_custom_route)
+      headers: {"Content-Type" => "application/json"}, &.custom_route)
+
+    res.status_code.should eq(302)
+    res.headers["Location"].should eq("/hello/:id")
+    res.output.to_s.should be_empty
+  end
+
+  it "#custom_route without defining name" do
+    res = HelperSpecActionController.context(
+      method: "GET", route: "/hello/alt_route",
+      headers: {"Content-Type" => "application/json"}, &.get_alt_route)
 
     res.status_code.should eq(302)
     res.headers["Location"].should eq("/hello/:id")

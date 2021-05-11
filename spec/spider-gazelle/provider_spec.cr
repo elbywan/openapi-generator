@@ -33,6 +33,8 @@ describe OpenAPI::Generator::RoutesProvider::ActionController do
     provider = OpenAPI::Generator::RoutesProvider::ActionController.new
     route_mappings = provider.route_mappings
     route_mappings.should eq [
+      {"get", "/hello/custom_route", "HelperSpecActionController::custom_route", [] of String},
+      {"get", "/hello/alt_route", "HelperSpecActionController::get_alt_route", [] of String},
       {"get", "/hello", "HelperSpecActionController::index", [] of String},
       {"get", "/hello/{id}", "HelperSpecActionController::show", ["id"]},
       {"post", "/hello", "HelperSpecActionController::create", [] of String},

@@ -21,6 +21,38 @@ end
 # - `respond_with` can infer responses types and schemas.
 # - `param` can infer query parameters.
 #
+# Please note, you cannot add annotation on top of macros. Therefore for custom routes with the syntax of i.e.
+#
+# get "/example", :example do
+#   render json: "example"
+# end
+#
+# Please re-declare the method of the route and add the annotation correspondingly
+#
+# @[OpenAPI](
+#   <<-YAML
+#     summary: example route
+#   YAML
+# )
+# def example
+#   previous_def
+# end
+#
+# For custom route without predefined name, the method is automatically created with the HTTP verb followed by the route
+#
+# get "/alternative" do
+#   render json: "alternative"
+# end
+#
+# @[OpenAPI](
+#   <<-YAML
+#     summary: alternative route
+#   YAML
+# )
+# def get_alternative
+#   previous_def
+# end
+#
 # NOTE: Do not forget to call `bootstrap` once before calling `OpenAPI::Generator.generate`.
 #
 # ```
