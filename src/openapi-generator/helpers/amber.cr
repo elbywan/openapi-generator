@@ -214,21 +214,25 @@ module OpenAPI::Generator::Helpers::Amber
   # :nodoc:
   private macro _query_params(name, param, required = true, multiple = false)
     {% qp_list = ::OpenAPI::Generator::Helpers::Amber::QP_LIST %}
-      {% method_name = "#{@type}::#{@def.name}" %}
+    {% ann = @def.annotation(OpenAPI) %}
+    {% def_names = ann && ann[:dependency] && [ann[:dependency]] || ann && ann[:dependencies] || [@def.name] %}
+    {% for def_name in def_names %}
+      {% method_name = "#{@type}::#{def_name.id}" %}
       {% unless qp_list.keys.includes? method_name %}
         {% qp_list[method_name] = [] of OpenAPI::Parameter %}
       {% end %}
       {% qp_list[method_name] << param %}
-      {% if multiple %}
-        %results = params.fetch_all({{name}})
-        {% if required %}
-          raise NilAssertionError.new if %results.size < 1
-        {% end %}
-        %results
-      {% elsif required %}
-        params[{{name}}]
-      {% else %}
-        params[{{name}}]?
+    {% end %}
+    {% if multiple %}
+      %results = params.fetch_all({{name}})
+      {% if required %}
+        raise NilAssertionError.new if %results.size < 1
+      {% end %}
+      %results
+    {% elsif required %}
+      params[{{name}}]
+    {% else %}
+      params[{{name}}]?
     {% end %}
   end
 
@@ -259,11 +263,15 @@ module OpenAPI::Generator::Helpers::Amber
   # :nodoc:
   private macro body_as(request_body, schema, content_type)
     {% body_list = ::OpenAPI::Generator::Helpers::Amber::BODY_LIST %}
-    {% method_name = "#{@type}::#{@def.name}" %}
-    {% unless body_list.keys.includes? method_name %}
-      {% body_list[method_name] = {request_body, {} of String => OpenAPI::Schema} %}
+    {% ann = @def.annotation(OpenAPI) %}
+    {% def_names = ann && ann[:dependency] && [ann[:dependency]] || ann && ann[:dependencies] || [@def.name] %}
+    {% for def_name in def_names %}
+      {% method_name = "#{@type}::#{def_name.id}" %}
+      {% unless body_list.keys.includes? method_name %}
+        {% body_list[method_name] = {request_body, {} of String => OpenAPI::Schema} %}
+      {% end %}
+      {% body_list[method_name][1][content_type] = schema %}
     {% end %}
-    {% body_list[method_name][1][content_type] = schema %}
   end
 
   # :nodoc:
@@ -356,12 +364,16 @@ module OpenAPI::Generator::Helpers::Amber
   macro respond_without_body(code, response)
     {% type_name = @type.stringify %}
     {% controller_responses = ::OpenAPI::Generator::Helpers::Amber::CONTROLLER_RESPONSES %}
-    {% method_name = type_name + "::#{@def.name}" %}
-    {% unless controller_responses[method_name] %}
-      {% controller_responses[method_name] = {} of Int32 => Hash(String, {OpenAPI::Response, Hash(String, OpenAPI::Schema)}) %}
-    {% end %}
-    {% unless controller_responses[method_name][code] %}
-      {% controller_responses[method_name][code] = {response, nil} %}
+    {% ann = @def.annotation(OpenAPI) %}
+    {% def_names = ann && ann[:dependency] && [ann[:dependency]] || ann && ann[:dependencies] || [@def.name] %}
+    {% for def_name in def_names %}
+      {% method_name = type_name + "::" + def_name.id %}
+      {% unless controller_responses[method_name] %}
+        {% controller_responses[method_name] = {} of Int32 => Hash(String, {OpenAPI::Response, Hash(String, OpenAPI::Schema)}) %}
+      {% end %}
+      {% unless controller_responses[method_name][code] %}
+        {% controller_responses[method_name][code] = {response, nil} %}
+      {% end %}
     {% end %}
     response.status_code = {{code}}
     response.close
