@@ -4,6 +4,10 @@ require "../../extensions"
 require "active-model"
 
 module OpenAPI::Generator::Serializable::Adapters::ActiveModel
+  {% unless (@type == OpenAPI::Generator::Serializable::Adapters::ActiveModel || @type.ancestors.includes?(::ActiveModel::Model)) %}
+    raise AdapterError.new("ActiveModel::Model was not inherited for type {{@type}}")
+  {% end %}
+
   # Serialize the class into an `OpenAPI::Schema` representation.
   #
   # Check the [swagger documentation](https://swagger.io/docs/specification/data-models/) for more details
