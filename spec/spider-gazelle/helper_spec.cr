@@ -29,6 +29,15 @@ class HelperSpecActionController < ActionController::Base
 
   @[OpenAPI(
     <<-YAML
+      summary: redirect to index
+    YAML
+  )]
+  def show
+    redirect_to("/hello", status: :found, description: "redirect to index res")
+  end
+
+  @[OpenAPI(
+    <<-YAML
       summary: Sends a hello payload
       responses:
         200:
@@ -64,6 +73,15 @@ class HelperSpecActionController < ActionController::Base
   def destroy
     head :no_content, description: "No content available"
   end
+
+  # @[OpenAPI(
+  #   <<-YAML
+  #     summary: custom route
+  #   YAML
+  # )]
+  # get "/custom_route" do
+  #   redirect_to("/hello/:id", description: "custom route redirect to show")
+  # end
 end
 
 require "../../src/openapi-generator/providers/action-controller.cr"
@@ -169,6 +187,18 @@ describe OpenAPI::Generator::Helpers::ActionController do
                   schema:
                     type: string
       /hello/{id}:
+        get:
+          summary: redirect to index
+          parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: string
+            example: id
+          responses:
+            "302":
+              description: redirect to index res
         delete:
           summary: Destroy route
           parameters:
@@ -266,6 +296,27 @@ describe OpenAPI::Generator::Helpers::ActionController do
 
     res.status_code.should eq(204)
     res.output.to_s.should eq("")
+  end
+
+  it "#redirect_to" do
+    res = HelperSpecActionController.context(
+      method: "GET", route: "/hello",
+      route_params: {"id" => "example"},
+      headers: {"Content-Type" => "application/json"}, &.show)
+
+    res.status_code.should eq(302)
+    res.headers["Location"].should eq("/hello")
+    res.output.to_s.should be_empty
+  end
+
+  pending "#custom_route" do
+    res = HelperSpecActionController.context(
+      method: "GET", route: "/hello/custom_route",
+      headers: {"Content-Type" => "application/json"}, &.get_custom_route)
+
+    res.status_code.should eq(302)
+    res.headers["Location"].should eq("/hello/:id")
+    res.output.to_s.should be_empty
   end
 
   it "should raise if there is no mandatory param" do
