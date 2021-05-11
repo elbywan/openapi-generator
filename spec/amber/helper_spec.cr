@@ -25,9 +25,7 @@ class AmberHelperSpecController < Amber::Controller::Base
     YAML
   )]
   def index
-    query_params "mandatory", description: "A mandatory query parameter"
-    query_params? "optional", description: "An optional query parameter"
-
+    _mandatory, _optional = index_helper
     body_as AmberSpec::Payload?, description: "A Hello payload."
 
     payload = AmberSpec::Payload.new
@@ -41,6 +39,14 @@ class AmberHelperSpecController < Amber::Controller::Base
     respond_with 400 do
       text "Ouch.", schema: String.to_openapi_schema
     end
+  end
+
+  @[OpenAPI(dependencies: {index})]
+  private def index_helper
+    {
+      query_params("mandatory", description: "A mandatory query parameter"),
+      query_params?("optional", description: "An optional query parameter"),
+    }
   end
 end
 

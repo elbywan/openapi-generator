@@ -31,15 +31,19 @@ require "../../src/openapi-generator/providers/action-controller.cr"
 describe OpenAPI::Generator::RoutesProvider::ActionController do
   it "should correctly detect routes and map them with the controller method" do
     provider = OpenAPI::Generator::RoutesProvider::ActionController.new
-    route_mappings = provider.route_mappings
+    route_mappings = provider.route_mappings.sort { |a, b|
+      comparison = a[0] <=> b[0]
+      comparison == 0 ? a[1] <=> b[1] : comparison
+    }
+    # helper_spec file + this file
     route_mappings.should eq [
-      {"get", "/hello/custom_route", "HelperSpecActionController::custom_route", [] of String},
-      {"get", "/hello/alt_route", "HelperSpecActionController::get_alt_route", [] of String},
-      {"get", "/hello", "HelperSpecActionController::index", [] of String},
-      {"get", "/hello/{id}", "HelperSpecActionController::show", ["id"]},
-      {"post", "/hello", "HelperSpecActionController::create", [] of String},
       {"delete", "/hello/{id}", "HelperSpecActionController::destroy", ["id"]},
+      {"get", "/hello", "HelperSpecActionController::index", [] of String},
+      {"get", "/hello/alt_route", "HelperSpecActionController::get_alt_route", [] of String},
+      {"get", "/hello/custom_route", "HelperSpecActionController::custom_route", [] of String},
+      {"get", "/hello/{id}", "HelperSpecActionController::show", ["id"]},
       {"get", "/{id}", "ProviderSpecActionController::show", ["id"]},
+      {"post", "/hello", "HelperSpecActionController::create", [] of String},
     ]
   end
 end
