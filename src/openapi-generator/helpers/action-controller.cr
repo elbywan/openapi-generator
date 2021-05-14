@@ -21,6 +21,38 @@ end
 # - `respond_with` can infer responses types and schemas.
 # - `param` can infer query parameters.
 #
+# Please note, you cannot add annotation on top of macros. Therefore for custom routes with the syntax of i.e.
+#
+# get "/example", :example do
+#   render json: "example"
+# end
+#
+# Please re-declare the method of the route and add the annotation correspondingly
+#
+# @[OpenAPI](
+#   <<-YAML
+#     summary: example route
+#   YAML
+# )
+# def example
+#   previous_def
+# end
+#
+# For custom route without predefined name, the method is automatically created with the HTTP verb followed by the route
+#
+# get "/alternative" do
+#   render json: "alternative"
+# end
+#
+# @[OpenAPI](
+#   <<-YAML
+#     summary: alternative route
+#   YAML
+# )
+# def get_alternative
+#   previous_def
+# end
+#
 # NOTE: Do not forget to call `bootstrap` once before calling `OpenAPI::Generator.generate`.
 #
 # ```
@@ -454,8 +486,66 @@ module OpenAPI::Generator::Helpers::ActionController
       ), type: {{type}}, schema: {{schema}})
   end
 
-  macro head(status_code = :ok, description = nil, headers = nil, links = nil, type = nil, schema = nil)
-    render(status_code: {{status_code}}, head: true, description: {{description}}, headers: {{headers}}, links: {{links}}, type: {{type}}, schema: {{schema}})
+  macro head(code = 200, description = nil, headers = nil, links = nil)
+    {% status = code.is_a?(SymbolLiteral) ? STATUS_CODES[code] : code %}
+
+    head(code: {{status}}, response: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_response(
+      description: {{description}},
+      code: {{status}},
+      headers: {{headers}},
+      links: {{links}}
+    ))
+  end
+
+  macro head(code, response)
+    {% type_name = @type.stringify %}
+    {% controller_responses = ::OpenAPI::Generator::Helpers::ActionController::CONTROLLER_RESPONSES %}
+    {% method_name = type_name + "::#{@def.name}" %}
+    {% unless controller_responses[method_name] %}
+      {% controller_responses[method_name] = {} of Int32 => Hash(String, {OpenAPI::Response, Hash(String, OpenAPI::Schema)}) %}
+    {% end %}
+    {% unless controller_responses[method_name][code] %}
+      {% controller_responses[method_name][code] = {response, nil} %}
+    {% end %}
+
+    head(status: {{code}})
+  end
+
+  macro redirect_to(path_to, status = :found, description = nil, headers = nil, links = nil)
+    {% code = status.is_a?(NumberLiteral) ? status : REDIRECTION_CODES[status] %}
+
+    location_header = ::OpenAPI::Header.new(
+      description: "Redirection",
+      required: true,
+      allow_empty_value: false,
+      example: "/example"
+    )
+    {% if headers == nil %}
+      headers = {"Location" => location_header}
+    {% else %}
+      headers["Location"] = location_header
+    {% end %}
+
+    redirect_to(path: {{path_to}}, code: {{code}}, response: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_response(
+      description: {{description}},
+      headers: {{headers}},
+      links: {{links}},
+      code: {{code}}
+    ))
+  end
+
+  macro redirect_to(path, code, response)
+    {% type_name = @type.stringify %}
+    {% controller_responses = ::OpenAPI::Generator::Helpers::ActionController::CONTROLLER_RESPONSES %}
+    {% method_name = type_name + "::#{@def.name}" %}
+    {% unless controller_responses[method_name] %}
+      {% controller_responses[method_name] = {} of Int32 => Hash(String, {OpenAPI::Response, Hash(String, OpenAPI::Schema)}) %}
+    {% end %}
+    {% unless controller_responses[method_name][code] %}
+      {% controller_responses[method_name][code] = {response, nil} %}
+    {% end %}
+
+    redirect_to(path: {{path}}, status: {{code}})
   end
 
   # Same as the ActionController method but without specifying any content and with automatic response inference.

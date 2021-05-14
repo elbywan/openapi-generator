@@ -29,6 +29,15 @@ class HelperSpecActionController < ActionController::Base
 
   @[OpenAPI(
     <<-YAML
+      summary: redirect to index
+    YAML
+  )]
+  def show
+    redirect_to("/hello", status: :found, description: "redirect to index res")
+  end
+
+  @[OpenAPI(
+    <<-YAML
       summary: Sends a hello payload
       responses:
         200:
@@ -51,6 +60,41 @@ class HelperSpecActionController < ActionController::Base
     respond_with 400 do
       text "Ouch.", schema: String.to_openapi_schema
     end
+  end
+
+  @[OpenAPI(
+    <<-YAML
+      summary: Destroy route
+    YAML
+  )]
+  def destroy
+    head :no_content, description: "No content available"
+  end
+
+  get "/custom_route", :custom_route do
+    redirect_to("/hello/:id", description: "custom route redirect to show")
+  end
+
+  @[OpenAPI(
+    <<-YAML
+      summary: custom route
+    YAML
+  )]
+  def custom_route
+    previous_def
+  end
+
+  get "/alt_route" do
+    redirect_to("/hello/:id", description: "alternative route redirect to show")
+  end
+
+  @[OpenAPI(
+    <<-YAML
+      summary: alternative route
+    YAML
+  )]
+  def get_alt_route
+    previous_def
   end
 
   @[OpenAPI(dependencies: {create})]
@@ -166,6 +210,43 @@ describe OpenAPI::Generator::Helpers::ActionController do
                 text/plain:
                   schema:
                     type: string
+      /hello/alt_route:
+        get:
+          summary: alternative route
+          responses:
+            "302":
+              description: alternative route redirect to show
+      /hello/custom_route:
+        get:
+          summary: custom route
+          responses:
+            "302":
+              description: custom route redirect to show
+      /hello/{id}:
+        get:
+          summary: redirect to index
+          parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: string
+            example: id
+          responses:
+            "302":
+              description: redirect to index res
+        delete:
+          summary: Destroy route
+          parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: string
+            example: id
+          responses:
+            "204":
+              description: No content available
       /{id}:
         get:
           summary: Says hello
@@ -241,6 +322,47 @@ describe OpenAPI::Generator::Helpers::ActionController do
 
     res.status_code.should eq(200)
     res.output.to_s.should eq(expected_body.to_json)
+  end
+
+  it "#head" do
+    res = HelperSpecActionController.context(
+      method: "DELETE", route: "/hello",
+      route_params: {"id" => "example"},
+      headers: {"Content-Type" => "application/json"}, &.destroy)
+
+    res.status_code.should eq(204)
+    res.output.to_s.should eq("")
+  end
+
+  it "#redirect_to" do
+    res = HelperSpecActionController.context(
+      method: "GET", route: "/hello",
+      route_params: {"id" => "example"},
+      headers: {"Content-Type" => "application/json"}, &.show)
+
+    res.status_code.should eq(302)
+    res.headers["Location"].should eq("/hello")
+    res.output.to_s.should be_empty
+  end
+
+  it "#custom_route" do
+    res = HelperSpecActionController.context(
+      method: "GET", route: "/hello/custom_route",
+      headers: {"Content-Type" => "application/json"}, &.custom_route)
+
+    res.status_code.should eq(302)
+    res.headers["Location"].should eq("/hello/:id")
+    res.output.to_s.should be_empty
+  end
+
+  it "#custom_route without defining name" do
+    res = HelperSpecActionController.context(
+      method: "GET", route: "/hello/alt_route",
+      headers: {"Content-Type" => "application/json"}, &.get_alt_route)
+
+    res.status_code.should eq(302)
+    res.headers["Location"].should eq("/hello/:id")
+    res.output.to_s.should be_empty
   end
 
   it "should raise if there is no mandatory param" do

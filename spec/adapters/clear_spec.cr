@@ -3,6 +3,7 @@ require "spec"
 
 class ClearModelExample
   include Clear::Model
+  extend OpenAPI::Generator::Serializable
   extend OpenAPI::Generator::Serializable::Adapters::Clear
 
   column id : Int64, primary: true, mass_assign: false, example: "123"
