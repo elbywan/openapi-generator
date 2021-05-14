@@ -57,12 +57,12 @@ module Clear::Model::HasColumns
           end
         elsif _type.is_a?(Generic) # Union?
           if _type.name.stringify == "::Union"
-            converter = (_type.type_vars.map(&.resolve).map(&.stringify).sort.reject { |x| x == "Nil" || x == "::Nil" }.join("")).id.stringify
+            converter = (_type.type_vars.map(&.resolve).reject(Nil).map(&.stringify).join("")).id.stringify
           else
             converter = _type.resolve.stringify
           end
         elsif _type.is_a?(Union)
-          converter = (_type.types.map(&.resolve).map(&.stringify).sort.reject { |x| x == "Nil" || x == "::Nil" }.join("")).id.stringify
+          converter = (_type.types.map(&.resolve).reject(Nil).map(&.stringify).sort.join("")).id.stringify
         else
           raise "Unknown: #{_type}, #{_type.class}"
         end
