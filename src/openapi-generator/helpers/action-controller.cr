@@ -202,15 +202,11 @@ module OpenAPI::Generator::Helpers::ActionController
   # :nodoc:
   private macro _params(name, default_value, type, param, required = true, multiple = false)
     {% qp_list = ::OpenAPI::Generator::Helpers::ActionController::QP_LIST %}
-    {% ann = @def.annotation(OpenAPI) %}
-    {% def_names = ann && ann[:dependency] && [ann[:dependency]] || ann && ann[:dependencies] || [@def.name] %}
-    {% for def_name in def_names %}
-      {% method_name = "#{@type}::#{def_name.id}" %}
-      {% unless qp_list.keys.includes? method_name %}
-        {% qp_list[method_name] = [] of OpenAPI::Parameter %}
-      {% end %}
-      {% qp_list[method_name] << param %}
+    {% method_name = "#{@type}::#{@def.name}" %}
+    {% unless qp_list.keys.includes? method_name %}
+      {% qp_list[method_name] = [] of OpenAPI::Parameter %}
     {% end %}
+    {% qp_list[method_name] << param %}
     begin
       {% if multiple %}
         %results = params.fetch_all({{name}})
@@ -250,8 +246,8 @@ module OpenAPI::Generator::Helpers::ActionController
   # body_as SomeClass
   # ```
   macro body_as(type, description = nil, content_type = "application/json", constructor = :from_json)
-    {% non_nil_type = type.resolve.union_types.reject(&.== Nil).first %}
-    _body_as(
+    {% non_nil_type = type.resolve.union_types.reject { |t| t == Nil }[0] %}
+    body_as(
       request_body: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_request_body(
         description: {{description}},
         required: {{!type.resolve.nilable?}}
@@ -259,43 +255,20 @@ module OpenAPI::Generator::Helpers::ActionController
       schema: {{non_nil_type}}.to_openapi_schema,
       content_type: {{content_type}}
     )
-
-    {% if type.resolve.union_types.includes?(Nil) %}
-      %content = request.body.try &.gets_to_end
-      if %content
-        ::{{non_nil_type}}.{{constructor.id}}(%content)
-      end
-    {% else %}
-      ::{{non_nil_type}}.{{constructor.id}}(request.body.as(IO))
-    {% end %}
-  end
-
-  macro body_raw(type, description = nil, content_type = "application/json")
-    {% non_nil_type = type.resolve.union_types.reject(&.== Nil).first %}
-    _body_as(
-      request_body: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_request_body(
-        description: {{description}},
-        required: {{!type.resolve.nilable?}}
-      ),
-      schema: {{non_nil_type}}.to_openapi_schema,
-      content_type: {{content_type}}
-    )
-
-    request.body.as(IO)
+    %content = request.body.try &.gets_to_end
+    if %content
+      ::{{non_nil_type}}.{{constructor.id}}(%content)
+    end
   end
 
   # :nodoc:
-  private macro _body_as(request_body, schema, content_type)
+  private macro body_as(request_body, schema, content_type)
     {% body_list = ::OpenAPI::Generator::Helpers::ActionController::BODY_LIST %}
-    {% ann = @def.annotation(OpenAPI) %}
-    {% def_names = ann && ann[:dependency] && [ann[:dependency]] || ann && ann[:dependencies] || [@def.name] %}
-    {% for def_name in def_names %}
-      {% method_name = "#{@type}::#{def_name.id}" %}
-      {% unless body_list.keys.includes? method_name %}
-        {% body_list[method_name] = {request_body, {} of String => OpenAPI::Schema} %}
-      {% end %}
-      {% body_list[method_name][1][content_type] = schema %}
+    {% method_name = "#{@type}::#{@def.name}" %}
+    {% unless body_list.keys.includes? method_name %}
+      {% body_list[method_name] = {request_body, {} of String => OpenAPI::Schema} %}
     {% end %}
+    {% body_list[method_name][1][content_type] = schema %}
   end
 
   # :nodoc:
@@ -445,17 +418,13 @@ module OpenAPI::Generator::Helpers::ActionController
     {% status = status_code.is_a?(SymbolLiteral) ? STATUS_CODES[status_code] : status_code %}
 
     render(
-      status_code: {{status}}, head: {{head}}, json: {{json}}, yaml: {{yaml}}, xml: {{xml}}, html: {{html}}, text: {{text}}, binary: {{binary}}, template: {{template}}, partial: {{partial}}, layout: {{layout}},
+      status_code: {{status}}, head: {{head}}, json: {{json}}, yaml: {{yaml}}, xml: {{xml}}, html: {{html}}, text: {{text}}, binary: {{binary}}, template: {{template}}, partial: {{partial}}, layout: {{layout}}, 
       response: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_response(
         description: {{description}},
         code: {{status}},
         headers: {{headers}},
         links: {{links}}
       ), type: {{type}}, schema: {{schema}})
-  end
-
-  macro head(status_code = :ok, description = nil, headers = nil, links = nil, type = nil, schema = nil)
-    render(status_code: {{status_code}}, head: true, description: {{description}}, headers: {{headers}}, links: {{links}}, type: {{type}}, schema: {{schema}})
   end
 
   # Same as the ActionController method but without specifying any content and with automatic response inference.
@@ -472,16 +441,12 @@ module OpenAPI::Generator::Helpers::ActionController
   macro respond_without_body(code, response)
     {% type_name = @type.stringify %}
     {% controller_responses = ::OpenAPI::Generator::Helpers::ActionController::CONTROLLER_RESPONSES %}
-    {% ann = @def.annotation(OpenAPI) %}
-    {% def_names = ann && ann[:dependency] && [ann[:dependency]] || ann && ann[:dependencies] || [@def.name] %}
-    {% for def_name in def_names %}
-      {% method_name = type_name + "::" + def_name.id %}
-      {% unless controller_responses[method_name] %}
-        {% controller_responses[method_name] = {} of Int32 => Hash(String, {OpenAPI::Response, Hash(String, OpenAPI::Schema)}) %}
-      {% end %}
-      {% unless controller_responses[method_name][code] %}
-        {% controller_responses[method_name][code] = {response, nil} %}
-      {% end %}
+    {% method_name = type_name + "::#{@def.name}" %}
+    {% unless controller_responses[method_name] %}
+      {% controller_responses[method_name] = {} of Int32 => Hash(String, {OpenAPI::Response, Hash(String, OpenAPI::Schema)}) %}
+    {% end %}
+    {% unless controller_responses[method_name][code] %}
+      {% controller_responses[method_name][code] = {response, nil} %}
     {% end %}
     response.status_code = {{code}}
     response.close
