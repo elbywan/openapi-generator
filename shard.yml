@@ -28,9 +28,5 @@ development_dependencies:
   http-params-serializable:
     github: caspiano/http-params-serializable
     branch: chore/0.36.0
-  clear:
-    github: place-labs/clear
-  active-model:
-    github: spider-gazelle/active-model
 
 license: MIT

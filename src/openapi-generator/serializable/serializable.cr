@@ -72,9 +72,6 @@ module OpenAPI::Generator::Serializable
   annotation OpenAPI::Field
   end
 
-  class AdapterError < Exception
-  end
-
   # A list of all serializable subclasses.
   SERIALIZABLE_CLASSES = [] of Class
 

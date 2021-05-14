@@ -16,7 +16,6 @@ RUN shards install
 RUN crystal spec ./spec/core && \
     crystal spec ./spec/amber && \
     crystal spec ./spec/lucky && \
-    crystal spec ./spec/spider-gazelle && \
-    crystal spec ./spec/adapters \
+    crystal spec ./spec/spider-gazelle
 
 ENTRYPOINT exit 0

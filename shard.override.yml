@@ -4,8 +4,3 @@ dependencies:
   shell-table:
     github: jwaldrip/shell-table.cr
     branch: master
-  inflector:
-    github: anykeyh/inflector.cr
-  action-controller:
-    github: spider-gazelle/action-controller
-    branch: fix/redirect
