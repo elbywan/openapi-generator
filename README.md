@@ -376,30 +376,6 @@ class CoordinatesController < Amber::Controller::Base
 end
 ```
 
-#### Limitation
-
-Schema inference relies on the method name and will not follow nested calls.
-If needed you can flag a method having one or more dependencies using an annotation as done below.
-
-```crystal
-  @[OpenAPI(
-    <<-YAML
-      summary: The entry point.
-    YAML
-  )]
-  def entry
-    # ...
-    helper()
-    # ...
-  end
-
-  @[OpenAPI(dependency: entry)] # or `@[OpenAPI(dependencies: { entry })]`
-  private def helper
-    # Inference macros called here will be bound to "entry".
-    # ...
-  end
-```
-
 #### API
 
 `openapi-generator` overload existing or adds similar methods and macros to intercept calls and infer schema properties.
@@ -561,30 +537,6 @@ class CoordinatesController < ActionController::Controller::Base
     end
   end
 end
-```
-
-#### Limitation
-
-Schema inference relies on the method name and will not follow nested calls.
-If needed you can flag a method having one or more dependencies using an annotation as done below.
-
-```crystal
-  @[OpenAPI(
-    <<-YAML
-      summary: The entry point.
-    YAML
-  )]
-  def entry
-    # ...
-    helper()
-    # ...
-  end
-
-  @[OpenAPI(dependency: entry)] # or `@[OpenAPI(dependencies: { entry })]`
-  private def helper
-    # Inference macros called here will be bound to "entry".
-    # ...
-  end
 ```
 
 #### API
