@@ -4,3 +4,5 @@ dependencies:
   shell-table:
     github: jwaldrip/shell-table.cr
     branch: master
+  inflector:
+    github: anykeyh/inflector.cr
