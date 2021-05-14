@@ -36,10 +36,7 @@ class HelperSpecActionController < ActionController::Base
     YAML
   )]
   def create
-    mandatory = param mandatory : String, "A mandatory query parameter"
-    optional = param optional : Bool?, "An optional query parameter"
-    with_default = param with_default : String = "default_value", "A mandatory query parameter with default"
-    with_default_nillable = param with_default_nillable : String? = "default_value_nillable", "An optional query parameter with default"
+    mandatory, optional, with_default, with_default_nillable = create_helper
 
     body_as ActionControllerSpec::Payload?, description: "A Hello payload."
 
@@ -54,6 +51,16 @@ class HelperSpecActionController < ActionController::Base
     respond_with 400 do
       text "Ouch.", schema: String.to_openapi_schema
     end
+  end
+
+  @[OpenAPI(dependencies: {create})]
+  private def create_helper
+    {
+      param(mandatory : String, "A mandatory query parameter"),
+      param(optional : Bool?, "An optional query parameter"),
+      param(with_default : String = "default_value", "A mandatory query parameter with default"),
+      param(with_default_nillable : String? = "default_value_nillable", "An optional query parameter with default"),
+    }
   end
 end
 

@@ -28,14 +28,16 @@ require "../../src/openapi-generator/providers/amber.cr"
 describe OpenAPI::Generator::RoutesProvider::Amber do
   it "should correctly detect routes and map them with the controller method" do
     provider = OpenAPI::Generator::RoutesProvider::Amber.new
-    route_mappings = provider.route_mappings
-    route_mappings.sort.should eq [
-      # from the helper spec file
-      {"post", "/hello", "AmberHelperSpecController::index", [] of String},
-      # from this spec file
+    route_mappings = provider.route_mappings.sort { |a, b|
+      comparison = a[0] <=> b[0]
+      comparison == 0 ? a[1] <=> b[1] : comparison
+    }
+    # from the helper spec file + this spec file
+    route_mappings.should eq [
       {"get", "/{id}", "AmberProviderSpecController::index", ["id"]},
       {"head", "/{id}", "AmberProviderSpecController::index", ["id"]},
       {"options", "/{id}", "AmberProviderSpecController::index", ["id"]},
-    ].sort
+      {"post", "/hello", "AmberHelperSpecController::index", [] of String},
+    ]
   end
 end
