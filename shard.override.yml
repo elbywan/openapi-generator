@@ -4,3 +4,6 @@ dependencies:
   shell-table:
     github: jwaldrip/shell-table.cr
     branch: master
+  inflector:
+    github: phoffer/inflector.cr
+    branch: master
