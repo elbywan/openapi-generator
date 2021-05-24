@@ -135,7 +135,7 @@ end
 # The `Generator` will take care of serialization while producing the openapi yaml file.**
 module OpenAPI::Generator::Serializable::Adapters::Clear
   {% unless (@type == OpenAPI::Generator::Serializable::Adapters::Clear || ::Clear::Model.includers.includes?(@type)) %}
-    raise AdapterError.new("Clear::Model was not included for type {{@type}}")
+    {% raise AdapterError.new("Clear::Model was not included for type {{@type}}") %}
   {% end %}
 
   # Serialize the class into an `OpenAPI::Schema` representation.

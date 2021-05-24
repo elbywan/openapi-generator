@@ -5,7 +5,7 @@ require "active-model"
 
 module OpenAPI::Generator::Serializable::Adapters::ActiveModel
   {% unless (@type == OpenAPI::Generator::Serializable::Adapters::ActiveModel || @type.ancestors.includes?(::ActiveModel::Model)) %}
-    raise AdapterError.new("ActiveModel::Model was not inherited for type {{@type}}")
+    {% raise AdapterError.new("ActiveModel::Model was not inherited for type {{@type}}") %}
   {% end %}
 
   # Serialize the class into an `OpenAPI::Schema` representation.
