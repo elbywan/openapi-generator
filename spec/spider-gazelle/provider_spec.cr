@@ -37,7 +37,11 @@ describe OpenAPI::Generator::RoutesProvider::ActionController do
     }
     # helper_spec file + this file
     route_mappings.should eq [
+      {"delete", "/hello/{id}", "HelperSpecActionController::destroy", ["id"]},
       {"get", "/hello", "HelperSpecActionController::index", [] of String},
+      {"get", "/hello/alt_route", "HelperSpecActionController::get_alt_route", [] of String},
+      {"get", "/hello/custom_route", "HelperSpecActionController::custom_route", [] of String},
+      {"get", "/hello/{id}", "HelperSpecActionController::show", ["id"]},
       {"get", "/{id}", "ProviderSpecActionController::show", ["id"]},
       {"post", "/hello", "HelperSpecActionController::create", [] of String},
     ]
