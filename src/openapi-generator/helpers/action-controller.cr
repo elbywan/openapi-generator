@@ -196,6 +196,45 @@ module OpenAPI::Generator::Helpers::ActionController
   QP_LIST = {} of String => Array(OpenAPI::Parameter)
   # :nodoc:
   BODY_LIST = {} of String => {OpenAPI::RequestBody, Hash(String, OpenAPI::Schema)}
+  # :nodoc:
+  ENTRY_POINT = [nil]
+
+  macro included
+    macro finished
+      # Override annotated methods and mark them as the entry point of the controller.
+      # When nested methods are called OpenAPI related macros will then properly identify
+      # and associate OpenAPI items with this entry point.
+      {% verbatim do %}
+        {% for method in @type.methods %}
+          {% ann = method.annotation(OpenAPI) %}
+          {% if ann %}
+            {% visibility = method.visibility != :public ? method.visibility.id : "" %}
+            {% name = method.name.id %}
+            {% splat_index = method.splat_index %}
+            {%
+              args = method.args.map_with_index { |arg, index|
+                index == splat_index ? "*#{arg}".id : arg.id
+              }
+              if double_splat = method.double_splat && "**#{method.double_splat}".id
+                args << double_splat
+              end
+              if block_arg = method.block_arg
+                args << "&#{block_arg}".id
+              end
+              args = args.join(',').id
+            %}
+            {% return_type = method.return_type && ": #{method.return_type}".id %}
+            {% definition = "def #{name}(#{args})#{return_type}" %}
+            {{visibility.id}} {{definition.id}}
+              \{% ENTRY_POINT[0] = {{name.stringify}} %}
+              previous_def
+              \{% ENTRY_POINT[0] = nil %}
+            end
+          {% end %}
+        {% end %}
+      {% end %}
+    end
+  end
 
   # Fetch a query parameter and register it in the OpenAPI operation related to the controller method.
   #
@@ -234,15 +273,12 @@ module OpenAPI::Generator::Helpers::ActionController
   # :nodoc:
   private macro _params(name, default_value, type, param, required = true, multiple = false)
     {% qp_list = ::OpenAPI::Generator::Helpers::ActionController::QP_LIST %}
-    {% ann = @def.annotation(OpenAPI) %}
-    {% def_names = ann && ann[:dependency] && [ann[:dependency]] || ann && ann[:dependencies] || [@def.name] %}
-    {% for def_name in def_names %}
-      {% method_name = "#{@type}::#{def_name.id}" %}
-      {% unless qp_list.keys.includes? method_name %}
-        {% qp_list[method_name] = [] of OpenAPI::Parameter %}
-      {% end %}
-      {% qp_list[method_name] << param %}
+    {% def_name = ENTRY_POINT[0] || @def.name %}
+    {% method_name = "#{@type}::#{def_name.id}" %}
+    {% unless qp_list.keys.includes? method_name %}
+      {% qp_list[method_name] = [] of OpenAPI::Parameter %}
     {% end %}
+    {% qp_list[method_name] << param %}
     begin
       {% if multiple %}
         %results = params.fetch_all({{name}})
@@ -282,8 +318,8 @@ module OpenAPI::Generator::Helpers::ActionController
   # body_as SomeClass
   # ```
   macro body_as(type, description = nil, content_type = "application/json", constructor = :from_json)
-    {% non_nil_type = type.resolve.union_types.reject(&.== Nil).first %}
-    _body_as(
+    {% non_nil_type = type.resolve.union_types.reject { |t| t == Nil }[0] %}
+    body_as(
       request_body: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_request_body(
         description: {{description}},
         required: {{!type.resolve.nilable?}}
@@ -291,43 +327,21 @@ module OpenAPI::Generator::Helpers::ActionController
       schema: {{non_nil_type}}.to_openapi_schema,
       content_type: {{content_type}}
     )
-
-    {% if type.resolve.union_types.includes?(Nil) %}
-      %content = request.body.try &.gets_to_end
-      if %content
-        ::{{non_nil_type}}.{{constructor.id}}(%content)
-      end
-    {% else %}
-      ::{{non_nil_type}}.{{constructor.id}}(request.body.as(IO))
-    {% end %}
-  end
-
-  macro body_raw(type, description = nil, content_type = "application/json")
-    {% non_nil_type = type.resolve.union_types.reject(&.== Nil).first %}
-    _body_as(
-      request_body: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_request_body(
-        description: {{description}},
-        required: {{!type.resolve.nilable?}}
-      ),
-      schema: {{non_nil_type}}.to_openapi_schema,
-      content_type: {{content_type}}
-    )
-
-    request.body.as(IO)
+    %content = request.body.try &.gets_to_end
+    if %content
+      ::{{non_nil_type}}.{{constructor.id}}(%content)
+    end
   end
 
   # :nodoc:
-  private macro _body_as(request_body, schema, content_type)
+  private macro body_as(request_body, schema, content_type)
     {% body_list = ::OpenAPI::Generator::Helpers::ActionController::BODY_LIST %}
-    {% ann = @def.annotation(OpenAPI) %}
-    {% def_names = ann && ann[:dependency] && [ann[:dependency]] || ann && ann[:dependencies] || [@def.name] %}
-    {% for def_name in def_names %}
-      {% method_name = "#{@type}::#{def_name.id}" %}
-      {% unless body_list.keys.includes? method_name %}
-        {% body_list[method_name] = {request_body, {} of String => OpenAPI::Schema} %}
-      {% end %}
-      {% body_list[method_name][1][content_type] = schema %}
+    {% def_name = ENTRY_POINT[0] || @def.name %}
+    {% method_name = "#{@type}::#{def_name.id}" %}
+    {% unless body_list.keys.includes? method_name %}
+      {% body_list[method_name] = {request_body, {} of String => OpenAPI::Schema} %}
     {% end %}
+    {% body_list[method_name][1][content_type] = schema %}
   end
 
   # :nodoc:
@@ -562,16 +576,13 @@ module OpenAPI::Generator::Helpers::ActionController
   macro respond_without_body(code, response)
     {% type_name = @type.stringify %}
     {% controller_responses = ::OpenAPI::Generator::Helpers::ActionController::CONTROLLER_RESPONSES %}
-    {% ann = @def.annotation(OpenAPI) %}
-    {% def_names = ann && ann[:dependency] && [ann[:dependency]] || ann && ann[:dependencies] || [@def.name] %}
-    {% for def_name in def_names %}
-      {% method_name = type_name + "::" + def_name.id %}
-      {% unless controller_responses[method_name] %}
-        {% controller_responses[method_name] = {} of Int32 => Hash(String, {OpenAPI::Response, Hash(String, OpenAPI::Schema)}) %}
-      {% end %}
-      {% unless controller_responses[method_name][code] %}
-        {% controller_responses[method_name][code] = {response, nil} %}
-      {% end %}
+    {% def_name = ENTRY_POINT[0] || @def.name %}
+    {% method_name = type_name + "::" + def_name.id %}
+    {% unless controller_responses[method_name] %}
+      {% controller_responses[method_name] = {} of Int32 => Hash(String, {OpenAPI::Response, Hash(String, OpenAPI::Schema)}) %}
+    {% end %}
+    {% unless controller_responses[method_name][code] %}
+      {% controller_responses[method_name][code] = {response, nil} %}
     {% end %}
     response.status_code = {{code}}
     response.close

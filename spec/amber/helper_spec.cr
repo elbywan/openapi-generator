@@ -41,7 +41,6 @@ class AmberHelperSpecController < Amber::Controller::Base
     end
   end
 
-  @[OpenAPI(dependencies: {index})]
   private def index_helper
     {
       query_params("mandatory", description: "A mandatory query parameter"),

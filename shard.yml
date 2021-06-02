@@ -1,5 +1,5 @@
 name: openapi-generator
-version: 2.1.0
+version: 2.0.0
 targets:
   openapi-generator:
     main: src/openapi-generator.cr
