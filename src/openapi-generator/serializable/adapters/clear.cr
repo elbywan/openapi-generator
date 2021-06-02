@@ -133,6 +133,10 @@ end
 # NOTE: **Calling `to_openapi_schema` programatically is unnecessary.
 # The `Generator` will take care of serialization while producing the openapi yaml file.**
 module OpenAPI::Generator::Serializable::Adapters::Clear
+  {% unless (@type == OpenAPI::Generator::Serializable::Adapters::Clear || ::Clear::Model.includers.includes?(@type)) %}
+    {% raise AdapterError.new("Clear::Model was not included for type {{@type}}") %}
+  {% end %}
+
   # Serialize the class into an `OpenAPI::Schema` representation.
   #
   # Check the [swagger documentation](https://swagger.io/docs/specification/data-models/) for more details
