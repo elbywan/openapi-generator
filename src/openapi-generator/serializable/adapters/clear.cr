@@ -95,7 +95,6 @@ end
 # class ClearModelExample
 #   include Clear::Model
 #   extend OpenAPI::Generator::Serializable
-#   extend OpenAPI::Generator::Serializable::Adapters::Clear
 
 #   column id : Int64, primary: true, mass_assign: false, example: "123"
 #   column email : String, mass_assign: true, example: "default@gmail.com"
