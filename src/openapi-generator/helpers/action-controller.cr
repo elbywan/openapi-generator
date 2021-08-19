@@ -3,6 +3,7 @@ require "json"
 require "http"
 require "http-params-serializable"
 require "http-params-serializable/ext"
+require "open_api/reference"
 
 class HTTP::Params::Serializable::ParamMissingError
   # Raised when a param is not nilable and missing from the query.
@@ -195,7 +196,7 @@ module OpenAPI::Generator::Helpers::ActionController
   # :nodoc:
   QP_LIST = {} of String => Array(OpenAPI::Parameter)
   # :nodoc:
-  BODY_LIST = {} of String => {OpenAPI::RequestBody, Hash(String, OpenAPI::Schema)}
+  BODY_LIST = {} of String => {OpenAPI::RequestBody, Hash(String, OpenAPI::Reference | OpenAPI::Schema)}
   # :nodoc:
   ENTRY_POINT = [nil]
 
@@ -319,7 +320,7 @@ module OpenAPI::Generator::Helpers::ActionController
   # ```
   macro body_as(type, description = nil, content_type = "application/json", constructor = :from_json)
     {% non_nil_type = type.resolve.union_types.reject(&.== Nil).first %}
-    body_as(
+    body_as_private(
       request_body: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_request_body(
         description: {{description}},
         required: {{!type.resolve.nilable?}}
@@ -338,20 +339,40 @@ module OpenAPI::Generator::Helpers::ActionController
     {% end %}
   end
 
-  # :nodoc:
-  private macro body_as(request_body, schema, content_type)
+  macro body_as_private(request_body, schema, content_type)
     {% body_list = ::OpenAPI::Generator::Helpers::ActionController::BODY_LIST %}
     {% def_name = ENTRY_POINT[0] || @def.name %}
     {% method_name = "#{@type}::#{def_name.id}" %}
     {% unless body_list.keys.includes? method_name %}
-      {% body_list[method_name] = {request_body, {} of String => OpenAPI::Schema} %}
+      {% body_list[method_name] = {request_body, {} of String => OpenAPI::Schema | OpenAPI::Reference} %}
     {% end %}
     {% body_list[method_name][1][content_type] = schema %}
   end
 
+  macro body_as_with(type, description = nil, content_type = "application/json", constructor = :from_json)
+    {% non_nil_type = type.resolve.union_types.reject(&.== Nil).first %}
+    body_as_private(
+      request_body: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_request_body(
+        description: {{description}},
+        required: {{!type.resolve.nilable?}}
+      ),
+      schema: ::OpenAPI::Reference.new(ref: "#/components/schemas/#{URI.encode_www_form({{non_nil_type.stringify.split("::").join("_") + "Request"}})}"),
+      content_type: {{content_type}}
+    )
+
+    {% if type.resolve.union_types.includes?(Nil) %}
+      %content = request.body.try &.gets_to_end
+      if %content
+        ::{{non_nil_type}}.{{constructor.id}}(%content)
+      end
+    {% else %}
+      ::{{non_nil_type}}.{{constructor.id}}(request.body.as(IO))
+    {% end %}
+  end
+
   macro body_raw(type, description = nil, content_type = "application/json")
     {% non_nil_type = type.resolve.union_types.reject(&.== Nil).first %}
-    body_as(
+    body_as_private(
       request_body: ::OpenAPI::Generator::Helpers::ActionController.init_openapi_request_body(
         description: {{description}},
         required: {{!type.resolve.nilable?}}

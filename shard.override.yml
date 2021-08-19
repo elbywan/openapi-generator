@@ -7,3 +7,6 @@ dependencies:
   inflector:
     github: phoffer/inflector.cr
     branch: master
+  http-params-serializable:
+    github: place-labs/http-params-serializable
+    branch: chore/0.36.0
